@@ -64,38 +64,17 @@ html {
 
     <?php
     /**
-     * 2. Search Section  
-     * 助成金検索システム
+     * 2. Content Section
+     * メインコンテンツエリア（検索・カテゴリー機能削除済み）
      */
     ?>
-    <section class="front-page-section section-animate" id="search-section">
-        <?php get_template_part('template-parts/front-page/section', 'search'); ?>
-    </section>
-
-    <?php
-    /**
-     * 3. Categories Section
-     * カテゴリ別ナビゲーション
-     */
-    ?>
-    <section class="front-page-section section-animate" id="categories-section">
-        <?php get_template_part('template-parts/front-page/section', 'categories'); ?>
-    </section>
-
-    <?php
-    /**
-     * 4. Category Hierarchy Section
-     * カテゴリー階層表示（親→子構造）
-     * User Request: 大枠のカテゴリ→中枠の階層構造を実装
-     */
-    ?>
-    <section class="front-page-section section-animate" id="category-hierarchy-section">
-        <div class="container">
-            <div class="section-header" style="text-align: center; margin-bottom: 48px;">
-                <h2 class="section-title" style="font-size: 32px; font-weight: 700; color: #000000; margin-bottom: 16px;">カテゴリー別に探す</h2>
-                <p class="section-description" style="font-size: 16px; color: #666666;">補助金・助成金を分野別に検索できます</p>
-            </div>
-            <?php get_template_part('template-parts/category', 'hierarchy'); ?>
+    <section class="front-page-section section-animate" id="content-section">
+        <div class="container" style="padding: 80px 20px; text-align: center;">
+            <h2 style="font-size: 28px; color: #333; margin-bottom: 20px;">Grant Insight Perfect</h2>
+            <p style="font-size: 16px; color: #666; max-width: 600px; margin: 0 auto;">
+                助成金情報プラットフォームへようこそ。<br>
+                ヒーローセクションから各種情報をご確認ください。
+            </p>
         </div>
     </section>
 
