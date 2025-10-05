@@ -2841,3 +2841,246 @@ function gi_load_grants() {
 }
 add_action('wp_ajax_gi_load_grants', 'gi_load_grants');
 add_action('wp_ajax_nopriv_gi_load_grants', 'gi_load_grants');
+
+/**
+ * =============================================================================
+ * Enhanced Filter Preview AJAX Handler
+ * =============================================================================
+ */
+
+/**
+ * フィルタープレビュー用AJAX関数
+ */
+function gi_ajax_get_filter_preview() {
+    // Nonce verification
+    if (!wp_verify_nonce($_POST['nonce'] ?? '', 'gi_ajax_nonce')) {
+        wp_send_json_error('セキュリティチェックに失敗しました');
+    }
+    
+    $filters = json_decode(stripslashes($_POST['filters'] ?? '{}'), true);
+    
+    // Build query args
+    $args = [
+        'post_type' => 'grant',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'fields' => 'ids',
+        'no_found_rows' => false
+    ];
+    
+    // Apply filters
+    $tax_query = ['relation' => 'AND'];
+    $meta_query = ['relation' => 'AND'];
+    
+    // Categories
+    if (!empty($filters['categories']) && is_array($filters['categories'])) {
+        $tax_query[] = [
+            'taxonomy' => 'grant_category',
+            'field' => 'slug',
+            'terms' => $filters['categories'],
+            'operator' => 'IN'
+        ];
+    }
+    
+    // Prefectures
+    if (!empty($filters['prefectures']) && is_array($filters['prefectures'])) {
+        $tax_query[] = [
+            'taxonomy' => 'grant_prefecture',
+            'field' => 'slug',
+            'terms' => $filters['prefectures'],
+            'operator' => 'IN'
+        ];
+    }
+    
+    // Status
+    if (!empty($filters['status']) && is_array($filters['status'])) {
+        $meta_query[] = [
+            'key' => 'application_status',
+            'value' => $filters['status'],
+            'compare' => 'IN'
+        ];
+    }
+    
+    // Featured
+    if (!empty($filters['is_featured']) && $filters['is_featured'] === '1') {
+        $meta_query[] = [
+            'key' => 'is_featured',
+            'value' => '1',
+            'compare' => '='
+        ];
+    }
+    
+    // Amount range
+    if (!empty($filters['amount'])) {
+        $amount_meta = gi_get_amount_meta_query($filters['amount']);
+        if ($amount_meta) {
+            $meta_query[] = $amount_meta;
+        }
+    }
+    
+    // Add queries if not empty
+    if (count($tax_query) > 1) {
+        $args['tax_query'] = $tax_query;
+    }
+    if (count($meta_query) > 1) {
+        $args['meta_query'] = $meta_query;
+    }
+    
+    // Execute query
+    $query = new WP_Query($args);
+    $count = $query->found_posts;
+    
+    // Get category breakdown
+    $categories = [];
+    if ($count > 0 && $count < 500) { // Only for reasonable result sets
+        $post_ids = $query->posts;
+        $category_terms = wp_get_object_terms($post_ids, 'grant_category');
+        
+        $category_counts = [];
+        foreach ($category_terms as $term) {
+            $category_counts[$term->name] = ($category_counts[$term->name] ?? 0) + 1;
+        }
+        
+        arsort($category_counts);
+        $categories = array_slice($category_counts, 0, 5, true);
+    }
+    
+    wp_send_json_success([
+        'count' => $count,
+        'categories' => $categories,
+        'filters_applied' => count($tax_query) + count($meta_query) - 2
+    ]);
+}
+
+add_action('wp_ajax_gi_get_filter_preview', 'gi_ajax_get_filter_preview');
+add_action('wp_ajax_nopriv_gi_get_filter_preview', 'gi_ajax_get_filter_preview');
+
+/**
+ * Location-based filter support
+ */
+function gi_ajax_get_location_suggestions() {
+    if (!wp_verify_nonce($_POST['nonce'] ?? '', 'gi_ajax_nonce')) {
+        wp_send_json_error('セキュリティチェックに失敗しました');
+    }
+    
+    $query = sanitize_text_field($_POST['query'] ?? '');
+    $type = sanitize_text_field($_POST['type'] ?? 'both'); // prefecture, municipality, both
+    
+    $results = [];
+    
+    if (strlen($query) >= 1) {
+        // Search prefectures
+        if ($type === 'prefecture' || $type === 'both') {
+            $prefectures = get_terms([
+                'taxonomy' => 'grant_prefecture',
+                'name__like' => $query,
+                'hide_empty' => true,
+                'number' => 10
+            ]);
+            
+            foreach ($prefectures as $term) {
+                $results[] = [
+                    'type' => 'prefecture',
+                    'id' => $term->slug,
+                    'name' => $term->name,
+                    'count' => $term->count
+                ];
+            }
+        }
+        
+        // Search municipalities
+        if ($type === 'municipality' || $type === 'both') {
+            $municipalities = get_terms([
+                'taxonomy' => 'grant_municipality',
+                'name__like' => $query,
+                'hide_empty' => true,
+                'number' => 15
+            ]);
+            
+            foreach ($municipalities as $term) {
+                $results[] = [
+                    'type' => 'municipality',
+                    'id' => $term->slug,
+                    'name' => $term->name,
+                    'count' => $term->count
+                ];
+            }
+        }
+    }
+    
+    wp_send_json_success($results);
+}
+
+add_action('wp_ajax_gi_get_location_suggestions', 'gi_ajax_get_location_suggestions');
+add_action('wp_ajax_nopriv_gi_get_location_suggestions', 'gi_ajax_get_location_suggestions');
+
+/**
+ * Get status counts for filter display
+ */
+function gi_get_status_count($status) {
+    static $cache = [];
+    
+    if (isset($cache[$status])) {
+        return $cache[$status];
+    }
+    
+    $args = [
+        'post_type' => 'grant',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'fields' => 'ids',
+        'meta_query' => [
+            [
+                'key' => 'application_status',
+                'value' => $status,
+                'compare' => '='
+            ]
+        ]
+    ];
+    
+    $query = new WP_Query($args);
+    $count = $query->found_posts;
+    $cache[$status] = $count;
+    
+    return $count;
+}
+
+/**
+ * Helper function for amount meta queries
+ */
+function gi_get_amount_meta_query($amount_range) {
+    switch ($amount_range) {
+        case '0-100':
+            return [
+                'key' => 'max_amount_numeric',
+                'value' => 1000000,
+                'compare' => '<='
+            ];
+        case '100-500':
+            return [
+                'key' => 'max_amount_numeric',
+                'value' => [1000000, 5000000],
+                'compare' => 'BETWEEN'
+            ];
+        case '500-1000':
+            return [
+                'key' => 'max_amount_numeric',
+                'value' => [5000000, 10000000],
+                'compare' => 'BETWEEN'
+            ];
+        case '1000-3000':
+            return [
+                'key' => 'max_amount_numeric',
+                'value' => [10000000, 30000000],
+                'compare' => 'BETWEEN'
+            ];
+        case '3000+':
+            return [
+                'key' => 'max_amount_numeric',
+                'value' => 30000000,
+                'compare' => '>='
+            ];
+        default:
+            return null;
+    }
+}
