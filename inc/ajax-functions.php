@@ -1516,7 +1516,7 @@ function gi_search_grant_titles($query, $limit = 5) {
         ];
     }
     
-    return $results
+    return $results;
 }
 
 /**
