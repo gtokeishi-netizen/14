@@ -38,8 +38,8 @@ add_action('wp_ajax_gi_voice_input', 'gi_ajax_process_voice_input');
 add_action('wp_ajax_nopriv_gi_voice_input', 'gi_ajax_process_voice_input');
 
 // 検索候補機能
-add_action('wp_ajax_gi_search_suggestions', 'gi_ajax_get_search_suggestions');
-add_action('wp_ajax_nopriv_gi_search_suggestions', 'gi_ajax_get_search_suggestions');
+add_action('wp_ajax_gi_search_suggestions', 'gi_ajax_search_suggestions_enhanced');
+add_action('wp_ajax_nopriv_gi_search_suggestions', 'gi_ajax_search_suggestions_enhanced');
 
 // 音声履歴機能
 add_action('wp_ajax_gi_voice_history', 'gi_ajax_save_voice_history');
@@ -352,23 +352,83 @@ function gi_ajax_process_voice_input() {
 }
 
 /**
- * 検索候補取得
+ * 検索候補取得 - Enhanced Version
  */
-function gi_ajax_get_search_suggestions() {
+function gi_ajax_search_suggestions_enhanced() {
     try {
-        if (!gi_verify_ajax_nonce()) {
+        // Nonce verification
+        if (!wp_verify_nonce($_POST['nonce'] ?? '', 'gi_ajax_nonce')) {
             wp_send_json_error(['message' => 'セキュリティチェックに失敗しました']);
             return;
         }
         
-        $partial_query = sanitize_text_field($_POST['query'] ?? '');
-        $limit = min(intval($_POST['limit'] ?? 10), 20);
+        $query = sanitize_text_field($_POST['query'] ?? '');
         
-        $suggestions = gi_get_smart_search_suggestions($partial_query, $limit);
+        if (strlen($query) < 2) {
+            wp_send_json_success([]);
+            return;
+        }
+        
+        $suggestions = [];
+        
+        // Search in grant titles
+        $grant_args = [
+            'post_type' => 'grant',
+            'post_status' => 'publish',
+            'posts_per_page' => 5,
+            's' => $query,
+            'fields' => 'ids'
+        ];
+        
+        $grant_query = new WP_Query($grant_args);
+        foreach ($grant_query->posts as $post_id) {
+            $suggestions[] = [
+                'type' => 'grant',
+                'title' => get_the_title($post_id),
+                'url' => get_permalink($post_id),
+                'icon' => 'fas fa-file-alt'
+            ];
+        }
+        
+        // Search in categories
+        $categories = get_terms([
+            'taxonomy' => 'grant_category',
+            'name__like' => $query,
+            'hide_empty' => true,
+            'number' => 3
+        ]);
+        
+        foreach ($categories as $term) {
+            $suggestions[] = [
+                'type' => 'category',
+                'title' => $term->name,
+                'url' => get_term_link($term),
+                'icon' => 'fas fa-tag',
+                'count' => $term->count
+            ];
+        }
+        
+        // Search in prefectures
+        $prefectures = get_terms([
+            'taxonomy' => 'grant_prefecture',
+            'name__like' => $query,
+            'hide_empty' => true,
+            'number' => 3
+        ]);
+        
+        foreach ($prefectures as $term) {
+            $suggestions[] = [
+                'type' => 'prefecture',
+                'title' => $term->name,
+                'url' => get_term_link($term),
+                'icon' => 'fas fa-map-marker-alt',
+                'count' => $term->count
+            ];
+        }
         
         wp_send_json_success([
             'suggestions' => $suggestions,
-            'query' => $partial_query
+            'query' => $query
         ]);
         
     } catch (Exception $e) {
@@ -3169,8 +3229,8 @@ add_action('wp_ajax_nopriv_gi_filter_grants', 'gi_ajax_filter_grants');
 add_action('wp_ajax_gi_search_grants', 'gi_ajax_search_grants');
 add_action('wp_ajax_nopriv_gi_search_grants', 'gi_ajax_search_grants');
 
-add_action('wp_ajax_gi_get_search_suggestions', 'gi_ajax_get_search_suggestions');
-add_action('wp_ajax_nopriv_gi_get_search_suggestions', 'gi_ajax_get_search_suggestions');
+add_action('wp_ajax_gi_get_search_suggestions', 'gi_ajax_search_suggestions_enhanced');
+add_action('wp_ajax_nopriv_gi_get_search_suggestions', 'gi_ajax_search_suggestions_enhanced');
 
 add_action('wp_ajax_gi_load_more_grants', 'gi_ajax_load_more_grants');
 add_action('wp_ajax_nopriv_gi_load_more_grants', 'gi_ajax_load_more_grants');

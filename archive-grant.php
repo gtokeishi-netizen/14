@@ -675,15 +675,69 @@ $region_mapping = [
     
     .clean-layout {
         display: grid;
-        grid-template-columns: 280px 1fr;
+        grid-template-columns: 320px 1fr;
         gap: var(--space-8);
         align-items: start;
+        height: calc(100vh - 200px);
+        overflow: hidden;
     }
     
     /* ===== SIDEBAR ===== */
     .clean-sidebar {
         position: sticky;
         top: 120px;
+        height: calc(100vh - 140px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-width: thin;
+        scrollbar-color: var(--gray-300) var(--gray-100);
+    }
+    
+    .clean-sidebar::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    .clean-sidebar::-webkit-scrollbar-track {
+        background: var(--gray-100);
+        border-radius: var(--radius-sm);
+    }
+    
+    .clean-sidebar::-webkit-scrollbar-thumb {
+        background: var(--gray-300);
+        border-radius: var(--radius-sm);
+    }
+    
+    .clean-sidebar::-webkit-scrollbar-thumb:hover {
+        background: var(--gray-400);
+    }
+    
+    /* ===== MAIN CONTENT ===== */
+    .clean-content {
+        height: calc(100vh - 140px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-right: var(--space-2);
+        scrollbar-width: thin;
+        scrollbar-color: var(--gray-300) var(--gray-100);
+    }
+    
+    .clean-content::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    .clean-content::-webkit-scrollbar-track {
+        background: var(--gray-100);
+        border-radius: var(--radius-sm);
+    }
+    
+    .clean-content::-webkit-scrollbar-thumb {
+        background: var(--gray-300);
+        border-radius: var(--radius-sm);
+    }
+    
+    .clean-content::-webkit-scrollbar-thumb:hover {
+        background: var(--gray-400);
+    }
     }
     
     .clean-filter-card {
@@ -982,11 +1036,22 @@ $region_mapping = [
     @media (max-width: 1024px) {
         .clean-layout {
             grid-template-columns: 1fr;
+            height: auto;
+            overflow: visible;
         }
         
         .clean-sidebar {
             position: static;
             margin-bottom: var(--space-6);
+            height: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .clean-content {
+            height: auto;
+            overflow: visible;
+            padding-right: 0;
         }
         
         .clean-grants-grid {
@@ -4496,11 +4561,12 @@ $region_mapping = [
             elements.clean_filter_close.addEventListener('click', closeFilterSidebar);
         }
         
-        // New Enhanced Events
+        // Enhanced Filter Events
         bindFilterEvents();
         bindLocationEvents();
         bindCategoryEvents();
         bindActionEvents();
+        bindScrollEvents();
         
         // View switcher
         if (elements.clean_grid_view) {
@@ -4563,6 +4629,162 @@ $region_mapping = [
         
         // Initialize scroll indicators
         initScrollIndicators();
+    }
+    
+    /**
+     * Enhanced Filter Event Handlers
+     */
+    function bindFilterEvents() {
+        // All checkbox filters - Enhanced
+        document.querySelectorAll('.clean-filter-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', handleFilterCheckboxChange);
+        });
+        
+        // Category checkboxes with enhanced handling
+        document.querySelectorAll('.category-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', handleCategoryChange);
+        });
+        
+        // Amount range filters
+        document.querySelectorAll('select[name^="amount"]').forEach(select => {
+            select.addEventListener('change', handleAmountFilterChange);
+        });
+    }
+    
+    /**
+     * Enhanced checkbox handler
+     */
+    function handleFilterCheckboxChange(e) {
+        const checkbox = e.target;
+        const filterType = getFilterTypeFromName(checkbox.name);
+        const value = checkbox.value;
+        
+        if (!filterType) return;
+        
+        if (checkbox.checked) {
+            if (!state.filters[filterType].includes(value)) {
+                state.filters[filterType].push(value);
+            }
+        } else {
+            const index = state.filters[filterType].indexOf(value);
+            if (index > -1) {
+                state.filters[filterType].splice(index, 1);
+            }
+        }
+        
+        // Special handling for featured checkbox
+        if (checkbox.name === 'is_featured') {
+            state.filters.is_featured = checkbox.checked ? '1' : '';
+        }
+        
+        updateFilterState();
+    }
+    
+    /**
+     * Category-specific change handler
+     */
+    function handleCategoryChange(e) {
+        const checkbox = e.target;
+        const categorySlug = checkbox.value;
+        
+        if (checkbox.checked) {
+            if (!state.filters.categories.includes(categorySlug)) {
+                state.filters.categories.push(categorySlug);
+            }
+        } else {
+            const index = state.filters.categories.indexOf(categorySlug);
+            if (index > -1) {
+                state.filters.categories.splice(index, 1);
+            }
+        }
+        
+        // Update parent label state
+        const label = checkbox.closest('label');
+        if (label) {
+            label.classList.toggle('selected', checkbox.checked);
+        }
+        
+        updateFilterState();
+    }
+    
+    /**
+     * Get filter type from input name
+     */
+    function getFilterTypeFromName(name) {
+        const mapping = {
+            'categories[]': 'categories',
+            'prefectures[]': 'prefectures',
+            'municipalities[]': 'municipalities',
+            'status[]': 'status',
+            'difficulty[]': 'difficulty',
+            'success_rate[]': 'success_rate'
+        };
+        return mapping[name] || null;
+    }
+    
+    function bindLocationEvents() {
+        // Already implemented - keeping existing functionality
+    }
+    
+    function bindCategoryEvents() {
+        // Category search and show more functionality
+        // Already implemented in separate init functions
+    }
+    
+    function bindActionEvents() {
+        // View toggles and other actions
+        // Already implemented above in bindEvents
+    }
+    
+    function bindScrollEvents() {
+        // Add scroll to top button if not exists
+        if (!document.getElementById('scroll-to-top')) {
+            const scrollBtn = document.createElement('button');
+            scrollBtn.id = 'scroll-to-top';
+            scrollBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+            scrollBtn.className = 'scroll-to-top-btn';
+            scrollBtn.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                background: var(--primary);
+                color: white;
+                border: none;
+                border-radius: 50%;
+                font-size: 1.2rem;
+                cursor: pointer;
+                display: none;
+                z-index: 1000;
+                box-shadow: var(--shadow-lg);
+                transition: var(--transition);
+            `;
+            document.body.appendChild(scrollBtn);
+        }
+        
+        const scrollToTopBtn = document.getElementById('scroll-to-top');
+        if (scrollToTopBtn) {
+            scrollToTopBtn.addEventListener('click', () => {
+                const contentArea = document.querySelector('.clean-content');
+                if (contentArea) {
+                    contentArea.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        }
+        
+        // Monitor scroll position
+        const contentArea = document.querySelector('.clean-content');
+        if (contentArea) {
+            contentArea.addEventListener('scroll', debounce(() => {
+                const scrollTop = contentArea.scrollTop;
+                if (scrollToTopBtn) {
+                    scrollToTopBtn.style.display = scrollTop > 300 ? 'block' : 'none';
+                }
+            }, 100));
+        }
     }
     
     /**
@@ -4967,7 +5189,7 @@ $region_mapping = [
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 body: new URLSearchParams({
-                    action: 'gi_load_grants',
+                    action: 'gi_ajax_load_grants',
                     nonce: config.nonce,
                     search: state.filters.search,
                     categories: JSON.stringify(state.filters.categories),
@@ -5181,6 +5403,102 @@ $region_mapping = [
         setTimeout(() => {
             notification.remove();
         }, 3000);
+    }
+    
+    /**
+     * Update filter state and trigger grants loading
+     */
+    function updateFilterState() {
+        // Update UI elements to reflect current state
+        syncUIWithState();
+        
+        // Reset to first page when filters change
+        state.currentPage = 1;
+        
+        // Trigger grants loading
+        loadGrants();
+        
+        // Update preview counter
+        updatePreviewCounter();
+    }
+    
+    /**
+     * Sync UI elements with current state
+     */
+    function syncUIWithState() {
+        // Update search input
+        const searchInput = document.getElementById('clean-search-input');
+        if (searchInput && searchInput.value !== state.filters.search) {
+            searchInput.value = state.filters.search;
+        }
+        
+        // Update quick search input
+        const quickSearchInput = document.getElementById('quickSearchInput');
+        if (quickSearchInput && quickSearchInput.value !== state.filters.search) {
+            quickSearchInput.value = state.filters.search;
+        }
+        
+        // Update checkboxes
+        updateCheckboxStates();
+        
+        // Update sort dropdown
+        const sortSelect = document.getElementById('clean-sort-select');
+        if (sortSelect && sortSelect.value !== state.filters.sort) {
+            sortSelect.value = state.filters.sort;
+        }
+    }
+    
+    /**
+     * Update checkbox states to match current filters
+     */
+    function updateCheckboxStates() {
+        // Category checkboxes
+        document.querySelectorAll('input[name="categories[]"]').forEach(checkbox => {
+            checkbox.checked = state.filters.categories.includes(checkbox.value);
+        });
+        
+        // Prefecture checkboxes
+        document.querySelectorAll('input[name="prefectures[]"]').forEach(checkbox => {
+            checkbox.checked = state.filters.prefectures.includes(checkbox.value);
+        });
+        
+        // Status checkboxes
+        document.querySelectorAll('input[name="status[]"]').forEach(checkbox => {
+            checkbox.checked = state.filters.status.includes(checkbox.value);
+        });
+        
+        // Featured checkbox
+        const featuredCheckbox = document.querySelector('input[name="is_featured"]');
+        if (featuredCheckbox) {
+            featuredCheckbox.checked = state.filters.is_featured === '1';
+        }
+    }
+    
+    /**
+     * Update preview counter
+     */
+    async function updatePreviewCounter() {
+        try {
+            const response = await fetch(config.ajaxUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({
+                    action: 'gi_get_filter_preview',
+                    nonce: config.nonce,
+                    filters: JSON.stringify(state.filters)
+                })
+            });
+            
+            const data = await response.json();
+            if (data.success) {
+                const countElement = document.getElementById('live-count');
+                if (countElement) {
+                    countElement.textContent = data.data.count || 0;
+                }
+            }
+        } catch (error) {
+            console.error('Preview update error:', error);
+        }
     }
     
     /**
