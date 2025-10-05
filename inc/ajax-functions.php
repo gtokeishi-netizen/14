@@ -69,6 +69,14 @@ add_action('wp_ajax_nopriv_gi_get_search_history', 'gi_ajax_get_search_history')
 add_action('wp_ajax_gi_ai_feedback', 'gi_ajax_submit_ai_feedback');
 add_action('wp_ajax_nopriv_gi_ai_feedback', 'gi_ajax_submit_ai_feedback');
 
+// AI チェックリスト生成機能
+add_action('wp_ajax_gi_generate_checklist', 'gi_ajax_generate_checklist');
+add_action('wp_ajax_nopriv_gi_generate_checklist', 'gi_ajax_generate_checklist');
+
+// AI 比較機能
+add_action('wp_ajax_gi_compare_grants', 'gi_ajax_compare_grants');
+add_action('wp_ajax_nopriv_gi_compare_grants', 'gi_ajax_compare_grants');
+
 /**
  * =============================================================================
  * 主要なAJAXハンドラー関数 - 完全版
@@ -1508,7 +1516,448 @@ function gi_search_grant_titles($query, $limit = 5) {
         ];
     }
     
-    return $results;
+    return $results
+}
+
+/**
+ * =============================================================================
+ * AI チェックリスト生成機能 - Complete Implementation
+ * =============================================================================
+ */
+
+/**
+ * AIチェックリスト生成 AJAXハンドラー
+ */
+function gi_ajax_generate_checklist() {
+    try {
+        // セキュリティ検証
+        if (!gi_verify_ajax_nonce()) {
+            wp_send_json_error(['message' => 'セキュリティチェックに失敗しました', 'code' => 'SECURITY_ERROR']);
+            return;
+        }
+        
+        $post_id = intval($_POST['post_id'] ?? 0);
+        
+        if (!$post_id) {
+            wp_send_json_error(['message' => '助成金IDが不正です', 'code' => 'INVALID_POST_ID']);
+            return;
+        }
+        
+        // 投稿の存在確認
+        $grant_post = get_post($post_id);
+        if (!$grant_post || $grant_post->post_type !== 'grant') {
+            wp_send_json_error(['message' => '助成金が見つかりません', 'code' => 'GRANT_NOT_FOUND']);
+            return;
+        }
+        
+        $start_time = microtime(true);
+        
+        // チェックリスト生成
+        $checklist = gi_generate_grant_checklist($post_id);
+        
+        $end_time = microtime(true);
+        $processing_time = round(($end_time - $start_time) * 1000);
+        
+        wp_send_json_success([
+            'checklist' => $checklist,
+            'grant_id' => $post_id,
+            'grant_title' => $grant_post->post_title,
+            'processing_time_ms' => $processing_time
+        ]);
+        
+    } catch (Exception $e) {
+        error_log('Checklist Generation Error: ' . $e->getMessage());
+        wp_send_json_error([
+            'message' => 'チェックリスト生成中にエラーが発生しました',
+            'code' => 'CHECKLIST_ERROR',
+            'debug' => WP_DEBUG ? $e->getMessage() : null
+        ]);
+    }
+}
+
+/**
+ * 助成金チェックリスト生成
+ */
+function gi_generate_grant_checklist($post_id) {
+    // 助成金の詳細情報を取得
+    $grant_details = gi_get_grant_details($post_id);
+    
+    $checklist = [];
+    
+    // 1. 基本要件チェック
+    $checklist[] = [
+        'text' => '助成金の対象者・対象事業の範囲を確認しました',
+        'priority' => 'high',
+        'checked' => false,
+        'category' => 'eligibility'
+    ];
+    
+    $checklist[] = [
+        'text' => '企業規模（従業員数、資本金など）の要件を満たしている',
+        'priority' => 'high',
+        'checked' => false,
+        'category' => 'eligibility'
+    ];
+    
+    // 2. 申請期限関連
+    if (!empty($grant_details['deadline'])) {
+        $checklist[] = [
+            'text' => '申請期限（' . $grant_details['deadline'] . '）を確認し、スケジュールを立てました',
+            'priority' => 'high',
+            'checked' => false,
+            'category' => 'schedule'
+        ];
+    }
+    
+    // 3. 必要書類関連
+    $checklist[] = [
+        'text' => '事業計画書を作成しました',
+        'priority' => 'high',
+        'checked' => false,
+        'category' => 'documents'
+    ];
+    
+    $checklist[] = [
+        'text' => '会社案内、登記事項証明書、決算書を準備しました',
+        'priority' => 'medium',
+        'checked' => false,
+        'category' => 'documents'
+    ];
+    
+    $checklist[] = [
+        'text' => '見積書、カタログなどの根拠資料を準備しました',
+        'priority' => 'medium',
+        'checked' => false,
+        'category' => 'documents'
+    ];
+    
+    // 4. 資金関連
+    if (!empty($grant_details['max_amount'])) {
+        $checklist[] = [
+            'text' => '申請金額と事業費の積算を完了しました',
+            'priority' => 'high',
+            'checked' => false,
+            'category' => 'budget'
+        ];
+    }
+    
+    $checklist[] = [
+        'text' => '自己負担となる資金の確保を確認しました',
+        'priority' => 'medium',
+        'checked' => false,
+        'category' => 'budget'
+    ];
+    
+    // 5. 特殊要件（助成金によって異なる）
+    if (!empty($grant_details['grant_target'])) {
+        if (strpos($grant_details['grant_target'], 'IT') !== false || strpos($grant_details['grant_target'], 'デジタル') !== false) {
+            $checklist[] = [
+                'text' => 'ITシステムの仕様書、機能一覧を準備しました',
+                'priority' => 'medium',
+                'checked' => false,
+                'category' => 'specific'
+            ];
+        }
+        
+        if (strpos($grant_details['grant_target'], '製造') !== false || strpos($grant_details['grant_target'], 'ものづくり') !== false) {
+            $checklist[] = [
+                'text' => '製造設備のスペック、導入効果を明確にしました',
+                'priority' => 'medium',
+                'checked' => false,
+                'category' => 'specific'
+            ];
+        }
+    }
+    
+    // 6. 最終確認
+    $checklist[] = [
+        'text' => '申請書を第三者に確認してもらいました',
+        'priority' => 'medium',
+        'checked' => false,
+        'category' => 'final'
+    ];
+    
+    $checklist[] = [
+        'text' => '申請書の提出方法（郵送・Web提出等）を確認しました',
+        'priority' => 'high',
+        'checked' => false,
+        'category' => 'final'
+    ];
+    
+    return $checklist;
+}
+
+/**
+ * =============================================================================
+ * AI 比較機能 - Complete Implementation
+ * =============================================================================
+ */
+
+/**
+ * AI比較機能 AJAXハンドラー
+ */
+function gi_ajax_compare_grants() {
+    try {
+        // セキュリティ検証
+        if (!gi_verify_ajax_nonce()) {
+            wp_send_json_error(['message' => 'セキュリティチェックに失敗しました', 'code' => 'SECURITY_ERROR']);
+            return;
+        }
+        
+        $grant_ids = $_POST['grant_ids'] ?? [];
+        
+        if (empty($grant_ids) || !is_array($grant_ids)) {
+            wp_send_json_error(['message' => '比較する助成金が選択されていません', 'code' => 'NO_GRANTS_SELECTED']);
+            return;
+        }
+        
+        if (count($grant_ids) < 2) {
+            wp_send_json_error(['message' => '比較には2件以上の助成金が必要です', 'code' => 'INSUFFICIENT_GRANTS']);
+            return;
+        }
+        
+        if (count($grant_ids) > 3) {
+            wp_send_json_error(['message' => '比較は最大3件までです', 'code' => 'TOO_MANY_GRANTS']);
+            return;
+        }
+        
+        $start_time = microtime(true);
+        
+        // 比較データ生成
+        $comparison_data = gi_generate_grants_comparison($grant_ids);
+        
+        // AIおすすめ生成
+        $recommendation = gi_generate_comparison_recommendation($comparison_data);
+        
+        $end_time = microtime(true);
+        $processing_time = round(($end_time - $start_time) * 1000);
+        
+        wp_send_json_success([
+            'comparison' => $comparison_data,
+            'recommendation' => $recommendation,
+            'grant_count' => count($grant_ids),
+            'processing_time_ms' => $processing_time
+        ]);
+        
+    } catch (Exception $e) {
+        error_log('Grants Comparison Error: ' . $e->getMessage());
+        wp_send_json_error([
+            'message' => '比較処理中にエラーが発生しました',
+            'code' => 'COMPARISON_ERROR',
+            'debug' => WP_DEBUG ? $e->getMessage() : null
+        ]);
+    }
+}
+
+/**
+ * 助成金比較データ生成
+ */
+function gi_generate_grants_comparison($grant_ids) {
+    $comparison_data = [];
+    
+    foreach ($grant_ids as $grant_id) {
+        $grant_id = intval($grant_id);
+        $grant_post = get_post($grant_id);
+        
+        if (!$grant_post || $grant_post->post_type !== 'grant') {
+            continue;
+        }
+        
+        $grant_details = gi_get_grant_details($grant_id);
+        
+        // マッチングスコア計算
+        $match_score = gi_calculate_comparison_match_score($grant_id);
+        
+        // 難易度情報
+        $difficulty = gi_get_grant_difficulty_info($grant_id);
+        
+        // 成功率情報
+        $success_rate = gi_get_field_safe('grant_success_rate', $grant_id, 0);
+        
+        $comparison_data[] = [
+            'id' => $grant_id,
+            'title' => $grant_post->post_title,
+            'amount' => $grant_details['max_amount'] ?: '未定',
+            'amount_numeric' => gi_extract_numeric_amount($grant_details['max_amount']),
+            'deadline' => $grant_details['deadline'] ?: '随時',
+            'organization' => $grant_details['organization'] ?: '未定',
+            'target' => $grant_details['grant_target'] ?: '未定',
+            'subsidy_rate' => gi_get_field_safe('subsidy_rate', $grant_id, ''),
+            'match_score' => $match_score,
+            'difficulty' => $difficulty,
+            'success_rate' => $success_rate ?: null,
+            'rate' => $success_rate > 0 ? $success_rate : null,
+            'application_method' => gi_get_field_safe('application_method', $grant_id, 'オンライン'),
+            'eligible_expenses' => $grant_details['eligible_expenses'] ?: '',
+            'permalink' => get_permalink($grant_id)
+        ];
+    }
+    
+    return $comparison_data;
+}
+
+/**
+ * 比較マッチングスコア計算
+ */
+function gi_calculate_comparison_match_score($grant_id) {
+    // ベーススコア
+    $base_score = 70;
+    
+    // 特徴加算
+    if (gi_get_field_safe('is_featured', $grant_id) == '1') {
+        $base_score += 10;
+    }
+    
+    // 金額加算
+    $amount_numeric = gi_get_field_safe('max_amount_numeric', $grant_id, 0);
+    if ($amount_numeric >= 10000000) { // 1000万円以上
+        $base_score += 15;
+    } elseif ($amount_numeric >= 5000000) { // 500万円以上
+        $base_score += 10;
+    } elseif ($amount_numeric >= 1000000) { // 100万円以上
+        $base_score += 5;
+    }
+    
+    // 成功率加算
+    $success_rate = gi_get_field_safe('grant_success_rate', $grant_id, 0);
+    if ($success_rate >= 50) {
+        $base_score += 8;
+    } elseif ($success_rate >= 30) {
+        $base_score += 5;
+    }
+    
+    // 難易度調整
+    $difficulty = gi_get_field_safe('grant_difficulty', $grant_id, 'normal');
+    if ($difficulty === 'easy') {
+        $base_score += 5;
+    } elseif ($difficulty === 'hard') {
+        $base_score -= 5;
+    }
+    
+    return min(98, max(60, $base_score));
+}
+
+/**
+ * 助成金難易度情報取得
+ */
+function gi_get_grant_difficulty_info($grant_id) {
+    $difficulty = gi_get_field_safe('grant_difficulty', $grant_id, 'normal');
+    
+    $difficulty_map = [
+        'easy' => [
+            'level' => 'easy',
+            'label' => '易しい',
+            'stars' => '★★☆',
+            'description' => '初心者向け',
+            'color' => '#16a34a'
+        ],
+        'normal' => [
+            'level' => 'normal',
+            'label' => '普通',
+            'stars' => '★★★',
+            'description' => '標準的',
+            'color' => '#eab308'
+        ],
+        'hard' => [
+            'level' => 'hard',
+            'label' => '難しい',
+            'stars' => '★★★',
+            'description' => '経験者向け',
+            'color' => '#dc2626'
+        ]
+    ];
+    
+    return $difficulty_map[$difficulty] ?? $difficulty_map['normal'];
+}
+
+/**
+ * 数値金額抜き出し
+ */
+function gi_extract_numeric_amount($amount_string) {
+    if (empty($amount_string)) return 0;
+    
+    // 数字と単位を抜き出し
+    preg_match_all('/([\d,]+)(\s*[万億千百十]?)(円)?/', $amount_string, $matches, PREG_SET_ORDER);
+    
+    if (empty($matches)) return 0;
+    
+    $total = 0;
+    
+    foreach ($matches as $match) {
+        $number = intval(str_replace(',', '', $match[1]));
+        $unit = $match[2] ?? '';
+        
+        switch (trim($unit)) {
+            case '億':
+                $number *= 100000000;
+                break;
+            case '万':
+                $number *= 10000;
+                break;
+            case '千':
+                $number *= 1000;
+                break;
+            case '百':
+                $number *= 100;
+                break;
+        }
+        
+        $total = max($total, $number); // 最大値を取る
+    }
+    
+    return $total;
+}
+
+/**
+ * 比較結果からAIおすすめ生成
+ */
+function gi_generate_comparison_recommendation($comparison_data) {
+    if (empty($comparison_data)) {
+        return [
+            'title' => '比較データがありません',
+            'match_score' => 0,
+            'reason' => '比較する助成金を選択してください。'
+        ];
+    }
+    
+    // マッチスコアでソート
+    usort($comparison_data, function($a, $b) {
+        return $b['match_score'] <=> $a['match_score'];
+    });
+    
+    $best_grant = $comparison_data[0];
+    
+    // おすすめ理由生成
+    $reasons = [];
+    
+    if ($best_grant['match_score'] >= 85) {
+        $reasons[] = '適合度が非常に高い';
+    }
+    
+    if ($best_grant['amount_numeric'] >= 5000000) {
+        $reasons[] = '助成金額が高額';
+    }
+    
+    if (!empty($best_grant['success_rate']) && $best_grant['success_rate'] >= 40) {
+        $reasons[] = '採択率が高い';
+    }
+    
+    if ($best_grant['difficulty']['level'] === 'easy') {
+        $reasons[] = '申請難易度が低い';
+    }
+    
+    $reason_text = !empty($reasons) 
+        ? implode('、', $reasons) . 'ことが理由です。'
+        : '総合的にバランスが良い助成金です。';
+    
+    return [
+        'title' => $best_grant['title'],
+        'match_score' => $best_grant['match_score'],
+        'reason' => $reason_text,
+        'grant_id' => $best_grant['id'],
+        'permalink' => $best_grant['permalink']
+    ];
+}
 }
 
 function gi_get_grant_resources($post_id, $intent) {
