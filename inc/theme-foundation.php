@@ -264,12 +264,24 @@ add_action('init', 'gi_register_post_types');
 add_action('after_switch_theme', 'flush_rewrite_rules');
 add_action('wp_loaded', function() {
     static $flushed = false;
-    if (!$flushed && !get_option('gi_permalinks_flushed_v2')) {
-        flush_rewrite_rules();
-        update_option('gi_permalinks_flushed_v2', true);
+    if (!$flushed && !get_option('gi_permalinks_flushed_v3')) {
+        flush_rewrite_rules(true);
+        update_option('gi_permalinks_flushed_v3', current_time('mysql'));
         $flushed = true;
     }
 });
+
+// Force flush on theme activation or when post type doesn't have proper archive
+add_action('init', function() {
+    // Check if grants archive is accessible
+    if (post_type_exists('grant')) {
+        $archive_link = get_post_type_archive_link('grant');
+        if (!$archive_link || !get_option('gi_permalinks_forced_flush')) {
+            flush_rewrite_rules(true);
+            update_option('gi_permalinks_forced_flush', current_time('mysql'));
+        }
+    }
+}, 20);
 
 /**
  * カスタムタクソノミー登録
