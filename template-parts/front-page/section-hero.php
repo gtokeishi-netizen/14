@@ -109,15 +109,10 @@ $mobile_quick_stats = array(
                     
                     <!-- CTAボタン -->
                     <div class="cta-container">
-                        <button onclick="startGrantSearch()" class="btn-primary" aria-label="無料で助成金を探す">
+                        <a href="<?php echo esc_url(home_url('/grant/')); ?>" class="btn-primary" aria-label="無料で助成金を探す">
                             <span class="btn-icon">🔍</span>
                             <span class="btn-text"><?php echo gip_safe_output($hero_config['cta_primary_text']); ?></span>
-                        </button>
-                        
-                        <button onclick="openAIConsultation()" class="btn-secondary" aria-label="AI専門家に相談">
-                            <span class="btn-icon">💬</span>
-                            <span class="btn-text"><?php echo gip_safe_output($hero_config['cta_secondary_text']); ?></span>
-                        </button>
+                        </a>
                     </div>
                     
                     <!-- 統計表示 -->
@@ -368,15 +363,10 @@ $mobile_quick_stats = array(
                 
                 <!-- モバイルCTA -->
                 <div class="mobile-cta">
-                    <button onclick="startGrantSearch()" class="mobile-btn-primary">
+                    <a href="<?php echo esc_url(home_url('/grant/')); ?>" class="mobile-btn-primary">
                         <span class="btn-icon">🔍</span>
                         <span><?php echo gip_safe_output($hero_config['cta_primary_text']); ?></span>
-                    </button>
-                    
-                    <button onclick="openAIConsultation()" class="mobile-btn-secondary">
-                        <span class="btn-icon">💬</span>
-                        <span><?php echo gip_safe_output($hero_config['cta_secondary_text']); ?></span>
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -2073,55 +2063,7 @@ class GrantHeroStylishSystem {
     }
 }
 
-// グローバル関数
-function startGrantSearch() {
-    console.log('助成金検索を開始します');
-    
-    const system = window.grantHeroStylishSystem;
-    if (system && system.showNotification) {
-        system.showNotification('🔍 助成金検索開始', 'AI が12,847件のデータベースから最適な助成金を検索中...');
-    }
-    
-    // 視覚的フィードバック
-    const button = event?.target?.closest('button');
-    if (button) {
-        button.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-            button.style.transform = '';
-        }, 150);
-    }
-    
-    // AIアシスタントを開いて検索を開始
-    if (window.aiAssistant) {
-        window.aiAssistant.openChat();
-        window.aiAssistant.elements.input.value = 'おすすめの助成金を教えてください';
-        window.aiAssistant.sendMessage();
-    } else {
-        // フォールバック: 助成金一覧ページへ遷移
-        window.location.href = '/grant/';
-    }
-}
-
-function openAIConsultation() {
-    console.log('AI相談を開始します');
-    
-    const system = window.grantHeroStylishSystem;
-    if (system && system.showNotification) {
-        system.showNotification('💬 AI専門家相談', 'AI専門家が最適な助成金・補助金をご提案いたします');
-    }
-    
-    // AIアシスタントを開く
-    if (window.aiAssistant) {
-        window.aiAssistant.openChat();
-    } else {
-        // AIアシスタントがまだ読み込まれていない場合は遅延実行
-        setTimeout(() => {
-            if (window.aiAssistant) {
-                window.aiAssistant.openChat();
-            }
-        }, 1000);
-    }
-}
+// グローバル関数は削除済み（直接リンクに変更）
 
 // 初期化
 document.addEventListener('DOMContentLoaded', () => {

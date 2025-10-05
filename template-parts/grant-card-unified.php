@@ -2509,214 +2509,12 @@ document.head.appendChild(grantCardStyles);
         <span><?php echo esc_html($difficulty_data['label']); ?></span>
     </div>
     <?php endif; ?>
-    
-    <!-- AI バッジコンテナ（デスクトップ用） -->
-    <div class="grant-badge-container">
-        <div class="grant-badge-left">
-            <!-- AI期限アラート -->
-            <?php 
-            if (function_exists('gi_get_deadline_urgency')) {
-                $urgency = gi_get_deadline_urgency($post_id);
-                if ($urgency && $urgency['level'] !== 'safe'):
-            ?>
-            <div class="grant-urgency-alert" data-level="<?php echo esc_attr($urgency['level']); ?>" style="background: <?php echo esc_attr($urgency['color']); ?>;">
-                <span><?php echo esc_html(str_replace(['', '', ''], '', $urgency['text'])); ?></span>
-            </div>
-            <?php 
-                endif;
-            } else {
-                // Fallback urgency calculation if function doesn't exist
-                $deadline_date = get_field('deadline_date', $post_id) ?: get_field('deadline', $post_id);
-                if ($deadline_date) {
-                    $deadline_timestamp = is_numeric($deadline_date) ? intval($deadline_date) : strtotime($deadline_date);
-                    if ($deadline_timestamp) {
-                        $now = current_time('timestamp');
-                        $days_left = floor(($deadline_timestamp - $now) / (60 * 60 * 24));
-                        if ($days_left > 0 && $days_left <= 7):
-            ?>
-            <div class="grant-urgency-alert" data-level="urgent" style="background: #f59e0b;">
-                <span>残り<?php echo $days_left; ?>日</span>
-            </div>
-            <?php 
-                        endif;
-                    }
-                }
-            }
-            ?>
-            
-            <!-- AI申請難易度 -->
-            <?php 
-            if (function_exists('gi_calculate_difficulty_score')) {
-                $ai_difficulty = gi_calculate_difficulty_score($post_id);
-                if ($ai_difficulty):
-            ?>
-            <div class="grant-ai-difficulty" data-level="<?php echo esc_attr($ai_difficulty['class']); ?>" aria-label="AI申請難易度">
-                <span class="difficulty-stars"><?php echo esc_html($ai_difficulty['stars']); ?></span>
-                <span class="difficulty-label"><?php echo esc_html($ai_difficulty['label']); ?></span>
-            </div>
-            <?php 
-                endif;
-            } else {
-                // Fallback difficulty calculation
-                $required_docs = get_field('required_documents', $post_id);
-                $doc_count = !empty($required_docs) ? substr_count($required_docs, "\n") + 1 : 3;
-                $difficulty_level = $doc_count >= 8 ? 'hard' : ($doc_count <= 3 ? 'easy' : 'normal');
-                $difficulty_labels = [
-                    'easy' => ['label' => '易しい', 'stars' => '⭐⭐', 'class' => 'easy'],
-                    'normal' => ['label' => '普通', 'stars' => '⭐⭐⭐', 'class' => 'normal'],
-                    'hard' => ['label' => '難しい', 'stars' => '⭐⭐⭐⭐', 'class' => 'hard']
-                ];
-                $difficulty_data = $difficulty_labels[$difficulty_level];
-            ?>
-            <div class="grant-ai-difficulty" data-level="<?php echo esc_attr($difficulty_data['class']); ?>" aria-label="AI申請難易度">
-                <span class="difficulty-stars"><?php echo esc_html($difficulty_data['stars']); ?></span>
-                <span class="difficulty-label"><?php echo esc_html($difficulty_data['label']); ?></span>
-            </div>
-            <?php } ?>
-        </div>
-        
-        <div class="grant-badge-right">
-            <!-- AI適合度スコア -->
-            <?php 
-            if (function_exists('gi_calculate_match_score')) {
-                $match_score = gi_calculate_match_score($post_id);
-                if ($match_score >= 70):
-            ?>
-            <div class="grant-match-score" aria-label="AI適合度スコア">
-                <span>適合度 <?php echo $match_score; ?>%</span>
-            </div>
-            <?php 
-                endif;
-            } else {
-                // Fallback match score calculation
-                $fallback_score = 75; // Default good score
-                
-                // Adjust based on category match (simulate user preference)
-                $categories = wp_get_post_terms($post_id, 'grant_category', ['fields' => 'names']);
-                if (!empty($categories)) {
-                    $popular_categories = ['IT関連', 'デジタル化', '中小企業支援', 'スタートアップ支援'];
-                    foreach ($categories as $cat) {
-                        if (in_array($cat, $popular_categories)) {
-                            $fallback_score += 10;
-                            break;
-                        }
-                    }
-                }
-                
-                // Adjust based on amount
-                $max_amount = get_field('max_amount_numeric', $post_id);
-                if ($max_amount && $max_amount >= 1000000) { // 100万円以上
-                    $fallback_score += 5;
-                }
-                
-                $fallback_score = min(95, $fallback_score); // Cap at 95%
-                
-                if ($fallback_score >= 70):
-            ?>
-            <div class="grant-match-score" aria-label="AI適合度スコア">
-                <span>適合度 <?php echo $fallback_score; ?>%</span>
-            </div>
-            <?php 
-                endif;
-            }
-            ?>
-        </div>
-    </div>
+
     
     <!-- カードコンテンツ -->
     <div class="grant-card-content">
         <div class="grant-main-info">
-            <!-- AIバッジコンテナ（スマホ用） -->
-            <div class="grant-ai-badges-mobile">
-                <?php 
-                // スマホ表示用のAIバッジ（CSSで制御）
-                $mobile_match_score = 0;
-                if (function_exists('gi_calculate_match_score')) {
-                    $mobile_match_score = gi_calculate_match_score($post_id);
-                } else {
-                    // Use same fallback as desktop
-                    $mobile_match_score = 75;
-                    $categories = wp_get_post_terms($post_id, 'grant_category', ['fields' => 'names']);
-                    if (!empty($categories)) {
-                        $popular_categories = ['IT関連', 'デジタル化', '中小企業支援', 'スタートアップ支援'];
-                        foreach ($categories as $cat) {
-                            if (in_array($cat, $popular_categories)) {
-                                $mobile_match_score += 10;
-                                break;
-                            }
-                        }
-                    }
-                    $mobile_match_score = min(95, $mobile_match_score);
-                }
-                
-                if ($mobile_match_score >= 70):
-                ?>
-                <div class="grant-match-score-mobile" aria-label="AI適合度スコア">
-                    <span>適合度 <?php echo $mobile_match_score; ?>%</span>
-                </div>
-                <?php 
-                endif;
-                
-                // Mobile difficulty badge
-                if (function_exists('gi_calculate_difficulty_score')) {
-                    $mobile_ai_difficulty = gi_calculate_difficulty_score($post_id);
-                    if ($mobile_ai_difficulty):
-                ?>
-                <div class="grant-ai-difficulty-mobile" data-level="<?php echo esc_attr($mobile_ai_difficulty['class']); ?>">
-                    <span><?php echo esc_html($mobile_ai_difficulty['stars']); ?></span>
-                    <span><?php echo esc_html($mobile_ai_difficulty['label']); ?></span>
-                </div>
-                <?php 
-                    endif;
-                } else {
-                    // Mobile difficulty fallback
-                    $required_docs = get_field('required_documents', $post_id);
-                    $doc_count = !empty($required_docs) ? substr_count($required_docs, "\n") + 1 : 3;
-                    $difficulty_level = $doc_count >= 8 ? 'hard' : ($doc_count <= 3 ? 'easy' : 'normal');
-                    $difficulty_labels = [
-                        'easy' => ['label' => '易しい', 'stars' => '⭐⭐', 'class' => 'easy'],
-                        'normal' => ['label' => '普通', 'stars' => '⭐⭐⭐', 'class' => 'normal'],
-                        'hard' => ['label' => '難しい', 'stars' => '⭐⭐⭐⭐', 'class' => 'hard']
-                    ];
-                    $mobile_difficulty_data = $difficulty_labels[$difficulty_level];
-                ?>
-                <div class="grant-ai-difficulty-mobile" data-level="<?php echo esc_attr($mobile_difficulty_data['class']); ?>">
-                    <span><?php echo esc_html($mobile_difficulty_data['stars']); ?></span>
-                    <span><?php echo esc_html($mobile_difficulty_data['label']); ?></span>
-                </div>
-                <?php 
-                }
-                
-                // Mobile urgency badge
-                if (function_exists('gi_get_deadline_urgency')) {
-                    $mobile_urgency = gi_get_deadline_urgency($post_id);
-                    if ($mobile_urgency && $mobile_urgency['level'] !== 'safe'):
-                ?>
-                <div class="grant-urgency-alert-mobile" style="background: <?php echo esc_attr($mobile_urgency['color']); ?>;">
-                    <span><?php echo esc_html($mobile_urgency['text']); ?></span>
-                </div>
-                <?php 
-                    endif;
-                } else {
-                    // Mobile urgency fallback
-                    $deadline_date = get_field('deadline_date', $post_id) ?: get_field('deadline', $post_id);
-                    if ($deadline_date) {
-                        $deadline_timestamp = is_numeric($deadline_date) ? intval($deadline_date) : strtotime($deadline_date);
-                        if ($deadline_timestamp) {
-                            $now = current_time('timestamp');
-                            $days_left = floor(($deadline_timestamp - $now) / (60 * 60 * 24));
-                            if ($days_left > 0 && $days_left <= 7):
-                ?>
-                <div class="grant-urgency-alert-mobile" style="background: #f59e0b;">
-                    <span>残り<?php echo $days_left; ?>日</span>
-                </div>
-                <?php 
-                            endif;
-                        }
-                    }
-                }
-                ?>
-            </div>
+
             
             <!-- タイトルセクション -->
             <div class="grant-title-section">
@@ -2830,28 +2628,39 @@ document.head.appendChild(grantCardStyles);
                 <span>AIに質問</span>
             </button>
             <?php if ($official_url): ?>
-            <a href="<?php echo esc_url($official_url); ?>" class="grant-btn grant-btn--secondary" target="_blank" rel="noopener noreferrer" role="button">
-                <span>公式サイト</span>
+            <a href="<?php echo esc_url($official_url); ?>" class="grant-btn grant-btn--secondary grant-btn--icon" target="_blank" rel="noopener noreferrer" role="button" title="公式サイト">
+                <svg class="grant-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="m9 18 6-6-6-6"/>
+                    <path d="M14 5h7v7"/>
+                </svg>
             </a>
             <?php endif; ?>
             
             <!-- AI機能ボタン群 -->
-            <button class="grant-btn grant-btn--checklist" 
+            <button class="grant-btn grant-btn--checklist grant-btn--icon" 
                     data-post-id="<?php echo esc_attr($post_id); ?>" 
                     data-grant-title="<?php echo esc_attr($title); ?>"
                     onclick="openGrantChecklist(this)" 
-                    title="AI申請チェックリスト"
+                    title="チェックリスト"
                     role="button">
-                <span>チェックリスト</span>
+                <svg class="grant-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 11l3 3 8-8"/>
+                    <path d="m21 12-8 8-3-3"/>
+                    <rect x="3" y="5" width="6" height="6" rx="1"/>
+                </svg>
             </button>
             
-            <button class="grant-btn grant-btn--compare" 
+            <button class="grant-btn grant-btn--compare grant-btn--icon" 
                     data-post-id="<?php echo esc_attr($post_id); ?>" 
                     data-grant-title="<?php echo esc_attr($title); ?>"
                     onclick="addToCompare(this)" 
-                    title="AI比較機能に追加"
+                    title="比較機能"
                     role="button">
-                <span>比較</span>
+                <svg class="grant-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 6h18"/>
+                    <path d="M7 12h10"/>
+                    <path d="M10 18h4"/>
+                </svg>
             </button>
         </div>
     </footer>
@@ -2861,8 +2670,11 @@ document.head.appendChild(grantCardStyles);
         <div class="grant-hover-scrollable">
             <div class="grant-hover-header">
                 <h3 class="grant-hover-title"><?php echo esc_html($title); ?></h3>
-                <button class="grant-hover-close" aria-label="詳細を閉じる">
-                    閉じる
+                <button class="grant-hover-close grant-btn--icon" aria-label="詳細を閉じる">
+                    <svg class="grant-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
                 </button>
             </div>
             
@@ -2982,8 +2794,11 @@ function openGrantChecklist(button) {
         <div class="ai-modal-content">
             <div class="ai-modal-header">
                 <h3>AI申請チェックリスト</h3>
-                <button class="ai-modal-close" onclick="this.closest('.ai-checklist-modal').remove()">
-                    閉じる
+                <button class="ai-modal-close grant-btn--icon" onclick="this.closest('.ai-checklist-modal').remove()">
+                    <svg class="grant-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
                 </button>
             </div>
             <div class="ai-modal-body">
@@ -3095,8 +2910,11 @@ function showCompareModal() {
         <div class="ai-modal-content ai-modal-large">
             <div class="ai-modal-header">
                 <h3>AI比較分析</h3>
-                <button class="ai-modal-close" onclick="this.closest('.ai-compare-modal').remove()">
-                    閉じる
+                <button class="ai-modal-close grant-btn--icon" onclick="this.closest('.ai-compare-modal').remove()">
+                    <svg class="grant-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
                 </button>
             </div>
             <div class="ai-modal-body">
@@ -3437,6 +3255,101 @@ function showToast(message, type = 'success') {
 .ai-toast-warning {
     background: #fbbf24;
     color: #000;
+}
+
+/* Icon Button Styles */
+.grant-btn--icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    background: transparent;
+    border: 2px solid #000;
+    color: #000;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.grant-btn--icon:hover {
+    background: #000;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.grant-btn--icon .grant-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    stroke-width: 2.5;
+}
+
+/* Icon button specific colors */
+.grant-btn--secondary.grant-btn--icon {
+    border-color: #666;
+    color: #666;
+}
+
+.grant-btn--secondary.grant-btn--icon:hover {
+    background: #666;
+    color: #fff;
+}
+
+.grant-btn--checklist.grant-btn--icon {
+    border-color: #059669;
+    color: #059669;
+}
+
+.grant-btn--checklist.grant-btn--icon:hover {
+    background: #059669;
+    color: #fff;
+}
+
+.grant-btn--compare.grant-btn--icon {
+    border-color: #dc2626;
+    color: #dc2626;
+}
+
+.grant-btn--compare.grant-btn--icon:hover {
+    background: #dc2626;
+    color: #fff;
+}
+
+.grant-btn--compare.grant-btn--icon.active {
+    background: #dc2626;
+    color: #fff;
+}
+
+/* Close button styles */
+.grant-hover-close.grant-btn--icon,
+.ai-modal-close.grant-btn--icon {
+    border: 1px solid #ccc;
+    color: #666;
+    min-width: 2rem;
+    min-height: 2rem;
+    padding: 0.25rem;
+}
+
+.grant-hover-close.grant-btn--icon:hover,
+.ai-modal-close.grant-btn--icon:hover {
+    background: #f5f5f5;
+    color: #000;
+    border-color: #999;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .grant-btn--icon {
+        min-width: 2.25rem;
+        min-height: 2.25rem;
+        padding: 0.375rem;
+    }
+    
+    .grant-btn--icon .grant-icon {
+        width: 1.125rem;
+        height: 1.125rem;
+    }
 }
 </style>
 <?php endif; ?>
