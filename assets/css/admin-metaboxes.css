@@ -1,0 +1,272 @@
+/**
+ * 助成金投稿メタボックス用 CSS
+ * 
+ * Google Sheets連携対応の投稿編集画面スタイル
+ */
+
+/* メタボックス全体のスタイル */
+.grant-metabox-content {
+    padding: 0;
+    font-size: 13px;
+}
+
+.grant-metabox-content p {
+    margin-bottom: 15px;
+}
+
+.grant-metabox-content label {
+    display: block;
+    font-weight: 600;
+    color: #1d2327;
+    margin-bottom: 4px;
+}
+
+.grant-metabox-content small {
+    display: block;
+    color: #646970;
+    font-style: italic;
+    margin-top: 4px;
+}
+
+/* フォーム要素のスタイル */
+.grant-metabox-content input[type="text"],
+.grant-metabox-content input[type="number"],
+.grant-metabox-content input[type="date"],
+.grant-metabox-content input[type="url"],
+.grant-metabox-content select,
+.grant-metabox-content textarea {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 1.4;
+    box-sizing: border-box;
+}
+
+.grant-metabox-content input:focus,
+.grant-metabox-content select:focus,
+.grant-metabox-content textarea:focus {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 1px #2271b1;
+    outline: none;
+}
+
+/* 読み取り専用フィールド */
+.grant-metabox-content input[readonly] {
+    background-color: #f6f7f7;
+    color: #646970;
+    cursor: not-allowed;
+}
+
+/* グリッドレイアウト */
+.grant-metabox-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* メタボックスヘッダーのアイコン */
+.postbox .postbox-header h2::before {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+/* 都道府県メタボックス */
+#grant-prefecture-metabox .inside {
+    padding: 12px;
+}
+
+#grant-prefecture-metabox select {
+    background-color: #fff;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%23646970' d='m0 1 2 2 2-2z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 12px;
+    padding-right: 28px;
+}
+
+/* 市町村メタボックス */
+#grant-municipality-metabox textarea {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* ステータスメタボックス */
+#grant-status-metabox select option {
+    padding: 4px 8px;
+}
+
+#grant-status-metabox select[name="application_status"] option[value="open"] {
+    background-color: #d1ecf1;
+}
+
+#grant-status-metabox select[name="application_status"] option[value="upcoming"] {
+    background-color: #fff3cd;
+}
+
+#grant-status-metabox select[name="application_status"] option[value="closed"] {
+    background-color: #f8d7da;
+}
+
+#grant-status-metabox select[name="application_status"] option[value="suspended"] {
+    background-color: #e2e3e5;
+}
+
+/* 金額メタボックス */
+#grant-amount-metabox .inside {
+    padding: 12px;
+}
+
+#grant-amount-metabox input[type="number"] {
+    text-align: right;
+    font-family: monospace;
+}
+
+/* 組織情報メタボックス */
+#grant-organization-metabox .inside {
+    padding: 12px;
+}
+
+#grant-organization-metabox select[name="organization_type"] option::before {
+    margin-right: 8px;
+}
+
+/* 同期情報メタボックス */
+#grant-sync-info-metabox .inside {
+    padding: 8px;
+    background-color: #f8f9fa;
+}
+
+#grant-sync-info-metabox .grant-metabox-content {
+    font-size: 12px;
+}
+
+#grant-sync-info-metabox p {
+    margin: 5px 0;
+    line-height: 1.4;
+}
+
+#grant-sync-info-metabox .button {
+    font-size: 11px;
+    padding: 4px 8px;
+    height: auto;
+    line-height: 1.2;
+}
+
+/* フィールドガイダンス */
+.field-guidance {
+    margin: 8px 0 !important;
+    padding: 8px 12px !important;
+    border-left: 4px solid #72aee6;
+    background-color: #f0f6fc;
+    font-size: 12px;
+}
+
+.field-guidance.notice-warning {
+    border-left-color: #dba617;
+    background-color: #fcf9e8;
+}
+
+.field-guidance p {
+    margin: 0 !important;
+    line-height: 1.4;
+}
+
+/* 同期リマインダー */
+#sync-reminder {
+    border-left: 4px solid #00a0d2;
+    background-color: #e5f5fa;
+    padding: 12px !important;
+    margin: 15px 0 !important;
+}
+
+#sync-reminder p {
+    margin: 0 0 8px 0;
+}
+
+#sync-reminder .button {
+    font-size: 12px;
+}
+
+/* バリデーションエラー */
+#validation-errors {
+    border-left: 4px solid #d63638;
+    background-color: #fcf0f1;
+    padding: 12px !important;
+    margin: 15px 0 !important;
+}
+
+#validation-errors ul {
+    margin: 8px 0 0 20px;
+}
+
+#validation-errors li {
+    margin-bottom: 4px;
+    color: #d63638;
+}
+
+/* レスポンシブ対応 */
+@media screen and (max-width: 782px) {
+    .grant-metabox-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .grant-metabox-content input,
+    .grant-metabox-content select,
+    .grant-metabox-content textarea {
+        font-size: 16px; /* iOS でのズーム防止 */
+    }
+}
+
+/* 高解像度画面対応 */
+@media screen and (min-resolution: 192dpi) {
+    #grant-prefecture-metabox select {
+        background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'><path fill='%23646970' d='m0 1 2 2 2-2z'/></svg>");
+        background-size: 10px;
+    }
+}
+
+/* アクセシビリティ向上 */
+.grant-metabox-content input:focus,
+.grant-metabox-content select:focus,
+.grant-metabox-content textarea:focus {
+    outline: 2px solid #2271b1;
+    outline-offset: 0;
+}
+
+/* 印刷時のスタイル */
+@media print {
+    .grant-metabox-content {
+        background: none;
+        box-shadow: none;
+    }
+    
+    .grant-metabox-content input,
+    .grant-metabox-content select,
+    .grant-metabox-content textarea {
+        border: 1px solid #000;
+        background: none;
+    }
+}
+
+/* ダークモード対応 */
+@media (prefers-color-scheme: dark) {
+    .grant-metabox-content input,
+    .grant-metabox-content select,
+    .grant-metabox-content textarea {
+        background-color: #1e1e1e;
+        border-color: #555;
+        color: #fff;
+    }
+    
+    .grant-metabox-content label {
+        color: #fff;
+    }
+    
+    .grant-metabox-content small {
+        color: #ccc;
+    }
+}

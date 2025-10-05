@@ -1,0 +1,444 @@
+/**
+ * Google Sheets Admin Styles
+ * 
+ * 管理画面でのGoogle Sheets連携UI用スタイル
+ */
+
+/* カードスタイル */
+.gi-sheets-card {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    padding: 20px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.gi-sheets-card h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+/* 接続ステータス */
+#connection-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.gi-status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+    display: inline-block;
+}
+
+.gi-status-unknown {
+    background-color: #f6f7f7;
+    color: #50575e;
+}
+
+.gi-status-unknown .gi-status-indicator {
+    background-color: #8c8f94;
+}
+
+.gi-status-testing {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.gi-status-testing .gi-status-indicator {
+    background-color: #ffc107;
+    animation: pulse 1.5s infinite;
+}
+
+.gi-status-connected {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.gi-status-connected .gi-status-indicator {
+    background-color: #198754;
+}
+
+.gi-status-error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.gi-status-error .gi-status-indicator {
+    background-color: #dc3545;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* 接続情報 */
+.gi-connection-info {
+    background: #f6f7f7;
+    padding: 15px;
+    border-radius: 4px;
+    margin-top: 15px;
+}
+
+.gi-connection-info h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #1d2327;
+}
+
+.gi-connection-info p {
+    margin: 5px 0;
+    font-family: monospace;
+    font-size: 13px;
+}
+
+/* 同期コントロール */
+.gi-sync-controls {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+@media (min-width: 768px) {
+    .gi-sync-controls {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.gi-sync-option {
+    padding: 15px;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    text-align: center;
+    background: #f6f7f7;
+}
+
+.gi-sync-option button {
+    margin-bottom: 10px;
+    min-width: 150px;
+}
+
+.gi-sync-option .description {
+    margin: 0;
+    font-size: 12px;
+    color: #646970;
+}
+
+/* 同期結果 */
+#sync-result .notice {
+    margin: 15px 0 0 0;
+}
+
+/* ログコンテナ */
+.gi-log-container {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    background: #f6f7f7;
+}
+
+.gi-log-entry {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-bottom: 1px solid #dcdcde;
+    font-family: monospace;
+    font-size: 12px;
+}
+
+.gi-log-entry:last-child {
+    border-bottom: none;
+}
+
+.gi-log-time {
+    flex-shrink: 0;
+    margin-right: 15px;
+    color: #646970;
+    font-weight: 500;
+}
+
+.gi-log-message {
+    flex-grow: 1;
+    color: #1d2327;
+}
+
+.gi-log-info {
+    background-color: #e7f3ff;
+}
+
+.gi-log-success {
+    background-color: #d1e7dd;
+}
+
+.gi-log-warning {
+    background-color: #fff3cd;
+}
+
+.gi-log-error {
+    background-color: #f8d7da;
+}
+
+/* フィールドマッピング */
+.gi-mapping-info h4 {
+    margin-bottom: 10px;
+    color: #1d2327;
+}
+
+.gi-mapping-info table {
+    margin-top: 10px;
+}
+
+.gi-mapping-info table th {
+    text-align: left;
+    font-weight: 600;
+}
+
+.gi-mapping-info table td:first-child {
+    font-family: monospace;
+    font-weight: bold;
+    text-align: center;
+    width: 50px;
+}
+
+.gi-mapping-info table td:nth-child(2) {
+    font-weight: 500;
+    width: 120px;
+}
+
+/* 使用方法ガイド */
+.gi-usage-guide h4 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #1d2327;
+    font-size: 16px;
+}
+
+.gi-usage-guide ol {
+    padding-left: 20px;
+}
+
+.gi-usage-guide li {
+    margin-bottom: 5px;
+    line-height: 1.5;
+}
+
+.gi-usage-guide .notice {
+    margin-top: 15px;
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 767px) {
+    .gi-sheets-card {
+        margin-left: -20px;
+        margin-right: -20px;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+    
+    .gi-sync-option button {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .gi-log-entry {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .gi-log-time {
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+}
+
+/* ローディング状態 */
+.gi-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.gi-loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #0073aa;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 通知スタイル */
+.gi-admin-notice {
+    position: relative;
+    z-index: 10;
+}
+
+/* ボタンの無効状態 */
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* 初期化コントロール */
+.gi-init-controls .description {
+    margin-bottom: 15px;
+    color: #646970;
+}
+
+.gi-init-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.gi-init-actions button {
+    min-width: 150px;
+}
+
+.gi-danger {
+    background-color: #d63384 !important;
+    border-color: #d63384 !important;
+    color: white !important;
+}
+
+.gi-danger:hover {
+    background-color: #b02a5b !important;
+    border-color: #b02a5b !important;
+}
+
+/* Webhook設定 */
+.gi-webhook-info h4 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: #1d2327;
+}
+
+.gi-webhook-config .form-table th {
+    width: 140px;
+    font-weight: 500;
+}
+
+.gi-webhook-config .form-table td {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.gi-webhook-config input[type="text"],
+.gi-webhook-config input[type="password"] {
+    flex-grow: 1;
+    font-family: monospace;
+    font-size: 12px;
+    background: #f6f7f7;
+}
+
+.gi-copy-btn {
+    flex-shrink: 0;
+    min-width: 60px;
+}
+
+.gi-copy-btn.gi-copied {
+    background-color: #00a32a;
+    color: white;
+}
+
+.gi-gas-setup {
+    background: #f6f7f7;
+    padding: 15px;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+.gi-gas-setup h4 {
+    margin-top: 0;
+    color: #1d2327;
+}
+
+.gi-gas-setup ol {
+    padding-left: 20px;
+    line-height: 1.6;
+}
+
+.gi-gas-setup li {
+    margin-bottom: 5px;
+}
+
+/* 設定フォーム */
+.form-table th {
+    width: 200px;
+}
+
+.form-table .description {
+    margin-top: 5px;
+    font-style: normal;
+}
+
+/* テーブルスタイルの調整 */
+.widefat {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.widefat th,
+.widefat td {
+    border-bottom: 1px solid #c3c4c7;
+}
+
+.widefat thead th {
+    background: #f6f7f7;
+    font-weight: 600;
+}
+
+/* レスポンシブ調整 */
+@media (max-width: 767px) {
+    .gi-init-actions {
+        flex-direction: column;
+    }
+    
+    .gi-init-actions button {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .gi-webhook-config .form-table th,
+    .gi-webhook-config .form-table td {
+        display: block;
+        width: 100%;
+    }
+    
+    .gi-webhook-config .form-table td {
+        padding-top: 5px;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .gi-copy-btn {
+        align-self: flex-end;
+        min-width: 80px;
+    }
+}
