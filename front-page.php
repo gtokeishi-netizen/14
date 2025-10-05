@@ -64,18 +64,22 @@ html {
 
     <?php
     /**
-     * 2. Content Section
-     * メインコンテンツエリア（検索・カテゴリー機能削除済み）
+     * 2. Search Section
+     * AI検索セクション
      */
     ?>
-    <section class="front-page-section section-animate" id="content-section">
-        <div class="container" style="padding: 80px 20px; text-align: center;">
-            <h2 style="font-size: 28px; color: #333; margin-bottom: 20px;">Grant Insight Perfect</h2>
-            <p style="font-size: 16px; color: #666; max-width: 600px; margin: 0 auto;">
-                助成金情報プラットフォームへようこそ。<br>
-                ヒーローセクションから各種情報をご確認ください。
-            </p>
-        </div>
+    <section class="front-page-section section-animate" id="search-section">
+        <?php get_template_part('template-parts/front-page/section', 'search'); ?>
+    </section>
+
+    <?php
+    /**
+     * 3. Categories Section
+     * カテゴリーセクション
+     */
+    ?>
+    <section class="front-page-section section-animate" id="categories-section">
+        <?php get_template_part('template-parts/front-page/section', 'categories'); ?>
     </section>
 
 </main>
