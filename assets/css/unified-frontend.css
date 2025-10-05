@@ -1027,6 +1027,323 @@ article.grant::before {
 }
 
 /* ===============================================
+   CarSensor Style Quick Filter Interface
+   =============================================== */
+.carsensor-quick-filters {
+    background: var(--mb-white);
+    border: 1px solid var(--mb-gray-200);
+    border-radius: 12px;
+    margin: 0 0 2rem 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+}
+
+.carsensor-filter-wrapper {
+    position: relative;
+}
+
+/* Filter Tabs */
+.carsensor-filter-tabs {
+    display: flex;
+    background: var(--mb-gray-100);
+    border-bottom: 1px solid var(--mb-gray-200);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.carsensor-filter-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.carsensor-tab {
+    flex: 0 0 auto;
+    padding: 1rem 1.5rem;
+    background: transparent;
+    border: none;
+    color: var(--mb-gray-600);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.carsensor-tab:hover {
+    background: var(--mb-gray-200);
+    color: var(--mb-gray-800);
+}
+
+.carsensor-tab.active {
+    background: var(--mb-white);
+    color: var(--primary-blue);
+    border-bottom-color: var(--primary-blue);
+    font-weight: 600;
+}
+
+.carsensor-tab i {
+    font-size: 0.85rem;
+}
+
+/* Filter Content */
+.carsensor-filter-content {
+    position: relative;
+    min-height: 120px;
+}
+
+.carsensor-tab-content {
+    display: none;
+    padding: 1.5rem;
+    animation: fadeIn 0.3s ease;
+}
+
+.carsensor-tab-content.active {
+    display: block;
+}
+
+/* Quick Chips */
+.carsensor-quick-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.carsensor-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: var(--mb-gray-100);
+    border: 1px solid var(--mb-gray-300);
+    border-radius: 8px;
+    color: var(--mb-gray-700);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    position: relative;
+}
+
+.carsensor-chip:hover {
+    background: var(--mb-gray-200);
+    border-color: var(--mb-gray-400);
+    color: var(--mb-gray-800);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.carsensor-chip.active {
+    background: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: var(--mb-white);
+}
+
+.carsensor-chip i {
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+.carsensor-chip-count {
+    background: var(--mb-gray-400);
+    color: var(--mb-white);
+    font-size: 0.7rem;
+    padding: 0.2rem 0.4rem;
+    border-radius: 12px;
+    font-weight: 600;
+    margin-left: 0.25rem;
+}
+
+.carsensor-chip.active .carsensor-chip-count {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Active Filters */
+.carsensor-active-filters {
+    background: var(--mb-gray-50);
+    border-top: 1px solid var(--mb-gray-200);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.carsensor-active-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--mb-gray-600);
+    font-size: 0.9rem;
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+.carsensor-active-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.carsensor-active-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.4rem 0.8rem;
+    background: var(--primary-blue);
+    color: var(--mb-white);
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.carsensor-active-chip-remove {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0;
+    margin-left: 0.25rem;
+    transition: opacity 0.2s ease;
+}
+
+.carsensor-active-chip-remove:hover {
+    opacity: 0.7;
+}
+
+.carsensor-clear-all {
+    background: var(--mb-gray-600);
+    color: var(--mb-white);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: all 0.2s ease;
+}
+
+.carsensor-clear-all:hover {
+    background: var(--mb-gray-700);
+}
+
+/* Quick Results */
+.carsensor-quick-results {
+    background: var(--primary-blue);
+    color: var(--mb-white);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.carsensor-results-count {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.carsensor-apply-filters {
+    background: var(--mb-white);
+    color: var(--primary-blue);
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.carsensor-apply-filters:hover {
+    background: var(--mb-gray-100);
+    transform: translateY(-1px);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .carsensor-filter-tabs {
+        padding: 0;
+    }
+    
+    .carsensor-tab {
+        padding: 0.8rem 1rem;
+        font-size: 0.8rem;
+        min-width: fit-content;
+    }
+    
+    .carsensor-tab-content {
+        padding: 1rem;
+    }
+    
+    .carsensor-quick-chips {
+        gap: 0.5rem;
+    }
+    
+    .carsensor-chip {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.8rem;
+    }
+    
+    .carsensor-active-filters {
+        padding: 1rem;
+    }
+    
+    .carsensor-quick-results {
+        padding: 1rem;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+    
+    .carsensor-apply-filters {
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .carsensor-tab {
+        padding: 0.7rem 0.8rem;
+        font-size: 0.75rem;
+    }
+    
+    .carsensor-chip {
+        padding: 0.5rem 0.6rem;
+        font-size: 0.75rem;
+    }
+    
+    .carsensor-chip i {
+        font-size: 0.7rem;
+    }
+}
+
+/* ===============================================
    Reduced motion 対応
    =============================================== */
 @media (prefers-reduced-motion: reduce) {

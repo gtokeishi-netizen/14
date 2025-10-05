@@ -1569,13 +1569,162 @@ $region_mapping = [
         }
     }
     
-    /* ===== Font Awesome カテゴリチップ（白黒スタイリッシュデザイン） ===== */
+    /* ===== Category Checkbox Filter (Prefecture-like Style) ===== */
     .category-filter-group {
         background: linear-gradient(135deg, var(--gray-50) 0%, var(--white) 100%);
         border-radius: var(--radius-xl);
         padding: var(--space-5);
         margin-bottom: var(--space-6);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+    
+    .category-checkbox-container {
+        max-height: 300px;
+        overflow-y: auto;
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius-md);
+        background: var(--white);
+        margin-bottom: var(--space-4);
+    }
+    
+    .category-checkbox-option {
+        display: flex;
+        align-items: center;
+        padding: var(--space-3);
+        border-bottom: 1px solid var(--gray-100);
+        cursor: pointer;
+        transition: var(--transition);
+        margin: 0;
+    }
+    
+    .category-checkbox-option:last-child {
+        border-bottom: none;
+    }
+    
+    .category-checkbox-option:hover {
+        background: var(--gray-50);
+    }
+    
+    .category-checkbox-option.selected {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 197, 253, 0.1) 100%);
+        border-color: var(--primary);
+    }
+    
+    .category-checkbox-option .clean-filter-checkbox {
+        margin-right: var(--space-3);
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+    
+    .category-checkbox-option .clean-filter-label {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        cursor: pointer;
+        font-weight: 500;
+        color: var(--gray-800);
+        flex: 1;
+        margin: 0;
+    }
+    
+    .category-checkbox-icon {
+        color: var(--primary);
+        font-size: 1rem;
+        width: 20px;
+        text-align: center;
+    }
+    
+    .category-checkbox-option.selected .category-checkbox-icon {
+        color: var(--primary);
+    }
+    
+    .category-count {
+        color: var(--gray-500);
+        font-size: 0.875rem;
+        font-weight: 400;
+        margin-left: auto;
+    }
+    
+    .category-checkbox-option.selected .category-count {
+        color: var(--primary);
+        font-weight: 600;
+    }
+    
+    .category-show-more-container {
+        text-align: center;
+    }
+    
+    .category-show-more-btn {
+        background: none;
+        border: 2px solid var(--gray-200);
+        color: var(--gray-600);
+        padding: var(--space-2) var(--space-4);
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: var(--transition);
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+    }
+    
+    .category-show-more-btn:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+        background: rgba(59, 130, 246, 0.05);
+    }
+    
+    .category-search-container {
+        margin-bottom: var(--space-4);
+    }
+    
+    .category-search-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    
+    .category-search-icon {
+        position: absolute;
+        left: var(--space-3);
+        color: var(--gray-400);
+        font-size: 0.9rem;
+        z-index: 2;
+    }
+    
+    .category-search-input {
+        width: 100%;
+        padding: var(--space-3) var(--space-10) var(--space-3) var(--space-10);
+        border: 2px solid var(--gray-200);
+        border-radius: var(--radius-md);
+        font-size: 0.9rem;
+        background: var(--white);
+        transition: var(--transition);
+    }
+    
+    .category-search-input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    
+    .category-search-clear {
+        position: absolute;
+        right: var(--space-3);
+        background: none;
+        border: none;
+        color: var(--gray-400);
+        cursor: pointer;
+        padding: var(--space-1);
+        border-radius: var(--radius-sm);
+        transition: var(--transition);
+        z-index: 2;
+    }
+    
+    .category-search-clear:hover {
+        color: var(--gray-600);
+        background: var(--gray-100);
     }
     
     .category-grid-container {
@@ -2570,6 +2719,436 @@ $region_mapping = [
             filter: contrast(2);
         }
     }
+    
+    /* ===== CARSENSOR-STYLE QUICK FILTER ===== */
+    .carsensor-quick-filter {
+        background: linear-gradient(135deg, var(--white) 0%, #f8fafc 100%);
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius-lg);
+        padding: var(--space-6);
+        margin-bottom: var(--space-8);
+        box-shadow: var(--shadow-sm);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .carsensor-quick-filter::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+        background-size: 200% 100%;
+        animation: shimmer 3s linear infinite;
+    }
+    
+    @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+    }
+    
+    .quick-filter-header {
+        text-align: center;
+        margin-bottom: var(--space-6);
+    }
+    
+    .quick-filter-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--gray-900);
+        margin-bottom: var(--space-2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-2);
+    }
+    
+    .quick-filter-title i {
+        color: var(--primary);
+    }
+    
+    .quick-filter-subtitle {
+        color: var(--gray-600);
+        font-size: 0.9rem;
+        margin: 0;
+    }
+    
+    /* Quick Search Bar */
+    .quick-search-bar {
+        display: flex;
+        gap: var(--space-3);
+        margin-bottom: var(--space-6);
+        align-items: stretch;
+    }
+    
+    .search-input-wrapper {
+        flex: 1;
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    
+    .search-icon {
+        position: absolute;
+        left: var(--space-3);
+        color: var(--gray-400);
+        font-size: 1rem;
+        z-index: 2;
+    }
+    
+    .quick-search-input {
+        width: 100%;
+        padding: var(--space-3) var(--space-10) var(--space-3) var(--space-10);
+        border: 2px solid var(--gray-200);
+        border-radius: var(--radius-md);
+        font-size: 1rem;
+        background: var(--white);
+        transition: var(--transition);
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .quick-search-input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    
+    .search-clear-btn {
+        position: absolute;
+        right: var(--space-3);
+        background: none;
+        border: none;
+        color: var(--gray-400);
+        cursor: pointer;
+        padding: var(--space-1);
+        border-radius: var(--radius-sm);
+        transition: var(--transition);
+        z-index: 2;
+    }
+    
+    .search-clear-btn:hover {
+        color: var(--gray-600);
+        background: var(--gray-100);
+    }
+    
+    .quick-search-btn {
+        background: linear-gradient(135deg, var(--primary) 0%, #1d4ed8 100%);
+        color: var(--white);
+        border: none;
+        padding: var(--space-3) var(--space-6);
+        border-radius: var(--radius-md);
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        box-shadow: var(--shadow-sm);
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        white-space: nowrap;
+    }
+    
+    .quick-search-btn:hover {
+        background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+    }
+    
+    /* Filter Tabs */
+    .quick-filter-tabs {
+        margin-bottom: var(--space-6);
+    }
+    
+    .filter-tab-group {
+        display: flex;
+        gap: var(--space-2);
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .filter-tab {
+        background: var(--white);
+        border: 2px solid var(--gray-200);
+        border-radius: var(--radius-md);
+        padding: var(--space-3) var(--space-4);
+        cursor: pointer;
+        transition: var(--transition);
+        font-weight: 500;
+        color: var(--gray-700);
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        min-height: 48px;
+        white-space: nowrap;
+    }
+    
+    .filter-tab:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-sm);
+    }
+    
+    .filter-tab.active {
+        background: linear-gradient(135deg, var(--primary) 0%, #1d4ed8 100%);
+        border-color: var(--primary);
+        color: var(--white);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .filter-tab i {
+        font-size: 1.1rem;
+    }
+    
+    /* Tab Content */
+    .quick-filter-content {
+        position: relative;
+    }
+    
+    .tab-content {
+        display: none;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+    
+    .tab-content.active {
+        display: block;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Filter Grid */
+    .quick-filter-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--space-3);
+    }
+    
+    .region-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+    
+    .amount-grid {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+    
+    .status-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+    
+    .quick-filter-item {
+        background: var(--white);
+        border: 2px solid var(--gray-200);
+        border-radius: var(--radius-md);
+        padding: var(--space-4);
+        cursor: pointer;
+        transition: var(--transition);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-2);
+        min-height: 90px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .quick-filter-item:hover {
+        border-color: var(--primary);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .quick-filter-item.selected {
+        background: linear-gradient(135deg, var(--primary) 0%, #1d4ed8 100%);
+        border-color: var(--primary);
+        color: var(--white);
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .quick-filter-item i {
+        font-size: 1.5rem;
+        color: var(--primary);
+        margin-bottom: var(--space-1);
+    }
+    
+    .quick-filter-item.selected i {
+        color: var(--white);
+    }
+    
+    .quick-filter-item span {
+        font-weight: 600;
+        color: var(--gray-900);
+        font-size: 0.9rem;
+    }
+    
+    .quick-filter-item.selected span {
+        color: var(--white);
+    }
+    
+    .quick-filter-item small {
+        font-size: 0.75rem;
+        color: var(--gray-500);
+        font-weight: 400;
+    }
+    
+    .quick-filter-item.selected small {
+        color: rgba(255, 255, 255, 0.8);
+    }
+    
+    /* Status-specific styles */
+    .status-open { border-left: 4px solid #10b981; }
+    .status-closing { border-left: 4px solid #f59e0b; }
+    .status-upcoming { border-left: 4px solid #8b5cf6; }
+    .status-ongoing { border-left: 4px solid #06b6d4; }
+    
+    /* Applied Filters */
+    .applied-filters {
+        margin-top: var(--space-6);
+        padding-top: var(--space-4);
+        border-top: 2px solid var(--gray-100);
+    }
+    
+    .applied-filters-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--space-3);
+    }
+    
+    .applied-filters-label {
+        font-weight: 600;
+        color: var(--gray-700);
+        font-size: 0.9rem;
+    }
+    
+    .clear-all-filters {
+        background: var(--red-500);
+        color: var(--white);
+        border: none;
+        padding: var(--space-2) var(--space-3);
+        border-radius: var(--radius-sm);
+        font-size: 0.8rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: var(--space-1);
+    }
+    
+    .clear-all-filters:hover {
+        background: #dc2626;
+        transform: translateY(-1px);
+    }
+    
+    .applied-filters-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+    }
+    
+    .applied-filter-tag {
+        background: var(--primary);
+        color: var(--white);
+        padding: var(--space-2) var(--space-3);
+        border-radius: var(--radius-full);
+        font-size: 0.8rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        animation: slideIn 0.3s ease-out;
+    }
+    
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateX(-20px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    
+    .filter-tag-remove {
+        background: none;
+        border: none;
+        color: var(--white);
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        font-size: 0.7rem;
+        opacity: 0.8;
+        transition: opacity 0.2s;
+    }
+    
+    .filter-tag-remove:hover {
+        opacity: 1;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .carsensor-quick-filter {
+            padding: var(--space-4);
+            margin-bottom: var(--space-6);
+        }
+        
+        .quick-filter-title {
+            font-size: 1.25rem;
+        }
+        
+        .quick-search-bar {
+            flex-direction: column;
+        }
+        
+        .filter-tab-group {
+            justify-content: stretch;
+        }
+        
+        .filter-tab {
+            flex: 1;
+            justify-content: center;
+            min-width: 0;
+        }
+        
+        .quick-filter-grid {
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: var(--space-2);
+        }
+        
+        .quick-filter-item {
+            min-height: 80px;
+            padding: var(--space-3);
+        }
+        
+        .quick-filter-item i {
+            font-size: 1.25rem;
+        }
+        
+        .quick-filter-item span {
+            font-size: 0.8rem;
+        }
+        
+        .applied-filters-header {
+            flex-direction: column;
+            align-items: stretch;
+            gap: var(--space-2);
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .filter-tab-group {
+            flex-direction: column;
+        }
+        
+        .quick-filter-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .quick-search-input {
+            font-size: 16px; /* Prevent zoom on iOS */
+        }
+    }
     </style>
     
     <!-- Fonts -->
@@ -2700,9 +3279,410 @@ $region_mapping = [
     </div>
 </section>
 
+<!-- CarSensor Style Quick Filter Interface -->
+<section class="carsensor-quick-filters">
+    <div class="clean-container">
+        <div class="carsensor-filter-wrapper">
+            
+            <!-- Quick Filter Tabs -->
+            <div class="carsensor-filter-tabs">
+                <button class="carsensor-tab active" data-tab="popular">
+                    <i class="fas fa-fire" aria-hidden="true"></i>
+                    人気条件
+                </button>
+                <button class="carsensor-tab" data-tab="category">
+                    <i class="fas fa-tag" aria-hidden="true"></i>
+                    カテゴリ
+                </button>
+                <button class="carsensor-tab" data-tab="region">
+                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                    地域
+                </button>
+                <button class="carsensor-tab" data-tab="amount">
+                    <i class="fas fa-yen-sign" aria-hidden="true"></i>
+                    金額
+                </button>
+                <button class="carsensor-tab" data-tab="status">
+                    <i class="fas fa-clock" aria-hidden="true"></i>
+                    ステータス
+                </button>
+            </div>
+
+            <!-- Quick Filter Content -->
+            <div class="carsensor-filter-content">
+                
+                <!-- Popular Conditions Tab -->
+                <div class="carsensor-tab-content active" data-tab="popular">
+                    <div class="carsensor-quick-chips">
+                        <button class="carsensor-chip" data-filter="is_featured" data-value="1">
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            おすすめ助成金
+                        </button>
+                        <button class="carsensor-chip" data-filter="amount" data-value="1000+">
+                            <i class="fas fa-gem" aria-hidden="true"></i>
+                            高額助成金（1000万円以上）
+                        </button>
+                        <button class="carsensor-chip" data-filter="success_rate" data-value="high">
+                            <i class="fas fa-thumbs-up" aria-hidden="true"></i>
+                            高採択率
+                        </button>
+                        <button class="carsensor-chip" data-filter="difficulty" data-value="easy">
+                            <i class="fas fa-smile" aria-hidden="true"></i>
+                            申請しやすい
+                        </button>
+                        <button class="carsensor-chip" data-filter="status" data-value="accepting">
+                            <i class="fas fa-calendar-check" aria-hidden="true"></i>
+                            現在募集中
+                        </button>
+                        <button class="carsensor-chip" data-filter="application_method" data-value="online">
+                            <i class="fas fa-globe" aria-hidden="true"></i>
+                            オンライン申請可
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Category Tab -->
+                <div class="carsensor-tab-content" data-tab="category">
+                    <div class="carsensor-quick-chips">
+                        <?php 
+                        $categories = get_terms([
+                            'taxonomy' => 'grant_category',
+                            'hide_empty' => true,
+                            'number' => 8,
+                            'orderby' => 'count',
+                            'order' => 'DESC'
+                        ]);
+                        foreach ($categories as $category): 
+                        ?>
+                        <button class="carsensor-chip" data-filter="category" data-value="<?php echo esc_attr($category->slug); ?>">
+                            <i class="fas fa-folder" aria-hidden="true"></i>
+                            <?php echo esc_html($category->name); ?>
+                            <span class="carsensor-chip-count"><?php echo $category->count; ?></span>
+                        </button>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <!-- Region Tab -->
+                <div class="carsensor-tab-content" data-tab="region">
+                    <div class="carsensor-quick-chips">
+                        <?php 
+                        $prefectures = get_terms([
+                            'taxonomy' => 'grant_prefecture',
+                            'hide_empty' => true,
+                            'number' => 10,
+                            'orderby' => 'count',
+                            'order' => 'DESC'
+                        ]);
+                        foreach ($prefectures as $prefecture): 
+                        ?>
+                        <button class="carsensor-chip" data-filter="prefecture" data-value="<?php echo esc_attr($prefecture->slug); ?>">
+                            <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                            <?php echo esc_html($prefecture->name); ?>
+                            <span class="carsensor-chip-count"><?php echo $prefecture->count; ?></span>
+                        </button>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <!-- Amount Tab -->
+                <div class="carsensor-tab-content" data-tab="amount">
+                    <div class="carsensor-quick-chips">
+                        <button class="carsensor-chip" data-filter="amount" data-value="0-100">
+                            <i class="fas fa-coins" aria-hidden="true"></i>
+                            〜100万円
+                        </button>
+                        <button class="carsensor-chip" data-filter="amount" data-value="100-300">
+                            <i class="fas fa-money-bill-wave" aria-hidden="true"></i>
+                            100〜300万円
+                        </button>
+                        <button class="carsensor-chip" data-filter="amount" data-value="300-500">
+                            <i class="fas fa-money-bill-alt" aria-hidden="true"></i>
+                            300〜500万円
+                        </button>
+                        <button class="carsensor-chip" data-filter="amount" data-value="500-1000">
+                            <i class="fas fa-hand-holding-usd" aria-hidden="true"></i>
+                            500〜1000万円
+                        </button>
+                        <button class="carsensor-chip" data-filter="amount" data-value="1000-3000">
+                            <i class="fas fa-gem" aria-hidden="true"></i>
+                            1000〜3000万円
+                        </button>
+                        <button class="carsensor-chip" data-filter="amount" data-value="3000+">
+                            <i class="fas fa-trophy" aria-hidden="true"></i>
+                            3000万円以上
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Status Tab -->
+                <div class="carsensor-tab-content" data-tab="status">
+                    <div class="carsensor-quick-chips">
+                        <button class="carsensor-chip" data-filter="status" data-value="accepting">
+                            <i class="fas fa-calendar-check" aria-hidden="true"></i>
+                            現在募集中
+                        </button>
+                        <button class="carsensor-chip" data-filter="status" data-value="upcoming">
+                            <i class="fas fa-clock" aria-hidden="true"></i>
+                            募集予定
+                        </button>
+                        <button class="carsensor-chip" data-filter="status" data-value="closed">
+                            <i class="fas fa-calendar-times" aria-hidden="true"></i>
+                            募集終了
+                        </button>
+                        <button class="carsensor-chip" data-filter="difficulty" data-value="easy">
+                            <i class="fas fa-smile" aria-hidden="true"></i>
+                            申請しやすい
+                        </button>
+                        <button class="carsensor-chip" data-filter="difficulty" data-value="medium">
+                            <i class="fas fa-meh" aria-hidden="true"></i>
+                            標準的
+                        </button>
+                        <button class="carsensor-chip" data-filter="difficulty" data-value="hard">
+                            <i class="fas fa-frown" aria-hidden="true"></i>
+                            申請が困難
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Active Filters Display -->
+            <div class="carsensor-active-filters" id="carsensor-active-filters" style="display: none;">
+                <div class="carsensor-active-title">
+                    <i class="fas fa-filter" aria-hidden="true"></i>
+                    適用中のフィルター：
+                </div>
+                <div class="carsensor-active-chips" id="carsensor-active-chips">
+                    <!-- Dynamic content -->
+                </div>
+                <button class="carsensor-clear-all" id="carsensor-clear-all">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                    すべてクリア
+                </button>
+            </div>
+
+            <!-- Quick Search Results -->
+            <div class="carsensor-quick-results" id="carsensor-quick-results" style="display: none;">
+                <div class="carsensor-results-count">
+                    <span id="carsensor-results-text">検索中...</span>
+                </div>
+                <button class="carsensor-apply-filters" id="carsensor-apply-filters">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    この条件で検索
+                </button>
+            </div>
+
+        </div>
+    </div>
+</section>
+
 <!-- Main Content -->
 <section class="clean-main">
     <div class="clean-container">
+    
+        <!-- CarSensor-Style Quick Filter Interface -->
+        <div class="carsensor-quick-filter" id="carSensorQuickFilter">
+            <div class="quick-filter-header">
+                <h3 class="quick-filter-title">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    クイック検索
+                </h3>
+                <p class="quick-filter-subtitle">人気の条件で素早く助成金を探す</p>
+            </div>
+            
+            <!-- Quick Search Bar -->
+            <div class="quick-search-bar">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search search-icon" aria-hidden="true"></i>
+                    <input type="text" 
+                           id="quickSearchInput" 
+                           class="quick-search-input" 
+                           placeholder="キーワードで検索（例：DX、省エネ、設備投資）" 
+                           value="<?php echo esc_attr($search_params['search']); ?>">
+                    <button type="button" class="search-clear-btn" id="quickSearchClear" style="display: none;">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <button type="button" class="quick-search-btn" id="quickSearchBtn">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    検索
+                </button>
+            </div>
+            
+            <!-- Quick Filter Tabs -->
+            <div class="quick-filter-tabs">
+                <div class="filter-tab-group">
+                    <!-- Popular Categories -->
+                    <div class="filter-tab active" data-tab="popular">
+                        <i class="fas fa-fire" aria-hidden="true"></i>
+                        人気カテゴリ
+                    </div>
+                    
+                    <!-- By Region -->
+                    <div class="filter-tab" data-tab="region">
+                        <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                        地域から探す
+                    </div>
+                    
+                    <!-- By Amount -->
+                    <div class="filter-tab" data-tab="amount">
+                        <i class="fas fa-yen-sign" aria-hidden="true"></i>
+                        金額から探す
+                    </div>
+                    
+                    <!-- By Status -->
+                    <div class="filter-tab" data-tab="status">
+                        <i class="fas fa-clock" aria-hidden="true"></i>
+                        募集状況
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tab Contents -->
+            <div class="quick-filter-content">
+                <!-- Popular Categories Tab -->
+                <div class="tab-content active" id="tabPopular">
+                    <div class="quick-filter-grid">
+                        <button type="button" class="quick-filter-item" data-category="dx-digitalization">
+                            <i class="fas fa-laptop-code" aria-hidden="true"></i>
+                            <span>DX・デジタル化</span>
+                            <small>156件</small>
+                        </button>
+                        <button type="button" class="quick-filter-item" data-category="equipment-investment">
+                            <i class="fas fa-cogs" aria-hidden="true"></i>
+                            <span>設備投資</span>
+                            <small>89件</small>
+                        </button>
+                        <button type="button" class="quick-filter-item" data-category="energy-saving">
+                            <i class="fas fa-leaf" aria-hidden="true"></i>
+                            <span>省エネ・環境</span>
+                            <small>124件</small>
+                        </button>
+                        <button type="button" class="quick-filter-item" data-category="startup-support">
+                            <i class="fas fa-rocket" aria-hidden="true"></i>
+                            <span>創業・起業支援</span>
+                            <small>67件</small>
+                        </button>
+                        <button type="button" class="quick-filter-item" data-category="research-development">
+                            <i class="fas fa-flask" aria-hidden="true"></i>
+                            <span>研究開発</span>
+                            <small>92件</small>
+                        </button>
+                        <button type="button" class="quick-filter-item" data-category="human-resources">
+                            <i class="fas fa-users" aria-hidden="true"></i>
+                            <span>人材育成</span>
+                            <small>78件</small>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Region Tab -->
+                <div class="tab-content" id="tabRegion">
+                    <div class="quick-filter-grid region-grid">
+                        <button type="button" class="quick-filter-item" data-region="tokyo">
+                            <i class="fas fa-building" aria-hidden="true"></i>
+                            <span>東京都</span>
+                            <small>245件</small>
+                        </button>
+                        <button type="button" class="quick-filter-item" data-region="osaka">
+                            <i class="fas fa-city" aria-hidden="true"></i>
+                            <span>大阪府</span>
+                            <small>156件</small>
+                        </button>
+                        <button type="button" class="quick-filter-item" data-region="kanagawa">
+                            <i class="fas fa-mountain" aria-hidden="true"></i>
+                            <span>神奈川県</span>
+                            <small>98件</small>
+                        </button>
+                        <button type="button" class="quick-filter-item" data-region="aichi">
+                            <i class="fas fa-car" aria-hidden="true"></i>
+                            <span>愛知県</span>
+                            <small>134件</small>
+                        </button>
+                        <button type="button" class="quick-filter-item" data-region="fukuoka">
+                            <i class="fas fa-ship" aria-hidden="true"></i>
+                            <span>福岡県</span>
+                            <small>87件</small>
+                        </button>
+                        <button type="button" class="quick-filter-item" data-region="national">
+                            <i class="fas fa-globe-asia" aria-hidden="true"></i>
+                            <span>全国対象</span>
+                            <small>189件</small>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Amount Tab -->
+                <div class="tab-content" id="tabAmount">
+                    <div class="quick-filter-grid amount-grid">
+                        <button type="button" class="quick-filter-item" data-amount="small">
+                            <i class="fas fa-coins" aria-hidden="true"></i>
+                            <span>〜100万円</span>
+                            <small>156件</small>
+                        </button>
+                        <button type="button" class="quick-filter-item" data-amount="medium">
+                            <i class="fas fa-money-bill" aria-hidden="true"></i>
+                            <span>100万〜500万円</span>
+                            <small>234件</small>
+                        </button>
+                        <button type="button" class="quick-filter-item" data-amount="large">
+                            <i class="fas fa-money-bill-wave" aria-hidden="true"></i>
+                            <span>500万〜1000万円</span>
+                            <small>89件</small>
+                        </button>
+                        <button type="button" class="quick-filter-item" data-amount="xlarge">
+                            <i class="fas fa-gem" aria-hidden="true"></i>
+                            <span>1000万円以上</span>
+                            <small>67件</small>
+                        </button>
+                        <button type="button" class="quick-filter-item" data-amount="unlimited">
+                            <i class="fas fa-infinity" aria-hidden="true"></i>
+                            <span>上限なし</span>
+                            <small>45件</small>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Status Tab -->
+                <div class="tab-content" id="tabStatus">
+                    <div class="quick-filter-grid status-grid">
+                        <button type="button" class="quick-filter-item status-open" data-status="open">
+                            <i class="fas fa-door-open" aria-hidden="true"></i>
+                            <span>募集中</span>
+                            <small>234件</small>
+                        </button>
+                        <button type="button" class="quick-filter-item status-closing" data-status="closing-soon">
+                            <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                            <span>締切間近</span>
+                            <small>45件</small>
+                        </button>
+                        <button type="button" class="quick-filter-item status-upcoming" data-status="upcoming">
+                            <i class="fas fa-calendar-plus" aria-hidden="true"></i>
+                            <span>募集予定</span>
+                            <small>67件</small>
+                        </button>
+                        <button type="button" class="quick-filter-item status-ongoing" data-status="ongoing">
+                            <i class="fas fa-sync-alt" aria-hidden="true"></i>
+                            <span>通年募集</span>
+                            <small>89件</small>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Applied Filters Display -->
+            <div class="applied-filters" id="appliedFilters" style="display: none;">
+                <div class="applied-filters-header">
+                    <span class="applied-filters-label">適用中のフィルター:</span>
+                    <button type="button" class="clear-all-filters" id="clearAllQuickFilters">
+                        <i class="fas fa-times" aria-hidden="true"></i>
+                        すべてクリア
+                    </button>
+                </div>
+                <div class="applied-filters-list" id="appliedFiltersList"></div>
+            </div>
+        </div>
         <div class="clean-layout">
             
             <!-- Sidebar Filters - Optimized Version -->
@@ -2958,64 +3938,92 @@ $region_mapping = [
                                 </div>
                             </div>
 
-                            <!-- Virtual Scroll Container -->
-                            <div class="category-virtual-scroll" id="category-virtual-scroll">
-                                <div class="category-grid-container" id="category-grid-container">
-                                    <?php 
-                                    $category_limit = 8;
-                                    $selected_categories = explode(',', $search_params['category']);
-                                    $category_count = count($all_categories);
+                            <!-- Checkbox Style Category List (Like Prefectures) -->
+                            <div class="category-checkbox-container">
+                                <?php 
+                                $selected_categories = explode(',', $search_params['category']);
+                                $selected_categories = array_filter($selected_categories); // Remove empty values
+                                
+                                // カテゴリ用のアイコンマッピング
+                                $category_icons = [
+                                    'it' => 'fas fa-laptop-code',
+                                    'dx' => 'fas fa-laptop-code',
+                                    'digital' => 'fas fa-laptop-code',
+                                    'manufacturing' => 'fas fa-industry',
+                                    'factory' => 'fas fa-industry',
+                                    'environment' => 'fas fa-leaf',
+                                    'eco' => 'fas fa-leaf',
+                                    'green' => 'fas fa-leaf',
+                                    'startup' => 'fas fa-rocket',
+                                    'entrepreneur' => 'fas fa-rocket',
+                                    'research' => 'fas fa-flask',
+                                    'development' => 'fas fa-flask',
+                                    'export' => 'fas fa-globe-asia',
+                                    'international' => 'fas fa-globe-asia',
+                                    'tourism' => 'fas fa-map-signs',
+                                    'travel' => 'fas fa-map-signs',
+                                    'agriculture' => 'fas fa-seedling',
+                                    'farming' => 'fas fa-seedling',
+                                    'welfare' => 'fas fa-heart',
+                                    'care' => 'fas fa-heart',
+                                    'education' => 'fas fa-graduation-cap',
+                                    'training' => 'fas fa-graduation-cap',
+                                    'energy' => 'fas fa-bolt',
+                                    'construction' => 'fas fa-hammer',
+                                    'healthcare' => 'fas fa-user-md',
+                                    'finance' => 'fas fa-coins',
+                                    'transport' => 'fas fa-truck',
+                                    'food' => 'fas fa-utensils',
+                                    'default' => 'fas fa-folder'
+                                ];
+                                
+                                foreach ($all_categories as $category): 
+                                    $is_selected = in_array($category->slug, $selected_categories);
                                     
-                                    $has_selected_cat = !empty(array_filter($selected_categories));
-                                    $show_all_cat_initially = $has_selected_cat;
-                                    
-                                    // カテゴリ用の白黒アイコンマッピング
-                                    $category_icons = [
-                                        'it' => 'fas fa-laptop-code',
-                                        'manufacturing' => 'fas fa-industry',
-                                        'environment' => 'fas fa-leaf',
-                                        'startup' => 'fas fa-rocket',
-                                        'research' => 'fas fa-flask',
-                                        'export' => 'fas fa-globe-asia',
-                                        'tourism' => 'fas fa-map-signs',
-                                        'agriculture' => 'fas fa-seedling',
-                                        'welfare' => 'fas fa-heart',
-                                        'education' => 'fas fa-graduation-cap',
-                                        'default' => 'fas fa-folder'
-                                    ];
-                                    
-                                    foreach ($all_categories as $index => $category): 
-                                        $is_selected_cat = in_array($category->slug, $selected_categories);
-                                        $is_hidden = !$show_all_cat_initially && $index >= $category_limit;
-                                        
-                                        // カテゴリに応じたアイコンを選択
-                                        $icon_class = 'fas fa-folder';
-                                        foreach ($category_icons as $key => $icon) {
-                                            if (strpos(strtolower($category->slug), $key) !== false) {
-                                                $icon_class = $icon;
-                                                break;
-                                            }
+                                    // カテゴリに応じたアイコンを選択
+                                    $icon_class = 'fas fa-folder';
+                                    foreach ($category_icons as $key => $icon) {
+                                        if (strpos(strtolower($category->slug), $key) !== false || 
+                                            strpos(strtolower($category->name), $key) !== false) {
+                                            $icon_class = $icon;
+                                            break;
                                         }
-                                    ?>
-                                    <label class="category-chip-enhanced <?php echo $is_selected_cat ? 'selected' : ''; ?> <?php echo $is_hidden ? 'clean-filter-more-item hidden' : ''; ?>" 
-                                           title="<?php echo esc_attr($category->name); ?>"
-                                           data-category-name="<?php echo esc_attr(strtolower($category->name)); ?>">
-                                        <input type="checkbox" 
-                                               name="categories[]" 
-                                               value="<?php echo esc_attr($category->slug); ?>" 
-                                               class="clean-filter-checkbox category-checkbox"
-                                               <?php checked($is_selected_cat); ?>>
-                                        <div class="category-icon-wrapper">
-                                            <i class="<?php echo esc_attr($icon_class); ?> category-icon" aria-hidden="true"></i>
-                                        </div>
-                                        <span class="category-name"><?php echo esc_html($category->name); ?></span>
+                                    }
+                                ?>
+                                <label class="clean-filter-option category-checkbox-option <?php echo $is_selected ? 'selected' : ''; ?>" 
+                                       data-category-slug="<?php echo esc_attr($category->slug); ?>"
+                                       data-category-name="<?php echo esc_attr(strtolower($category->name)); ?>">
+                                    <input type="checkbox" 
+                                           name="categories[]" 
+                                           value="<?php echo esc_attr($category->slug); ?>" 
+                                           class="clean-filter-checkbox category-checkbox"
+                                           <?php checked($is_selected); ?>>
+                                    <span class="clean-filter-label">
+                                        <i class="<?php echo esc_attr($icon_class); ?> category-checkbox-icon" aria-hidden="true"></i>
+                                        <?php echo esc_html($category->name); ?>
                                         <?php if ($category->count > 0): ?>
-                                        <span class="category-count-badge"><?php echo esc_html($category->count); ?></span>
+                                        <span class="category-count">(<?php echo esc_html($category->count); ?>)</span>
                                         <?php endif; ?>
-                                    </label>
-                                    <?php endforeach; ?>
-                                </div>
+                                    </span>
+                                </label>
+                                <?php endforeach; ?>
                             </div>
+                            
+                            <!-- Show More/Less Button -->
+                            <?php if (count($all_categories) > 8): ?>
+                            <div class="category-show-more-container">
+                                <button type="button" class="category-show-more-btn" id="categoryShowMoreBtn">
+                                    <span class="show-more-text">
+                                        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                                        さらに表示 (残り<?php echo count($all_categories) - 8; ?>件)
+                                    </span>
+                                    <span class="show-less-text" style="display: none;">
+                                        <i class="fas fa-chevron-up" aria-hidden="true"></i>
+                                        少なく表示
+                                    </span>
+                                </button>
+                            </div>
+                            <?php endif; ?>
 
                             <?php if ($category_count > $category_limit): ?>
                             <button type="button" class="clean-filter-more-btn" data-target="category" id="category-show-more">
@@ -4908,6 +5916,434 @@ function clearHistoryAndRecommendations() {
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 3000);
     }
+    
+    // ===== CARSENSOR-STYLE QUICK FILTER FUNCTIONALITY =====
+    
+    /**
+     * CarSensor-Style Quick Filter Management
+     */
+    function initCarSensorQuickFilter() {
+        const quickFilter = document.getElementById('carSensorQuickFilter');
+        if (!quickFilter) return;
+        
+        const tabs = quickFilter.querySelectorAll('.filter-tab');
+        const tabContents = quickFilter.querySelectorAll('.tab-content');
+        const quickSearchInput = document.getElementById('quickSearchInput');
+        const quickSearchBtn = document.getElementById('quickSearchBtn');
+        const quickSearchClear = document.getElementById('quickSearchClear');
+        const appliedFilters = document.getElementById('appliedFilters');
+        const appliedFiltersList = document.getElementById('appliedFiltersList');
+        const clearAllQuickFilters = document.getElementById('clearAllQuickFilters');
+        
+        let activeQuickFilters = new Set();
+        
+        // Tab switching
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
+                
+                // Update tab states
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Update content states
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === `tab${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`) {
+                        content.classList.add('active');
+                    }
+                });
+            });
+        });
+        
+        // Quick search functionality
+        if (quickSearchInput) {
+            quickSearchInput.addEventListener('input', debounce(() => {
+                const value = quickSearchInput.value.trim();
+                if (quickSearchClear) {
+                    quickSearchClear.style.display = value ? 'block' : 'none';
+                }
+                
+                // Update main search if connected
+                const mainSearchInput = document.querySelector('#clean-search-input');
+                if (mainSearchInput && value !== mainSearchInput.value) {
+                    mainSearchInput.value = value;
+                    state.filters.search = value;
+                    updateFilterState();
+                }
+            }, 300));
+            
+            quickSearchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    performQuickSearch();
+                }
+            });
+        }
+        
+        if (quickSearchBtn) {
+            quickSearchBtn.addEventListener('click', performQuickSearch);
+        }
+        
+        if (quickSearchClear) {
+            quickSearchClear.addEventListener('click', () => {
+                quickSearchInput.value = '';
+                quickSearchClear.style.display = 'none';
+                state.filters.search = '';
+                updateFilterState();
+            });
+        }
+        
+        // Quick filter item clicks
+        quickFilter.addEventListener('click', (e) => {
+            const filterItem = e.target.closest('.quick-filter-item');
+            if (!filterItem) return;
+            
+            e.preventDefault();
+            
+            // Toggle selection
+            filterItem.classList.toggle('selected');
+            
+            // Get filter data
+            const filterData = getFilterDataFromItem(filterItem);
+            if (!filterData) return;
+            
+            if (filterItem.classList.contains('selected')) {
+                activeQuickFilters.add(JSON.stringify(filterData));
+                applyQuickFilter(filterData);
+            } else {
+                activeQuickFilters.delete(JSON.stringify(filterData));
+                removeQuickFilter(filterData);
+            }
+            
+            updateAppliedFiltersDisplay();
+        });
+        
+        // Clear all quick filters
+        if (clearAllQuickFilters) {
+            clearAllQuickFilters.addEventListener('click', clearAllQuickFiltersFunc);
+        }
+        
+        function performQuickSearch() {
+            const query = quickSearchInput.value.trim();
+            if (query) {
+                state.filters.search = query;
+                state.currentPage = 1;
+                updateFilterState();
+            }
+        }
+        
+        function getFilterDataFromItem(item) {
+            const category = item.dataset.category;
+            const region = item.dataset.region;
+            const amount = item.dataset.amount;
+            const status = item.dataset.status;
+            
+            if (category) return { type: 'category', value: category };
+            if (region) return { type: 'region', value: region };
+            if (amount) return { type: 'amount', value: amount };
+            if (status) return { type: 'status', value: status };
+            
+            return null;
+        }
+        
+        function applyQuickFilter(filterData) {
+            switch (filterData.type) {
+                case 'category':
+                    if (!state.filters.categories.includes(filterData.value)) {
+                        state.filters.categories.push(filterData.value);
+                    }
+                    break;
+                case 'region':
+                    // Handle region mapping to prefectures
+                    const regionMapping = {
+                        'tokyo': ['tokyo'],
+                        'osaka': ['osaka'],
+                        'kanagawa': ['kanagawa'],
+                        'aichi': ['aichi'],
+                        'fukuoka': ['fukuoka'],
+                        'national': [] // Special case for national
+                    };
+                    
+                    if (filterData.value === 'national') {
+                        state.filters.prefectures = [];
+                        state.filters.region = 'all';
+                    } else if (regionMapping[filterData.value]) {
+                        state.filters.prefectures = regionMapping[filterData.value];
+                    }
+                    break;
+                case 'amount':
+                    state.filters.amount = filterData.value;
+                    break;
+                case 'status':
+                    if (!state.filters.status.includes(filterData.value)) {
+                        state.filters.status.push(filterData.value);
+                    }
+                    break;
+            }
+            
+            state.currentPage = 1;
+            updateFilterState();
+        }
+        
+        function removeQuickFilter(filterData) {
+            switch (filterData.type) {
+                case 'category':
+                    const catIndex = state.filters.categories.indexOf(filterData.value);
+                    if (catIndex > -1) {
+                        state.filters.categories.splice(catIndex, 1);
+                    }
+                    break;
+                case 'region':
+                    if (filterData.value === 'national') {
+                        // Don't remove national filter directly
+                    } else {
+                        // Remove specific prefecture
+                        const regionMapping = {
+                            'tokyo': ['tokyo'],
+                            'osaka': ['osaka'],
+                            'kanagawa': ['kanagawa'],
+                            'aichi': ['aichi'],
+                            'fukuoka': ['fukuoka']
+                        };
+                        
+                        if (regionMapping[filterData.value]) {
+                            regionMapping[filterData.value].forEach(pref => {
+                                const prefIndex = state.filters.prefectures.indexOf(pref);
+                                if (prefIndex > -1) {
+                                    state.filters.prefectures.splice(prefIndex, 1);
+                                }
+                            });
+                        }
+                    }
+                    break;
+                case 'amount':
+                    state.filters.amount = '';
+                    break;
+                case 'status':
+                    const statusIndex = state.filters.status.indexOf(filterData.value);
+                    if (statusIndex > -1) {
+                        state.filters.status.splice(statusIndex, 1);
+                    }
+                    break;
+            }
+            
+            updateFilterState();
+        }
+        
+        function updateAppliedFiltersDisplay() {
+            if (!appliedFilters || !appliedFiltersList) return;
+            
+            appliedFiltersList.innerHTML = '';
+            
+            if (activeQuickFilters.size === 0) {
+                appliedFilters.style.display = 'none';
+                return;
+            }
+            
+            appliedFilters.style.display = 'block';
+            
+            activeQuickFilters.forEach(filterStr => {
+                const filterData = JSON.parse(filterStr);
+                const tag = createFilterTag(filterData);
+                appliedFiltersList.appendChild(tag);
+            });
+        }
+        
+        function createFilterTag(filterData) {
+            const tag = document.createElement('div');
+            tag.className = 'applied-filter-tag';
+            
+            const label = getFilterLabel(filterData);
+            
+            tag.innerHTML = `
+                ${label}
+                <button type="button" class="filter-tag-remove" data-filter='${JSON.stringify(filterData)}'>
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                </button>
+            `;
+            
+            // Add remove functionality
+            const removeBtn = tag.querySelector('.filter-tag-remove');
+            removeBtn.addEventListener('click', () => {
+                activeQuickFilters.delete(JSON.stringify(filterData));
+                removeQuickFilter(filterData);
+                updateAppliedFiltersDisplay();
+                
+                // Update visual state of quick filter items
+                const filterItems = quickFilter.querySelectorAll('.quick-filter-item');
+                filterItems.forEach(item => {
+                    const itemData = getFilterDataFromItem(item);
+                    if (itemData && JSON.stringify(itemData) === JSON.stringify(filterData)) {
+                        item.classList.remove('selected');
+                    }
+                });
+            });
+            
+            return tag;
+        }
+        
+        function getFilterLabel(filterData) {
+            const labels = {
+                category: {
+                    'dx-digitalization': 'DX・デジタル化',
+                    'equipment-investment': '設備投資',
+                    'energy-saving': '省エネ・環境',
+                    'startup-support': '創業・起業支援',
+                    'research-development': '研究開発',
+                    'human-resources': '人材育成'
+                },
+                region: {
+                    'tokyo': '東京都',
+                    'osaka': '大阪府',
+                    'kanagawa': '神奈川県',
+                    'aichi': '愛知県',
+                    'fukuoka': '福岡県',
+                    'national': '全国対象'
+                },
+                amount: {
+                    'small': '〜100万円',
+                    'medium': '100万〜500万円',
+                    'large': '500万〜1000万円',
+                    'xlarge': '1000万円以上',
+                    'unlimited': '上限なし'
+                },
+                status: {
+                    'open': '募集中',
+                    'closing-soon': '締切間近',
+                    'upcoming': '募集予定',
+                    'ongoing': '通年募集'
+                }
+            };
+            
+            return labels[filterData.type]?.[filterData.value] || filterData.value;
+        }
+        
+        function clearAllQuickFiltersFunc() {
+            // Clear all quick filters
+            activeQuickFilters.clear();
+            
+            // Reset visual states
+            const filterItems = quickFilter.querySelectorAll('.quick-filter-item.selected');
+            filterItems.forEach(item => item.classList.remove('selected'));
+            
+            // Reset filter state
+            state.filters.categories = [];
+            state.filters.prefectures = [];
+            state.filters.status = [];
+            state.filters.amount = '';
+            state.filters.region = 'all';
+            state.currentPage = 1;
+            
+            updateAppliedFiltersDisplay();
+            updateFilterState();
+        }
+        
+        // Initialize with current state
+        syncQuickFiltersWithState();
+    }
+    
+    function syncQuickFiltersWithState() {
+        // Sync quick filters with current filter state
+        // This ensures consistency between quick filters and detailed filters
+        const quickFilter = document.getElementById('carSensorQuickFilter');
+        if (!quickFilter) return;
+        
+        // Update search input
+        const quickSearchInput = document.getElementById('quickSearchInput');
+        if (quickSearchInput && state.filters.search) {
+            quickSearchInput.value = state.filters.search;
+            const clearBtn = document.getElementById('quickSearchClear');
+            if (clearBtn) clearBtn.style.display = 'block';
+        }
+    }
+    
+    // Category Show More/Less functionality
+    function initCategoryShowMore() {
+        const showMoreBtn = document.getElementById('categoryShowMoreBtn');
+        const categoryOptions = document.querySelectorAll('.category-checkbox-option');
+        
+        if (!showMoreBtn || categoryOptions.length <= 8) return;
+        
+        // Initially hide items beyond the first 8
+        categoryOptions.forEach((option, index) => {
+            if (index >= 8) {
+                option.style.display = 'none';
+            }
+        });
+        
+        let isExpanded = false;
+        
+        showMoreBtn.addEventListener('click', () => {
+            isExpanded = !isExpanded;
+            
+            categoryOptions.forEach((option, index) => {
+                if (index >= 8) {
+                    option.style.display = isExpanded ? 'flex' : 'none';
+                }
+            });
+            
+            const showMoreText = showMoreBtn.querySelector('.show-more-text');
+            const showLessText = showMoreBtn.querySelector('.show-less-text');
+            
+            if (showMoreText && showLessText) {
+                showMoreText.style.display = isExpanded ? 'none' : 'flex';
+                showLessText.style.display = isExpanded ? 'flex' : 'none';
+            }
+        });
+    }
+    
+    // Category Search functionality
+    function initCategorySearch() {
+        const searchInput = document.getElementById('category-search-input');
+        const clearBtn = document.querySelector('.category-search-clear');
+        const categoryOptions = document.querySelectorAll('.category-checkbox-option');
+        
+        if (!searchInput) return;
+        
+        searchInput.addEventListener('input', debounce(() => {
+            const query = searchInput.value.toLowerCase().trim();
+            
+            if (clearBtn) {
+                clearBtn.style.display = query ? 'block' : 'none';
+            }
+            
+            categoryOptions.forEach(option => {
+                const categoryName = option.dataset.categoryName || '';
+                const isMatch = categoryName.includes(query) || 
+                               option.textContent.toLowerCase().includes(query);
+                
+                option.style.display = isMatch ? 'flex' : 'none';
+            });
+        }, 200));
+        
+        if (clearBtn) {
+            clearBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                clearBtn.style.display = 'none';
+                categoryOptions.forEach(option => {
+                    option.style.display = 'flex';
+                });
+                
+                // Reset show more/less state if needed
+                const showMoreBtn = document.getElementById('categoryShowMoreBtn');
+                if (showMoreBtn) {
+                    categoryOptions.forEach((option, index) => {
+                        if (index >= 8) {
+                            option.style.display = 'none';
+                        }
+                    });
+                }
+            });
+        }
+    }
+    
+    // Initialize all CarSensor features
+    document.addEventListener('DOMContentLoaded', () => {
+        initCarSensorQuickFilter();
+        initCategoryShowMore();
+        initCategorySearch();
+    });
 }
 </script>
 

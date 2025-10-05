@@ -138,49 +138,7 @@ if (!function_exists('gi_add_defer_attribute')) {
 remove_filter('script_loader_tag', 'gi_add_defer_attribute', 10);
 add_filter('script_loader_tag', 'gi_add_defer_attribute', 10, 3);
 
-/**
- * モバイル用AJAX - さらに読み込み
- */
-function gi_ajax_load_more_grants() {
-    check_ajax_referer('gi_ajax_nonce', 'nonce');
-    
-    $page = intval($_POST['page'] ?? 1);
-    $posts_per_page = 10;
-    
-    $args = [
-        'post_type' => 'grant',
-        'posts_per_page' => $posts_per_page,
-        'post_status' => 'publish',
-        'paged' => $page,
-        'orderby' => 'date',
-        'order' => 'DESC'
-    ];
-    
-    $query = new WP_Query($args);
-    
-    if (!$query->have_posts()) {
-        wp_send_json_error('No more posts found');
-    }
-    
-    ob_start();
-    
-    while ($query->have_posts()): $query->the_post();
-        echo gi_render_card(get_the_ID(), 'mobile');
-    endwhile;
-    
-    wp_reset_postdata();
-    
-    $html = ob_get_clean();
-    
-    wp_send_json_success([
-        'html' => $html,
-        'page' => $page,
-        'max_pages' => $query->max_num_pages,
-        'found_posts' => $query->found_posts
-    ]);
-}
-add_action('wp_ajax_gi_load_more_grants', 'gi_ajax_load_more_grants');
-add_action('wp_ajax_nopriv_gi_load_more_grants', 'gi_ajax_load_more_grants');
+
 
 /**
  * テーマのアクティベーションチェック

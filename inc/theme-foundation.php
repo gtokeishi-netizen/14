@@ -89,7 +89,7 @@ function gi_enqueue_scripts() {
     wp_enqueue_script('gi-unified-frontend', get_template_directory_uri() . '/assets/js/unified-frontend.js', array(), GI_THEME_VERSION, true);
     
     // AJAX設定
-    wp_localize_script('gi-main', 'gi_ajax', array(
+    wp_localize_script('gi-unified-frontend', 'gi_ajax', array(
         'ajax_url' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('gi_ajax_nonce')
     ));
