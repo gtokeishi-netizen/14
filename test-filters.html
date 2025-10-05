@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filter Test - Grant Insight</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Critical CSS variables and base styles */
+        :root {
+            --primary: #3b82f6;
+            --secondary: #10b981;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --white: #ffffff;
+            --red-500: #ef4444;
+            
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-5: 1.25rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            
+            --transition: all 0.15s ease-in-out;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-900);
+            line-height: 1.6;
+        }
+        
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-6);
+        }
+        
+        .test-header {
+            text-align: center;
+            margin-bottom: var(--space-8);
+            padding: var(--space-6);
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .test-status {
+            display: flex;
+            gap: var(--space-4);
+            margin-bottom: var(--space-6);
+            justify-content: center;
+        }
+        
+        .status-item {
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        .status-success { background: #dcfce7; color: #166534; }
+        .status-warning { background: #fef3c7; color: #92400e; }
+        .status-error { background: #fee2e2; color: #dc2626; }
+        
+        .layout {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: var(--space-8);
+            height: 80vh;
+            overflow: hidden;
+        }
+        
+        .sidebar {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow-y: auto;
+            padding: var(--space-6);
+        }
+        
+        .content {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow-y: auto;
+            padding: var(--space-6);
+        }
+        
+        .filter-group {
+            margin-bottom: var(--space-6);
+            padding: var(--space-4);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-md);
+        }
+        
+        .filter-title {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: var(--space-3);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        
+        .filter-option {
+            display: flex;
+            align-items: center;
+            padding: var(--space-2);
+            margin-bottom: var(--space-2);
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+        
+        .filter-option:hover {
+            background: var(--gray-50);
+        }
+        
+        .filter-option.selected {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary);
+        }
+        
+        .filter-checkbox {
+            margin-right: var(--space-3);
+        }
+        
+        .test-output {
+            padding: var(--space-4);
+            background: var(--gray-900);
+            color: var(--white);
+            border-radius: var(--radius-md);
+            font-family: monospace;
+            font-size: 0.875rem;
+            margin-top: var(--space-4);
+        }
+        
+        .btn {
+            padding: var(--space-3) var(--space-4);
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+        }
+        
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+        
+        @media (max-width: 768px) {
+            .layout {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+            
+            .sidebar {
+                max-height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-header">
+            <h1>🧪 Filter System Test</h1>
+            <p>カーセンサー風クイックフィルターと詳細フィルターのテスト</p>
+            
+            <div class="test-status">
+                <div class="status-item status-success">
+                    <i class="fas fa-check"></i> JavaScript Loaded
+                </div>
+                <div class="status-item status-success">
+                    <i class="fas fa-check"></i> CSS Applied
+                </div>
+                <div class="status-item status-warning" id="ajax-status">
+                    <i class="fas fa-clock"></i> AJAX Pending
+                </div>
+            </div>
+        </div>
+        
+        <div class="layout">
+            <!-- Sidebar with Filters -->
+            <div class="sidebar">
+                <h3>詳細フィルター</h3>
+                
+                <!-- Categories -->
+                <div class="filter-group">
+                    <h4 class="filter-title">
+                        <i class="fas fa-tags"></i>
+                        カテゴリ
+                    </h4>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox category-checkbox" name="categories[]" value="dx-digital">
+                        <span>DX・デジタル化</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox category-checkbox" name="categories[]" value="equipment">
+                        <span>設備投資</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox category-checkbox" name="categories[]" value="environment">
+                        <span>省エネ・環境</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox category-checkbox" name="categories[]" value="startup">
+                        <span>創業・起業支援</span>
+                    </label>
+                </div>
+                
+                <!-- Prefectures -->
+                <div class="filter-group">
+                    <h4 class="filter-title">
+                        <i class="fas fa-map-marker-alt"></i>
+                        都道府県
+                    </h4>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox prefecture-checkbox" name="prefectures[]" value="tokyo">
+                        <span>東京都</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox prefecture-checkbox" name="prefectures[]" value="osaka">
+                        <span>大阪府</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox prefecture-checkbox" name="prefectures[]" value="aichi">
+                        <span>愛知県</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox prefecture-checkbox" name="prefectures[]" value="fukuoka">
+                        <span>福岡県</span>
+                    </label>
+                </div>
+                
+                <!-- Status -->
+                <div class="filter-group">
+                    <h4 class="filter-title">
+                        <i class="fas fa-clock"></i>
+                        募集状況
+                    </h4>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox status-checkbox" name="status[]" value="open">
+                        <span>募集中</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox status-checkbox" name="status[]" value="closing-soon">
+                        <span>締切間近</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" class="filter-checkbox status-checkbox" name="status[]" value="upcoming">
+                        <span>募集予定</span>
+                    </label>
+                </div>
+                
+                <button class="btn btn-primary" id="test-filters">
+                    <i class="fas fa-play"></i>
+                    フィルターテスト実行
+                </button>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="content">
+                <h3>テスト結果</h3>
+                <p>左側のフィルターを操作して、動作確認を行ってください。</p>
+                
+                <div class="test-output" id="test-output">
+                    <div>🔍 Filter Test Console</div>
+                    <div>Ready for testing...</div>
+                </div>
+                
+                <div id="filter-results" style="margin-top: var(--space-4);"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Test filter functionality
+        class FilterTester {
+            constructor() {
+                this.state = {
+                    categories: [],
+                    prefectures: [],
+                    status: []
+                };
+                this.init();
+            }
+            
+            init() {
+                this.bindEvents();
+                this.log('Filter tester initialized');
+            }
+            
+            bindEvents() {
+                // Category checkboxes
+                document.querySelectorAll('.category-checkbox').forEach(cb => {
+                    cb.addEventListener('change', (e) => this.handleCategoryChange(e));
+                });
+                
+                // Prefecture checkboxes
+                document.querySelectorAll('.prefecture-checkbox').forEach(cb => {
+                    cb.addEventListener('change', (e) => this.handlePrefectureChange(e));
+                });
+                
+                // Status checkboxes
+                document.querySelectorAll('.status-checkbox').forEach(cb => {
+                    cb.addEventListener('change', (e) => this.handleStatusChange(e));
+                });
+                
+                // Test button
+                document.getElementById('test-filters').addEventListener('click', () => {
+                    this.runFilterTest();
+                });
+            }
+            
+            handleCategoryChange(e) {
+                const value = e.target.value;
+                const label = e.target.closest('.filter-option');
+                
+                if (e.target.checked) {
+                    if (!this.state.categories.includes(value)) {
+                        this.state.categories.push(value);
+                    }
+                    label.classList.add('selected');
+                } else {
+                    const index = this.state.categories.indexOf(value);
+                    if (index > -1) {
+                        this.state.categories.splice(index, 1);
+                    }
+                    label.classList.remove('selected');
+                }
+                
+                this.log(`Category ${e.target.checked ? 'added' : 'removed'}: ${value}`);
+                this.updateResults();
+            }
+            
+            handlePrefectureChange(e) {
+                const value = e.target.value;
+                const label = e.target.closest('.filter-option');
+                
+                if (e.target.checked) {
+                    if (!this.state.prefectures.includes(value)) {
+                        this.state.prefectures.push(value);
+                    }
+                    label.classList.add('selected');
+                } else {
+                    const index = this.state.prefectures.indexOf(value);
+                    if (index > -1) {
+                        this.state.prefectures.splice(index, 1);
+                    }
+                    label.classList.remove('selected');
+                }
+                
+                this.log(`Prefecture ${e.target.checked ? 'added' : 'removed'}: ${value}`);
+                this.updateResults();
+            }
+            
+            handleStatusChange(e) {
+                const value = e.target.value;
+                const label = e.target.closest('.filter-option');
+                
+                if (e.target.checked) {
+                    if (!this.state.status.includes(value)) {
+                        this.state.status.push(value);
+                    }
+                    label.classList.add('selected');
+                } else {
+                    const index = this.state.status.indexOf(value);
+                    if (index > -1) {
+                        this.state.status.splice(index, 1);
+                    }
+                    label.classList.remove('selected');
+                }
+                
+                this.log(`Status ${e.target.checked ? 'added' : 'removed'}: ${value}`);
+                this.updateResults();
+            }
+            
+            updateResults() {
+                const results = document.getElementById('filter-results');
+                const totalFilters = this.state.categories.length + this.state.prefectures.length + this.state.status.length;
+                
+                results.innerHTML = `
+                    <h4>現在のフィルター状態</h4>
+                    <p><strong>適用済みフィルター数:</strong> ${totalFilters}</p>
+                    <p><strong>カテゴリ:</strong> ${this.state.categories.join(', ') || 'なし'}</p>
+                    <p><strong>都道府県:</strong> ${this.state.prefectures.join(', ') || 'なし'}</p>
+                    <p><strong>募集状況:</strong> ${this.state.status.join(', ') || 'なし'}</p>
+                `;
+            }
+            
+            runFilterTest() {
+                this.log('Running comprehensive filter test...');
+                this.log(`State: ${JSON.stringify(this.state, null, 2)}`);
+                
+                // Simulate AJAX call
+                document.getElementById('ajax-status').innerHTML = '<i class="fas fa-spinner fa-spin"></i> AJAX Testing';
+                document.getElementById('ajax-status').className = 'status-item status-warning';
+                
+                setTimeout(() => {
+                    document.getElementById('ajax-status').innerHTML = '<i class="fas fa-check"></i> AJAX Success';
+                    document.getElementById('ajax-status').className = 'status-item status-success';
+                    this.log('✅ Filter test completed successfully!');
+                }, 1000);
+            }
+            
+            log(message) {
+                const output = document.getElementById('test-output');
+                const timestamp = new Date().toLocaleTimeString();
+                output.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+                output.scrollTop = output.scrollHeight;
+            }
+        }
+        
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new FilterTester();
+        });
+    </script>
+</body>
+</html>

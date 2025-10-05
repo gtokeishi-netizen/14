@@ -4090,18 +4090,7 @@ $region_mapping = [
                             </div>
                             <?php endif; ?>
 
-                            <?php if ($category_count > $category_limit): ?>
-                            <button type="button" class="clean-filter-more-btn" data-target="category" id="category-show-more">
-                                <span class="show-more-text <?php echo $show_all_cat_initially ? 'hidden' : ''; ?>">
-                                    <i class="fas fa-chevron-down" aria-hidden="true"></i>
-                                    さらに表示 (+<?php echo $category_count - $category_limit; ?>)
-                                </span>
-                                <span class="show-less-text <?php echo !$show_all_cat_initially ? 'hidden' : ''; ?>">
-                                    <i class="fas fa-chevron-up" aria-hidden="true"></i>
-                                    表示を減らす
-                                </span>
-                            </button>
-                            <?php endif; ?>
+                            <!-- Duplicate button removed -->
                         </div>
                         <?php endif; ?>
 
@@ -4652,32 +4641,58 @@ $region_mapping = [
     }
     
     /**
-     * Enhanced checkbox handler
+     * Simple and reliable checkbox handler
      */
     function handleFilterCheckboxChange(e) {
         const checkbox = e.target;
-        const filterType = getFilterTypeFromName(checkbox.name);
+        const name = checkbox.name;
         const value = checkbox.value;
         
-        if (!filterType) return;
+        console.log('Checkbox changed:', name, value, checkbox.checked);
         
-        if (checkbox.checked) {
-            if (!state.filters[filterType].includes(value)) {
-                state.filters[filterType].push(value);
+        // Handle different filter types
+        if (name === 'categories[]') {
+            if (checkbox.checked) {
+                if (!state.filters.categories.includes(value)) {
+                    state.filters.categories.push(value);
+                }
+            } else {
+                const index = state.filters.categories.indexOf(value);
+                if (index > -1) {
+                    state.filters.categories.splice(index, 1);
+                }
             }
-        } else {
-            const index = state.filters[filterType].indexOf(value);
-            if (index > -1) {
-                state.filters[filterType].splice(index, 1);
+        } else if (name === 'prefectures[]') {
+            if (checkbox.checked) {
+                if (!state.filters.prefectures.includes(value)) {
+                    state.filters.prefectures.push(value);
+                }
+            } else {
+                const index = state.filters.prefectures.indexOf(value);
+                if (index > -1) {
+                    state.filters.prefectures.splice(index, 1);
+                }
             }
-        }
-        
-        // Special handling for featured checkbox
-        if (checkbox.name === 'is_featured') {
+        } else if (name === 'status[]') {
+            if (checkbox.checked) {
+                if (!state.filters.status.includes(value)) {
+                    state.filters.status.push(value);
+                }
+            } else {
+                const index = state.filters.status.indexOf(value);
+                if (index > -1) {
+                    state.filters.status.splice(index, 1);
+                }
+            }
+        } else if (name === 'is_featured') {
             state.filters.is_featured = checkbox.checked ? '1' : '';
         }
         
-        updateFilterState();
+        console.log('Updated state:', state.filters);
+        
+        // Trigger update
+        state.currentPage = 1;
+        loadGrants();
     }
     
     /**
@@ -5083,32 +5098,43 @@ $region_mapping = [
      * Handle region tab click (カーセンサー風の地方選択)
      */
     function handleRegionTabClick(e) {
+        e.preventDefault();
         const tab = e.currentTarget;
         const region = tab.dataset.region;
         
-        // すべてのタブから active を削除
+        console.log('Region tab clicked:', region);
+        
+        // Update visual state
         document.querySelectorAll('.region-tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
         
-        // 都道府県の表示を更新
+        // Show/hide prefecture options based on region
         const prefectureOptions = document.querySelectorAll('.prefecture-option');
         
         if (region === 'all') {
-            // 全国選択時：すべての都道府県を表示
+            // Show all prefectures
             prefectureOptions.forEach(option => {
-                option.style.display = '';
+                option.style.display = 'flex';
             });
+            state.filters.region = '';
         } else {
-            // 特定地方選択時：その地方の都道府県のみ表示
+            // Show only prefectures in selected region
             prefectureOptions.forEach(option => {
                 const optionRegion = option.dataset.region;
-                option.style.display = optionRegion === region ? '' : 'none';
+                option.style.display = optionRegion === region ? 'flex' : 'none';
             });
+            state.filters.region = region;
         }
         
-        // 状態を更新
-        state.filters.region = region === 'all' ? '' : region;
-        updateFilterCount();
+        console.log('Updated region filter:', state.filters.region);
+        
+        // Clear prefecture selections when region changes (optional)
+        // state.filters.prefectures = [];
+        // document.querySelectorAll('.prefecture-checkbox').forEach(cb => cb.checked = false);
+        
+        // Update results
+        state.currentPage = 1;
+        loadGrants();
     }
     
     /**
@@ -5179,17 +5205,36 @@ $region_mapping = [
     async function loadGrants() {
         if (state.isLoading) return;
         
+        console.log('Loading grants with state:', state.filters);
+        
         state.isLoading = true;
         showLoading();
         
         try {
+            const requestData = {
+                action: 'gi_ajax_load_grants',
+                nonce: config.nonce,
+                search: state.filters.search,
+                categories: JSON.stringify(state.filters.categories),
+                prefectures: JSON.stringify(state.filters.prefectures),
+                municipalities: JSON.stringify(state.filters.municipalities),
+                region: state.filters.region,
+                amount: state.filters.amount,
+                status: JSON.stringify(state.filters.status),
+                only_featured: state.filters.is_featured,
+                sort: state.filters.sort,
+                view: state.currentView,
+                page: state.currentPage
+            };
+            
+            console.log('AJAX Request data:', requestData);
+            
             const response = await fetch(config.ajaxUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: new URLSearchParams({
-                    action: 'gi_ajax_load_grants',
+                body: new URLSearchParams(requestData)
                     nonce: config.nonce,
                     search: state.filters.search,
                     categories: JSON.stringify(state.filters.categories),
@@ -5205,12 +5250,15 @@ $region_mapping = [
                 })
             });
             
+            console.log('Response status:', response.status);
             const data = await response.json();
+            console.log('Response data:', data);
             
             if (data.success) {
                 renderGrants(data.data);
                 updateURL();
             } else {
+                console.error('AJAX Error:', data.data || 'Unknown error');
                 showNoResults();
             }
         } catch (error) {
@@ -6255,22 +6303,28 @@ function clearHistoryAndRecommendations() {
         
         let activeQuickFilters = new Set();
         
-        // Tab switching
+        // Simplified tab switching
         tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
+            tab.addEventListener('click', function(e) {
+                e.preventDefault();
                 const tabName = tab.dataset.tab;
                 
-                // Update tab states
+                console.log('Quick filter tab clicked:', tabName);
+                
+                // Update tab visual states
                 tabs.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
                 
-                // Update content states
+                // Update content visibility
                 tabContents.forEach(content => {
                     content.classList.remove('active');
-                    if (content.id === `tab${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`) {
-                        content.classList.add('active');
-                    }
                 });
+                
+                // Show correct content
+                const targetContent = document.getElementById(`tab${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
             });
         });
         
@@ -6312,30 +6366,95 @@ function clearHistoryAndRecommendations() {
             });
         }
         
-        // Quick filter item clicks
-        quickFilter.addEventListener('click', (e) => {
+        // Simplified quick filter item clicks
+        quickFilter.addEventListener('click', function(e) {
             const filterItem = e.target.closest('.quick-filter-item');
             if (!filterItem) return;
             
             e.preventDefault();
             
-            // Toggle selection
+            console.log('Quick filter item clicked:', filterItem);
+            
+            // Toggle visual selection
             filterItem.classList.toggle('selected');
             
-            // Get filter data
-            const filterData = getFilterDataFromItem(filterItem);
-            if (!filterData) return;
+            // Apply filter based on data attributes
+            const category = filterItem.dataset.category;
+            const region = filterItem.dataset.region;
+            const amount = filterItem.dataset.amount;
+            const status = filterItem.dataset.status;
             
-            if (filterItem.classList.contains('selected')) {
-                activeQuickFilters.add(JSON.stringify(filterData));
-                applyQuickFilter(filterData);
-            } else {
-                activeQuickFilters.delete(JSON.stringify(filterData));
-                removeQuickFilter(filterData);
+            if (category) {
+                handleQuickCategoryFilter(category, filterItem.classList.contains('selected'));
+            } else if (region) {
+                handleQuickRegionFilter(region, filterItem.classList.contains('selected'));
+            } else if (amount) {
+                handleQuickAmountFilter(amount, filterItem.classList.contains('selected'));
+            } else if (status) {
+                handleQuickStatusFilter(status, filterItem.classList.contains('selected'));
             }
-            
-            updateAppliedFiltersDisplay();
         });
+        
+        // Helper functions for quick filters
+        function handleQuickCategoryFilter(category, isSelected) {
+            if (isSelected) {
+                if (!state.filters.categories.includes(category)) {
+                    state.filters.categories.push(category);
+                }
+            } else {
+                const index = state.filters.categories.indexOf(category);
+                if (index > -1) {
+                    state.filters.categories.splice(index, 1);
+                }
+            }
+            state.currentPage = 1;
+            loadGrants();
+        }
+        
+        function handleQuickRegionFilter(region, isSelected) {
+            // Map region to prefectures
+            const regionMap = {
+                'tokyo': ['tokyo'],
+                'osaka': ['osaka'],
+                'kanagawa': ['kanagawa'],
+                'aichi': ['aichi'],
+                'fukuoka': ['fukuoka'],
+                'national': []
+            };
+            
+            if (isSelected) {
+                if (region === 'national') {
+                    state.filters.prefectures = [];
+                } else if (regionMap[region]) {
+                    state.filters.prefectures = regionMap[region];
+                }
+            } else {
+                state.filters.prefectures = [];
+            }
+            state.currentPage = 1;
+            loadGrants();
+        }
+        
+        function handleQuickAmountFilter(amount, isSelected) {
+            state.filters.amount = isSelected ? amount : '';
+            state.currentPage = 1;
+            loadGrants();
+        }
+        
+        function handleQuickStatusFilter(status, isSelected) {
+            if (isSelected) {
+                if (!state.filters.status.includes(status)) {
+                    state.filters.status.push(status);
+                }
+            } else {
+                const index = state.filters.status.indexOf(status);
+                if (index > -1) {
+                    state.filters.status.splice(index, 1);
+                }
+            }
+            state.currentPage = 1;
+            loadGrants();
+        }
         
         // Clear all quick filters
         if (clearAllQuickFilters) {
