@@ -85,11 +85,8 @@ function gi_enqueue_scripts() {
     // Google Fonts（日本語フォント）
     wp_enqueue_style('google-fonts-noto', 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap', array(), null);
     
-    // メインJavaScript
-    wp_enqueue_script('gi-main', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), GI_THEME_VERSION, true);
-    
-    // UI/UX拡張JavaScript
-    wp_enqueue_script('gi-ui-ux-enhancements', get_template_directory_uri() . '/assets/js/ui-ux-enhancements.js', array('jquery', 'gi-main'), GI_THEME_VERSION, true);
+    // 統合フロントエンドJavaScript（jQuery不要のVanilla JS）
+    wp_enqueue_script('gi-unified-frontend', get_template_directory_uri() . '/assets/js/unified-frontend.js', array(), GI_THEME_VERSION, true);
     
     // AJAX設定
     wp_localize_script('gi-main', 'gi_ajax', array(
@@ -624,11 +621,30 @@ function gi_pagination($pages = '') {
 }
 
 /**
- * 管理画面用のスタイル - 統合版
+ * 管理画面用のアセット - 統合版
  */
-function gi_admin_styles() {
+function gi_admin_assets() {
     // 統合管理画面CSS読み込み
     wp_enqueue_style('gi-admin-consolidated', get_template_directory_uri() . '/assets/css/admin-consolidated.css', array(), GI_THEME_VERSION);
+    
+    // 統合管理画面JavaScript読み込み
+    wp_enqueue_script('gi-admin-consolidated', get_template_directory_uri() . '/assets/js/admin-consolidated.js', array('jquery'), GI_THEME_VERSION, true);
+    
+    // JavaScript設定の出力
+    wp_localize_script('gi-admin-consolidated', 'giSheetsAdmin', array(
+        'ajaxurl' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('gi_admin_nonce'),
+        'strings' => array(
+            'testing' => 'テスト中...',
+            'syncing' => '同期中...',
+            'confirm_sync' => '同期を実行しますか？この操作には時間がかかる場合があります。'
+        )
+    ));
+    
+    wp_localize_script('gi-admin-consolidated', 'grantMetaboxes', array(
+        'ajaxurl' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('gi_metabox_nonce')
+    ));
     
     // 管理画面メニューアイコン設定
     echo '<style>
@@ -637,7 +653,7 @@ function gi_admin_styles() {
         }
     </style>';
 }
-add_action('admin_enqueue_scripts', 'gi_admin_styles');
+add_action('admin_enqueue_scripts', 'gi_admin_assets');
 
 /**
  * =============================================================================
