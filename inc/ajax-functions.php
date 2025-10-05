@@ -1958,7 +1958,6 @@ function gi_generate_comparison_recommendation($comparison_data) {
         'permalink' => $best_grant['permalink']
     ];
 }
-}
 
 function gi_get_grant_resources($post_id, $intent) {
     $resources = [
