@@ -2434,44 +2434,47 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// パーティクルアニメーション用CSS追加
-const grantCardStyles = document.createElement('style');
-grantCardStyles.textContent = `
-    @keyframes particle-float {
-        0% {
-            opacity: 1;
-            transform: translateY(0) translateX(0) scale(1);
+// パーティクルアニメーション用CSS追加（重複防止）
+if (!document.getElementById('grant-card-unified-styles')) {
+    const grantCardStyles = document.createElement('style');
+    grantCardStyles.id = 'grant-card-unified-styles';
+    grantCardStyles.textContent = `
+        @keyframes particle-float {
+            0% {
+                opacity: 1;
+                transform: translateY(0) translateX(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-60px) translateX(${Math.random() * 60 - 30}px) scale(0.3);
+            }
         }
-        100% {
-            opacity: 0;
-            transform: translateY(-60px) translateX(${Math.random() * 60 - 30}px) scale(0.3);
+        
+        /* ドラッグ無効化 */
+        .grant-card-unified * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-user-drag: none;
+            -khtml-user-drag: none;
+            -moz-user-drag: none;
+            -o-user-drag: none;
+            user-drag: none;
         }
-    }
-    
-    /* ドラッグ無効化 */
-    .grant-card-unified * {
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        -webkit-user-drag: none;
-        -khtml-user-drag: none;
-        -moz-user-drag: none;
-        -o-user-drag: none;
-        user-drag: none;
-    }
-    
-    /* テキストのみ選択可能 */
-    .grant-title a,
-    .grant-ai-summary-text,
-    .grant-detail-value {
-        -webkit-user-select: text;
-        -moz-user-select: text;
-        -ms-user-select: text;
-        user-select: text;
-    }
-`;
-document.head.appendChild(grantCardStyles);
+        
+        /* テキストのみ選択可能 */
+        .grant-title a,
+        .grant-ai-summary-text,
+        .grant-detail-value {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+        }
+    `;
+    document.head.appendChild(grantCardStyles);
+}
 </script>
 <?php endif; ?>
 
