@@ -1813,6 +1813,763 @@ $region_mapping = [
             font-size: 0.75rem;
         }
     }
+
+    /* ===== OPTIMIZED FILTER STYLES ===== */
+    
+    /* Active Filters Breadcrumb */
+    .active-filters-breadcrumb {
+        background: var(--gray-50);
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius-lg);
+        padding: var(--space-4);
+        margin-bottom: var(--space-4);
+    }
+    
+    .breadcrumb-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--space-3);
+    }
+    
+    .breadcrumb-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--gray-900);
+    }
+    
+    .clear-all-filters {
+        background: var(--danger);
+        color: var(--white);
+        border: none;
+        border-radius: var(--radius-md);
+        padding: var(--space-2) var(--space-3);
+        font-size: 0.75rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .clear-all-filters:hover {
+        background: #dc2626;
+    }
+    
+    .active-filters-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+    }
+    
+    .filter-crumb {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-1);
+        background: var(--primary);
+        color: var(--white);
+        padding: var(--space-1) var(--space-2);
+        border-radius: var(--radius-md);
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+    
+    .filter-crumb-remove {
+        background: none;
+        border: none;
+        color: inherit;
+        cursor: pointer;
+        padding: 0;
+        font-size: 0.875rem;
+        margin-left: var(--space-1);
+    }
+    
+    /* AI Filter Suggestions */
+    .ai-filter-suggestions {
+        background: linear-gradient(135deg, var(--gray-50) 0%, var(--white) 100%);
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius-lg);
+        padding: var(--space-4);
+        margin-bottom: var(--space-4);
+    }
+    
+    .suggestion-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--gray-900);
+        margin-bottom: var(--space-3);
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+    }
+    
+    .suggested-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+    }
+    
+    .suggestion-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-1);
+        background: var(--white);
+        border: 1px solid var(--gray-300);
+        border-radius: var(--radius-2xl);
+        padding: var(--space-2) var(--space-3);
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--gray-700);
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .suggestion-chip:hover {
+        background: var(--gray-900);
+        color: var(--white);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+    }
+    
+    /* Smart Location Picker */
+    .smart-location-picker {
+        margin-bottom: var(--space-4);
+    }
+    
+    .location-quick-access {
+        margin-bottom: var(--space-3);
+    }
+    
+    .detect-location-btn {
+        width: 100%;
+        background: linear-gradient(135deg, var(--gray-900) 0%, var(--gray-700) 100%);
+        color: var(--white);
+        border: none;
+        border-radius: var(--radius-md);
+        padding: var(--space-3);
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: var(--transition);
+        margin-bottom: var(--space-2);
+    }
+    
+    .detect-location-btn:hover {
+        background: linear-gradient(135deg, var(--gray-800) 0%, var(--gray-600) 100%);
+    }
+    
+    .popular-regions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-2);
+    }
+    
+    .popular-label {
+        font-size: 0.75rem;
+        color: var(--gray-600);
+        font-weight: 500;
+    }
+    
+    .region-quick-btn {
+        background: var(--gray-100);
+        border: 1px solid var(--gray-300);
+        border-radius: var(--radius-md);
+        padding: var(--space-1) var(--space-2);
+        font-size: 0.75rem;
+        color: var(--gray-700);
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .region-quick-btn:hover {
+        background: var(--gray-200);
+    }
+    
+    /* Searchable Location Dropdown */
+    .searchable-location-dropdown {
+        position: relative;
+    }
+    
+    .location-search-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    
+    .location-search-icon {
+        position: absolute;
+        left: var(--space-3);
+        color: var(--gray-400);
+        font-size: 0.875rem;
+        z-index: 1;
+    }
+    
+    .location-search {
+        width: 100%;
+        padding: var(--space-3) var(--space-8) var(--space-3) var(--space-8);
+        border: 2px solid var(--gray-300);
+        border-radius: var(--radius-md);
+        font-size: 0.875rem;
+        background: var(--white);
+        transition: var(--transition);
+    }
+    
+    .location-search:focus {
+        border-color: var(--primary);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .location-search-clear {
+        position: absolute;
+        right: var(--space-3);
+        background: none;
+        border: none;
+        color: var(--gray-400);
+        cursor: pointer;
+        padding: var(--space-1);
+        z-index: 1;
+    }
+    
+    .location-results {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        border: 1px solid var(--gray-300);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-lg);
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 100;
+    }
+    
+    .location-result-item {
+        padding: var(--space-2) var(--space-3);
+        cursor: pointer;
+        border-bottom: 1px solid var(--gray-100);
+        transition: var(--transition);
+    }
+    
+    .location-result-item:hover {
+        background: var(--gray-50);
+    }
+    
+    .location-result-item:last-child {
+        border-bottom: none;
+    }
+    
+    /* Progressive Disclosure */
+    .region-disclosure {
+        margin-top: var(--space-3);
+    }
+    
+    .region-summary {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--gray-700);
+        padding: var(--space-2);
+        border-radius: var(--radius-md);
+        transition: var(--transition);
+    }
+    
+    .region-summary:hover {
+        background: var(--gray-50);
+    }
+    
+    .disclosure-icon {
+        transition: transform 0.3s ease;
+    }
+    
+    .region-disclosure[open] .disclosure-icon {
+        transform: rotate(180deg);
+    }
+    
+    /* Enhanced Category Filters */
+    .category-search-container {
+        margin-bottom: var(--space-3);
+    }
+    
+    .category-search-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    
+    .category-search-icon {
+        position: absolute;
+        left: var(--space-2);
+        color: var(--gray-400);
+        font-size: 0.75rem;
+        z-index: 1;
+    }
+    
+    .category-search-input {
+        width: 100%;
+        padding: var(--space-2) var(--space-6) var(--space-2) var(--space-6);
+        border: 1px solid var(--gray-300);
+        border-radius: var(--radius-md);
+        font-size: 0.75rem;
+        background: var(--white);
+        transition: var(--transition);
+    }
+    
+    .category-search-input:focus {
+        border-color: var(--primary);
+        outline: none;
+    }
+    
+    .category-search-clear {
+        position: absolute;
+        right: var(--space-2);
+        background: none;
+        border: none;
+        color: var(--gray-400);
+        cursor: pointer;
+        padding: var(--space-1);
+        font-size: 0.75rem;
+        z-index: 1;
+    }
+    
+    .category-virtual-scroll {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    
+    .category-chip-enhanced {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        padding: var(--space-3);
+        background: var(--white);
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-bottom: var(--space-1);
+    }
+    
+    .category-chip-enhanced:hover {
+        border-color: var(--gray-400);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-sm);
+    }
+    
+    .category-chip-enhanced.selected {
+        background: var(--gray-900);
+        color: var(--white);
+        border-color: var(--gray-900);
+    }
+    
+    .category-chip-enhanced input {
+        display: none;
+    }
+    
+    .category-icon-wrapper {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--gray-100);
+        border-radius: 50%;
+        transition: var(--transition);
+    }
+    
+    .category-chip-enhanced.selected .category-icon-wrapper {
+        background: rgba(255, 255, 255, 0.2);
+    }
+    
+    .category-icon {
+        font-size: 1rem;
+        color: var(--gray-600);
+        transition: var(--transition);
+    }
+    
+    .category-chip-enhanced.selected .category-icon {
+        color: var(--white);
+    }
+    
+    .category-name {
+        flex: 1;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+    
+    .category-count-badge {
+        background: var(--gray-200);
+        color: var(--gray-700);
+        font-size: 0.6875rem;
+        font-weight: 600;
+        padding: 2px 6px;
+        border-radius: var(--radius-sm);
+        min-width: 20px;
+        text-align: center;
+    }
+    
+    .category-chip-enhanced.selected .category-count-badge {
+        background: rgba(255, 255, 255, 0.2);
+        color: var(--white);
+    }
+    
+    /* Enhanced Status Filters */
+    .status-option {
+        position: relative;
+    }
+    
+    .status-icon {
+        margin-right: var(--space-2);
+        font-size: 0.875rem;
+    }
+    
+    .status-success {
+        color: var(--success);
+    }
+    
+    .status-warning {
+        color: var(--warning);
+    }
+    
+    .status-danger {
+        color: var(--danger);
+    }
+    
+    .deadline-option {
+        background: rgba(251, 146, 60, 0.1);
+        border-radius: var(--radius-md);
+    }
+    
+    .deadline-icon {
+        color: var(--warning);
+        animation: pulse 2s infinite;
+    }
+    
+    /* Enhanced Amount Filters */
+    .amount-range-container {
+        margin-bottom: var(--space-4);
+        padding: var(--space-3);
+        background: var(--gray-50);
+        border-radius: var(--radius-md);
+    }
+    
+    .amount-display {
+        text-align: center;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--gray-900);
+        margin-bottom: var(--space-2);
+    }
+    
+    .amount-slider-wrapper {
+        position: relative;
+        height: 20px;
+    }
+    
+    .amount-slider {
+        position: absolute;
+        width: 100%;
+        height: 4px;
+        background: var(--gray-300);
+        border-radius: 2px;
+        outline: none;
+        appearance: none;
+    }
+    
+    .amount-slider::-webkit-slider-thumb {
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        background: var(--primary);
+        border-radius: 50%;
+        cursor: pointer;
+    }
+    
+    .amount-option .amount-icon {
+        margin-right: var(--space-2);
+        color: var(--success);
+    }
+    
+    /* Enhanced Method Filters */
+    .method-option {
+        padding: var(--space-3);
+        border-radius: var(--radius-md);
+        transition: var(--transition);
+    }
+    
+    .method-option:hover {
+        background: var(--gray-50);
+    }
+    
+    .method-icon {
+        margin-right: var(--space-2);
+        color: var(--gray-600);
+        font-size: 1rem;
+    }
+    
+    .method-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+    
+    .method-name {
+        font-weight: 500;
+        font-size: 0.875rem;
+    }
+    
+    .method-desc {
+        font-size: 0.75rem;
+        color: var(--gray-500);
+    }
+    
+    /* Enhanced Filter Actions */
+    .filter-actions-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-2);
+        margin-bottom: var(--space-3);
+    }
+    
+    .apply-filters-button,
+    .save-preset-button,
+    .share-filters-button {
+        background: var(--primary);
+        color: var(--white);
+        border: none;
+        border-radius: var(--radius-md);
+        padding: var(--space-2) var(--space-3);
+        font-size: 0.75rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-1);
+    }
+    
+    .apply-filters-button:hover,
+    .save-preset-button:hover,
+    .share-filters-button:hover {
+        background: var(--primary-dark);
+    }
+    
+    .save-preset-button {
+        background: var(--gray-600);
+    }
+    
+    .save-preset-button:hover {
+        background: var(--gray-700);
+    }
+    
+    .share-filters-button {
+        background: var(--info);
+    }
+    
+    .share-filters-button:hover {
+        background: #0ea5e9;
+    }
+    
+    .filter-statistics {
+        display: flex;
+        justify-content: space-between;
+        padding: var(--space-2);
+        background: var(--gray-50);
+        border-radius: var(--radius-md);
+        font-size: 0.75rem;
+    }
+    
+    .filter-stat {
+        display: flex;
+        align-items: center;
+        gap: var(--space-1);
+    }
+    
+    .stat-label {
+        color: var(--gray-600);
+        font-weight: 500;
+    }
+    
+    .stat-value {
+        color: var(--gray-900);
+        font-weight: 700;
+    }
+    
+    /* Filter Preview */
+    .filter-preview {
+        background: linear-gradient(135deg, var(--success) 0%, #16a34a 100%);
+        color: var(--white);
+        padding: var(--space-3);
+        border-radius: var(--radius-md);
+        margin-bottom: var(--space-4);
+        text-align: center;
+    }
+    
+    .preview-stats {
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+    
+    .preview-categories {
+        margin-top: var(--space-2);
+        font-size: 0.75rem;
+        opacity: 0.9;
+    }
+    
+    .category-stat {
+        display: inline-block;
+        margin-right: var(--space-2);
+    }
+    
+    /* Saved Filters */
+    .saved-filters {
+        background: var(--gray-50);
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius-lg);
+        padding: var(--space-4);
+        margin-bottom: var(--space-4);
+    }
+    
+    .saved-filters-title {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--gray-900);
+        margin-bottom: var(--space-3);
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+    }
+    
+    .save-current-filter {
+        width: 100%;
+        background: var(--gray-600);
+        color: var(--white);
+        border: none;
+        border-radius: var(--radius-md);
+        padding: var(--space-2);
+        font-size: 0.75rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: var(--transition);
+        margin-bottom: var(--space-3);
+    }
+    
+    .save-current-filter:hover {
+        background: var(--gray-700);
+    }
+    
+    .saved-filter-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+    }
+    
+    .saved-filter-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--white);
+        border: 1px solid var(--gray-300);
+        border-radius: var(--radius-md);
+        padding: var(--space-2) var(--space-3);
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+    
+    .saved-filter-item:hover {
+        border-color: var(--primary);
+    }
+    
+    .saved-filter-delete {
+        background: none;
+        border: none;
+        color: var(--danger);
+        cursor: pointer;
+        padding: 0;
+        font-size: 0.875rem;
+    }
+    
+    /* Responsive Enhancements */
+    @media (max-width: 768px) {
+        .filter-actions-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .suggested-filters {
+            flex-direction: column;
+        }
+        
+        .suggestion-chip {
+            justify-content: center;
+        }
+        
+        .popular-regions {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .category-chip-enhanced {
+            padding: var(--space-2);
+        }
+        
+        .category-icon-wrapper {
+            width: 28px;
+            height: 28px;
+        }
+    }
+    
+    /* Loading States */
+    .filter-loading {
+        opacity: 0.6;
+        pointer-events: none;
+        position: relative;
+    }
+    
+    .filter-loading::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--gray-300);
+        border-top-color: var(--primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        transform: translate(-50%, -50%);
+    }
+    
+    /* Accessibility Enhancements */
+    @media (prefers-reduced-motion: reduce) {
+        .category-chip-enhanced,
+        .suggestion-chip,
+        .filter-crumb,
+        .disclosure-icon {
+            transition: none;
+        }
+        
+        .deadline-icon {
+            animation: none;
+        }
+    }
+    
+    /* High Contrast Mode */
+    @media (prefers-contrast: high) {
+        .category-chip-enhanced {
+            border-width: 2px;
+        }
+        
+        .status-icon,
+        .method-icon,
+        .amount-icon {
+            filter: contrast(2);
+        }
+    }
     </style>
     
     <!-- Fonts -->
@@ -1852,7 +2609,7 @@ $region_mapping = [
                 <input type="text" 
                        id="clean-search-input" 
                        name="search" 
-                       placeholder="🤖 AI検索：「DXを推進したい」「環境に優しい事業」など自然な言葉で検索..." 
+                       placeholder="AI検索：「DXを推進したい」「環境に優しい事業」など自然な言葉で検索..." 
                        class="clean-search-input"
                        value="<?php echo esc_attr($search_params['search']); ?>"
                        autocomplete="off">
@@ -1948,46 +2705,165 @@ $region_mapping = [
     <div class="clean-container">
         <div class="clean-layout">
             
-            <!-- Sidebar Filters -->
+            <!-- Sidebar Filters - Optimized Version -->
             <aside id="clean-filter-sidebar" class="clean-sidebar" role="complementary" aria-labelledby="filter-title">
                 <div class="clean-filter-card">
                     <div class="clean-filter-header">
-                        <h3 id="filter-title" class="clean-filter-title">詳細フィルター</h3>
+                        <h3 id="filter-title" class="clean-filter-title">
+                            <i class="fas fa-filter" aria-hidden="true"></i>
+                            詳細フィルター
+                        </h3>
                         <button id="clean-filter-close" class="clean-filter-close" aria-label="フィルターパネルを閉じる">
-                            ×
+                            <i class="fas fa-times" aria-hidden="true"></i>
                         </button>
+                    </div>
+
+                    <!-- Active Filters Breadcrumb -->
+                    <div id="active-filters-breadcrumb" class="active-filters-breadcrumb" style="display: none;">
+                        <div class="breadcrumb-header">
+                            <span class="breadcrumb-title">アクティブフィルター:</span>
+                            <button class="clear-all-filters" id="clear-all-filters" type="button">
+                                <i class="fas fa-broom" aria-hidden="true"></i>
+                                すべてクリア
+                            </button>
+                        </div>
+                        <div id="active-filters-list" class="active-filters-list"></div>
+                    </div>
+
+                    <!-- AI Filter Suggestions -->
+                    <div class="ai-filter-suggestions">
+                        <h4 class="suggestion-title">
+                            <i class="fas fa-robot" aria-hidden="true"></i>
+                            おすすめフィルター
+                        </h4>
+                        <div class="suggested-filters">
+                            <button class="suggestion-chip" data-preset="it-companies">
+                                <i class="fas fa-laptop-code" aria-hidden="true"></i>
+                                IT企業向け
+                            </button>
+                            <button class="suggestion-chip" data-preset="tokyo-high-amount">
+                                <i class="fas fa-yen-sign" aria-hidden="true"></i>
+                                東京都高額
+                            </button>
+                            <button class="suggestion-chip" data-preset="manufacturing">
+                                <i class="fas fa-industry" aria-hidden="true"></i>
+                                製造業向け
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Saved Filters -->
+                    <div class="saved-filters" style="display: none;">
+                        <h4 class="saved-filters-title">
+                            <i class="fas fa-bookmark" aria-hidden="true"></i>
+                            保存済みフィルター
+                        </h4>
+                        <div class="saved-filter-actions">
+                            <button class="save-current-filter" id="save-current-filter" type="button">
+                                <i class="fas fa-save" aria-hidden="true"></i>
+                                現在の条件を保存
+                            </button>
+                        </div>
+                        <div id="saved-filter-list" class="saved-filter-list"></div>
                     </div>
 
                     <div class="clean-filter-body">
                         
-                        <!-- Special Filters -->
+                        <!-- Special Filters - Enhanced -->
                         <div class="clean-filter-group">
-                            <h4 class="clean-filter-group-title">特別条件</h4>
+                            <h4 class="clean-filter-group-title">
+                                <i class="fas fa-star" aria-hidden="true"></i>
+                                特別条件
+                            </h4>
                             <label class="clean-filter-option">
                                 <input type="checkbox" 
                                        name="is_featured" 
                                        value="1" 
                                        class="clean-filter-checkbox featured-checkbox"
                                        <?php checked($search_params['is_featured'], '1'); ?>>
-                                <span class="clean-filter-label">おすすめの助成金のみ</span>
+                                <span class="clean-filter-label">
+                                    <i class="fas fa-medal" aria-hidden="true"></i>
+                                    おすすめの助成金のみ
+                                </span>
+                            </label>
+                            <label class="clean-filter-option">
+                                <input type="checkbox" 
+                                       name="high_success_rate" 
+                                       value="1" 
+                                       class="clean-filter-checkbox success-rate-checkbox">
+                                <span class="clean-filter-label">
+                                    <i class="fas fa-chart-line" aria-hidden="true"></i>
+                                    高採択率（60%以上）
+                                </span>
                             </label>
                         </div>
-                        
-                        <!-- 地域階層フィルター（カーセンサー風） -->
-                        <div class="clean-filter-group region-hierarchy-filter">
-                            <h4 class="clean-filter-group-title">対象地域</h4>
-                            
-                            <!-- 地方選択（タブ式） -->
-                            <div class="region-tabs-container">
-                                <button type="button" class="region-tab <?php echo empty($search_params['region']) ? 'active' : ''; ?>" data-region="all">
-                                    全国
-                                </button>
-                                <?php foreach ($region_mapping as $region_name => $prefectures): ?>
-                                <button type="button" class="region-tab <?php echo $search_params['region'] === $region_name ? 'active' : ''; ?>" data-region="<?php echo esc_attr($region_name); ?>">
-                                    <?php echo esc_html($region_name); ?>
-                                </button>
-                                <?php endforeach; ?>
+
+                        <!-- Filter Preview -->
+                        <div class="filter-preview">
+                            <div class="preview-stats">
+                                <i class="fas fa-search" aria-hidden="true"></i>
+                                <span id="live-count">0</span>件の助成金
+                                <div class="preview-categories" id="preview-categories"></div>
                             </div>
+                        </div>
+                        
+                        <!-- Smart Location Selection System -->
+                        <div class="clean-filter-group region-hierarchy-filter">
+                            <h4 class="clean-filter-group-title">
+                                <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                                対象地域
+                            </h4>
+                            
+                            <!-- Smart Location Picker -->
+                            <div class="smart-location-picker">
+                                <div class="location-quick-access">
+                                    <button type="button" class="detect-location-btn" id="detect-location">
+                                        <i class="fas fa-crosshairs" aria-hidden="true"></i>
+                                        現在地から検索
+                                    </button>
+                                    <div class="popular-regions">
+                                        <span class="popular-label">人気地域:</span>
+                                        <button type="button" class="region-quick-btn" data-prefecture="tokyo">東京都</button>
+                                        <button type="button" class="region-quick-btn" data-prefecture="osaka">大阪府</button>
+                                        <button type="button" class="region-quick-btn" data-prefecture="aichi">愛知県</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Searchable Location Dropdown -->
+                                <div class="searchable-location-dropdown">
+                                    <div class="location-search-container">
+                                        <i class="fas fa-search location-search-icon" aria-hidden="true"></i>
+                                        <input type="text" 
+                                               placeholder="都道府県・市町村を検索..." 
+                                               class="location-search"
+                                               id="location-search-input"
+                                               autocomplete="off">
+                                        <button type="button" class="location-search-clear" style="display: none;">
+                                            <i class="fas fa-times" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                    <div class="location-results" id="location-results" style="display: none;"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Progressive Disclosure Tabs -->
+                            <details class="region-disclosure" open>
+                                <summary class="region-summary">
+                                    <i class="fas fa-chevron-down disclosure-icon" aria-hidden="true"></i>
+                                    地方別選択
+                                </summary>
+                                <div class="region-tabs-container">
+                                    <button type="button" class="region-tab <?php echo empty($search_params['region']) ? 'active' : ''; ?>" data-region="all">
+                                        <i class="fas fa-globe" aria-hidden="true"></i>
+                                        全国
+                                    </button>
+                                    <?php foreach ($region_mapping as $region_name => $prefectures): ?>
+                                    <button type="button" class="region-tab <?php echo $search_params['region'] === $region_name ? 'active' : ''; ?>" data-region="<?php echo esc_attr($region_name); ?>">
+                                        <?php echo esc_html($region_name); ?>
+                                    </button>
+                                    <?php endforeach; ?>
+                                </div>
+                            </details>
                             
                             <!-- 都道府県選択（選択した地方に応じて表示） -->
                             <?php if (!empty($all_prefectures) && !is_wp_error($all_prefectures)): ?>
@@ -2059,139 +2935,329 @@ $region_mapping = [
                             <?php endif; ?>
                         </div>
 
-                        <!-- Category Filters (アイコンなし白黒デザイン) -->
+                        <!-- Enhanced Category Filters with Search -->
                         <?php if (!empty($all_categories) && !is_wp_error($all_categories)): ?>
                         <div class="clean-filter-group category-filter-group">
                             <h4 class="clean-filter-group-title">
+                                <i class="fas fa-tags" aria-hidden="true"></i>
                                 カテゴリ
                             </h4>
-                            <div class="category-grid-container">
-                                <?php 
-                                $category_limit = 12;
-                                $selected_categories = explode(',', $search_params['category']);
-                                $category_count = count($all_categories);
-                                
-                                $has_selected_cat = !empty(array_filter($selected_categories));
-                                $show_all_cat_initially = $has_selected_cat;
-                                
-                                foreach ($all_categories as $index => $category): 
-                                    $is_selected_cat = in_array($category->slug, $selected_categories);
-                                    $is_hidden = !$show_all_cat_initially && $index >= $category_limit;
-                                ?>
-                                <label class="category-chip-fa <?php echo $is_selected_cat ? 'selected' : ''; ?> <?php echo $is_hidden ? 'clean-filter-more-item hidden' : ''; ?>" title="<?php echo esc_attr($category->name); ?>">
-                                    <input type="checkbox" 
-                                           name="categories[]" 
-                                           value="<?php echo esc_attr($category->slug); ?>" 
-                                           class="clean-filter-checkbox category-checkbox"
-                                           <?php checked($is_selected_cat); ?>
-                                           style="display: none;">
-                                    <span class="category-name"><?php echo esc_html($category->name); ?></span>
-                                    <?php if ($category->count > 0): ?>
-                                    <span class="category-count-badge"><?php echo esc_html($category->count); ?></span>
-                                    <?php endif; ?>
-                                </label>
-                                <?php endforeach; ?>
+                            
+                            <!-- Category Search -->
+                            <div class="category-search-container">
+                                <div class="category-search-wrapper">
+                                    <i class="fas fa-search category-search-icon" aria-hidden="true"></i>
+                                    <input type="text" 
+                                           placeholder="カテゴリを検索..." 
+                                           class="category-search-input"
+                                           id="category-search-input"
+                                           autocomplete="off">
+                                    <button type="button" class="category-search-clear" style="display: none;">
+                                        <i class="fas fa-times" aria-hidden="true"></i>
+                                    </button>
+                                </div>
                             </div>
+
+                            <!-- Virtual Scroll Container -->
+                            <div class="category-virtual-scroll" id="category-virtual-scroll">
+                                <div class="category-grid-container" id="category-grid-container">
+                                    <?php 
+                                    $category_limit = 8;
+                                    $selected_categories = explode(',', $search_params['category']);
+                                    $category_count = count($all_categories);
+                                    
+                                    $has_selected_cat = !empty(array_filter($selected_categories));
+                                    $show_all_cat_initially = $has_selected_cat;
+                                    
+                                    // カテゴリ用の白黒アイコンマッピング
+                                    $category_icons = [
+                                        'it' => 'fas fa-laptop-code',
+                                        'manufacturing' => 'fas fa-industry',
+                                        'environment' => 'fas fa-leaf',
+                                        'startup' => 'fas fa-rocket',
+                                        'research' => 'fas fa-flask',
+                                        'export' => 'fas fa-globe-asia',
+                                        'tourism' => 'fas fa-map-signs',
+                                        'agriculture' => 'fas fa-seedling',
+                                        'welfare' => 'fas fa-heart',
+                                        'education' => 'fas fa-graduation-cap',
+                                        'default' => 'fas fa-folder'
+                                    ];
+                                    
+                                    foreach ($all_categories as $index => $category): 
+                                        $is_selected_cat = in_array($category->slug, $selected_categories);
+                                        $is_hidden = !$show_all_cat_initially && $index >= $category_limit;
+                                        
+                                        // カテゴリに応じたアイコンを選択
+                                        $icon_class = 'fas fa-folder';
+                                        foreach ($category_icons as $key => $icon) {
+                                            if (strpos(strtolower($category->slug), $key) !== false) {
+                                                $icon_class = $icon;
+                                                break;
+                                            }
+                                        }
+                                    ?>
+                                    <label class="category-chip-enhanced <?php echo $is_selected_cat ? 'selected' : ''; ?> <?php echo $is_hidden ? 'clean-filter-more-item hidden' : ''; ?>" 
+                                           title="<?php echo esc_attr($category->name); ?>"
+                                           data-category-name="<?php echo esc_attr(strtolower($category->name)); ?>">
+                                        <input type="checkbox" 
+                                               name="categories[]" 
+                                               value="<?php echo esc_attr($category->slug); ?>" 
+                                               class="clean-filter-checkbox category-checkbox"
+                                               <?php checked($is_selected_cat); ?>>
+                                        <div class="category-icon-wrapper">
+                                            <i class="<?php echo esc_attr($icon_class); ?> category-icon" aria-hidden="true"></i>
+                                        </div>
+                                        <span class="category-name"><?php echo esc_html($category->name); ?></span>
+                                        <?php if ($category->count > 0): ?>
+                                        <span class="category-count-badge"><?php echo esc_html($category->count); ?></span>
+                                        <?php endif; ?>
+                                    </label>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+
                             <?php if ($category_count > $category_limit): ?>
-                            <button type="button" class="clean-filter-more-btn" data-target="category">
-                                <span class="show-more-text <?php echo $show_all_cat_initially ? 'hidden' : ''; ?>">さらに表示 (+<?php echo $category_count - $category_limit; ?>)</span>
-                                <span class="show-less-text <?php echo !$show_all_cat_initially ? 'hidden' : ''; ?>">表示を減らす</span>
+                            <button type="button" class="clean-filter-more-btn" data-target="category" id="category-show-more">
+                                <span class="show-more-text <?php echo $show_all_cat_initially ? 'hidden' : ''; ?>">
+                                    <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                                    さらに表示 (+<?php echo $category_count - $category_limit; ?>)
+                                </span>
+                                <span class="show-less-text <?php echo !$show_all_cat_initially ? 'hidden' : ''; ?>">
+                                    <i class="fas fa-chevron-up" aria-hidden="true"></i>
+                                    表示を減らす
+                                </span>
                             </button>
                             <?php endif; ?>
                         </div>
                         <?php endif; ?>
 
-                        <!-- Amount Filters -->
+                        <!-- Enhanced Amount Filters -->
                         <div class="clean-filter-group">
-                            <h4 class="clean-filter-group-title">助成金額</h4>
+                            <h4 class="clean-filter-group-title">
+                                <i class="fas fa-yen-sign" aria-hidden="true"></i>
+                                助成金額
+                            </h4>
+                            
+                            <!-- Amount Range Slider -->
+                            <div class="amount-range-container">
+                                <div class="amount-display">
+                                    <span id="amount-min-display">0</span>万円 〜 
+                                    <span id="amount-max-display">5000+</span>万円
+                                </div>
+                                <div class="amount-slider-wrapper">
+                                    <input type="range" 
+                                           class="amount-slider" 
+                                           id="amount-min-slider"
+                                           min="0" 
+                                           max="5000" 
+                                           value="0" 
+                                           step="100">
+                                    <input type="range" 
+                                           class="amount-slider" 
+                                           id="amount-max-slider"
+                                           min="0" 
+                                           max="5000" 
+                                           value="5000" 
+                                           step="100">
+                                </div>
+                            </div>
+                            
+                            <!-- Quick Amount Selection -->
                             <?php
                             $amount_ranges = [
-                                '' => 'すべての金額',
-                                '0-100' => '〜100万円',
-                                '100-500' => '100〜500万円',
-                                '500-1000' => '500〜1000万円',
-                                '1000-3000' => '1000〜3000万円',
-                                '3000+' => '3000万円以上'
+                                '' => ['label' => 'すべての金額', 'icon' => 'fas fa-infinity'],
+                                '0-100' => ['label' => '〜100万円', 'icon' => 'fas fa-coins'],
+                                '100-500' => ['label' => '100〜500万円', 'icon' => 'fas fa-money-bill'],
+                                '500-1000' => ['label' => '500〜1000万円', 'icon' => 'fas fa-money-bill-wave'],
+                                '1000-3000' => ['label' => '1000〜3000万円', 'icon' => 'fas fa-money-check'],
+                                '3000+' => ['label' => '3000万円以上', 'icon' => 'fas fa-gem']
                             ];
-                            foreach ($amount_ranges as $value => $label):
+                            foreach ($amount_ranges as $value => $config):
                             ?>
-                            <label class="clean-filter-option" tabindex="0">
+                            <label class="clean-filter-option amount-option" tabindex="0">
                                 <input type="radio" 
                                        name="amount" 
                                        value="<?php echo esc_attr($value); ?>" 
                                        class="clean-filter-radio amount-radio"
                                        <?php checked($search_params['amount'], $value); ?>
                                        aria-describedby="amount-<?php echo esc_attr($value ?: 'all'); ?>-desc">
-                                <span class="clean-filter-label" id="amount-<?php echo esc_attr($value ?: 'all'); ?>-desc"><?php echo esc_html($label); ?></span>
+                                <span class="clean-filter-label" id="amount-<?php echo esc_attr($value ?: 'all'); ?>-desc">
+                                    <i class="<?php echo esc_attr($config['icon']); ?> amount-icon" aria-hidden="true"></i>
+                                    <?php echo esc_html($config['label']); ?>
+                                </span>
                             </label>
                             <?php endforeach; ?>
                         </div>
 
-                        <!-- Status Filters -->
+                        <!-- Status Filters - Fixed and Enhanced -->
                         <div class="clean-filter-group">
-                            <h4 class="clean-filter-group-title">募集状況</h4>
+                            <h4 class="clean-filter-group-title">
+                                <i class="fas fa-calendar-check" aria-hidden="true"></i>
+                                募集状況
+                            </h4>
                             <?php
                             $status_options = [
-                                'active' => '募集中',
-                                'upcoming' => '募集予定',
-                                'closed' => '募集終了'
+                                'open' => ['label' => '募集中', 'icon' => 'fas fa-check-circle', 'color' => 'success'],
+                                'upcoming' => ['label' => '募集予定', 'icon' => 'fas fa-clock', 'color' => 'warning'],
+                                'closed' => ['label' => '募集終了', 'icon' => 'fas fa-times-circle', 'color' => 'danger']
                             ];
-                            foreach ($status_options as $value => $label):
-                                $selected_statuses = explode(',', $search_params['status']);
+                            
+                            // 正しいステータス値でチェック（activeではなくopen）
+                            $selected_statuses = array_filter(explode(',', $search_params['status']));
+                            
+                            foreach ($status_options as $value => $config):
                                 $is_selected = in_array($value, $selected_statuses);
+                                
+                                // 統計を取得
+                                $status_count = 0;
+                                if (function_exists('gi_get_status_count')) {
+                                    $status_count = gi_get_status_count($value);
+                                }
                             ?>
-                            <label class="clean-filter-option" tabindex="0">
+                            <label class="clean-filter-option status-option" tabindex="0" data-status="<?php echo esc_attr($value); ?>">
                                 <input type="checkbox" 
                                        name="status[]" 
                                        value="<?php echo esc_attr($value); ?>" 
                                        class="clean-filter-checkbox status-checkbox"
                                        <?php checked($is_selected); ?>
                                        aria-describedby="status-<?php echo esc_attr($value); ?>-desc">
-                                <span class="clean-filter-label" id="status-<?php echo esc_attr($value); ?>-desc"><?php echo esc_html($label); ?></span>
+                                <span class="clean-filter-label" id="status-<?php echo esc_attr($value); ?>-desc">
+                                    <i class="<?php echo esc_attr($config['icon']); ?> status-icon status-<?php echo esc_attr($config['color']); ?>" aria-hidden="true"></i>
+                                    <?php echo esc_html($config['label']); ?>
+                                </span>
+                                <?php if ($status_count > 0): ?>
+                                <span class="clean-filter-count"><?php echo esc_html($status_count); ?></span>
+                                <?php endif; ?>
+                            </label>
+                            <?php endforeach; ?>
+                            
+                            <!-- Deadline Soon Filter -->
+                            <label class="clean-filter-option deadline-option" tabindex="0">
+                                <input type="checkbox" 
+                                       name="deadline_soon" 
+                                       value="1" 
+                                       class="clean-filter-checkbox deadline-checkbox">
+                                <span class="clean-filter-label">
+                                    <i class="fas fa-exclamation-triangle deadline-icon" aria-hidden="true"></i>
+                                    締切間近（30日以内）
+                                </span>
+                            </label>
+                        </div>
+
+                        <!-- Enhanced Application Method Filters -->
+                        <div class="clean-filter-group">
+                            <h4 class="clean-filter-group-title">
+                                <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                                申請方法
+                            </h4>
+                            <?php
+                            $method_options = [
+                                'online' => ['label' => 'オンライン申請', 'icon' => 'fas fa-laptop', 'desc' => 'ウェブサイトから申請'],
+                                'mail' => ['label' => '郵送申請', 'icon' => 'fas fa-envelope', 'desc' => '書類を郵送で提出'],
+                                'direct' => ['label' => '持参申請', 'icon' => 'fas fa-hand-holding', 'desc' => '窓口に直接提出'],
+                                'email' => ['label' => 'メール申請', 'icon' => 'fas fa-at', 'desc' => 'メールで書類を送信']
+                            ];
+                            
+                            $selected_methods = array_filter(explode(',', $search_params['application_method'] ?? ''));
+                            
+                            foreach ($method_options as $value => $config):
+                                $is_selected = in_array($value, $selected_methods);
+                            ?>
+                            <label class="clean-filter-option method-option" tabindex="0">
+                                <input type="checkbox" 
+                                       name="application_method[]" 
+                                       value="<?php echo esc_attr($value); ?>" 
+                                       class="clean-filter-checkbox method-checkbox"
+                                       <?php checked($is_selected); ?>
+                                       aria-describedby="method-<?php echo esc_attr($value); ?>-desc">
+                                <span class="clean-filter-label">
+                                    <i class="<?php echo esc_attr($config['icon']); ?> method-icon" aria-hidden="true"></i>
+                                    <span class="method-text">
+                                        <span class="method-name"><?php echo esc_html($config['label']); ?></span>
+                                        <span class="method-desc" id="method-<?php echo esc_attr($value); ?>-desc"><?php echo esc_html($config['desc']); ?></span>
+                                    </span>
+                                </span>
                             </label>
                             <?php endforeach; ?>
                         </div>
 
-                        <!-- Application Method Filters -->
+                        <!-- Additional Filters -->
                         <div class="clean-filter-group">
-                            <h4 class="clean-filter-group-title">申請方法</h4>
+                            <h4 class="clean-filter-group-title">
+                                <i class="fas fa-cogs" aria-hidden="true"></i>
+                                その他条件
+                            </h4>
+                            
                             <label class="clean-filter-option" tabindex="0">
                                 <input type="checkbox" 
-                                       name="application_method[]" 
-                                       value="online" 
-                                       class="clean-filter-checkbox method-checkbox"
-                                       aria-describedby="method-online-desc">
-                                <span class="clean-filter-label" id="method-online-desc">
-                                    オンライン申請
+                                       name="no_guarantee_required" 
+                                       value="1" 
+                                       class="clean-filter-checkbox guarantee-checkbox">
+                                <span class="clean-filter-label">
+                                    <i class="fas fa-handshake" aria-hidden="true"></i>
+                                    保証人不要
                                 </span>
                             </label>
+                            
                             <label class="clean-filter-option" tabindex="0">
                                 <input type="checkbox" 
-                                       name="application_method[]" 
-                                       value="mail" 
-                                       class="clean-filter-checkbox method-checkbox"
-                                       aria-describedby="method-mail-desc">
-                                <span class="clean-filter-label" id="method-mail-desc">
-                                    郵送申請
+                                       name="startup_friendly" 
+                                       value="1" 
+                                       class="clean-filter-checkbox startup-checkbox">
+                                <span class="clean-filter-label">
+                                    <i class="fas fa-rocket" aria-hidden="true"></i>
+                                    スタートアップ対応
                                 </span>
                             </label>
+                            
                             <label class="clean-filter-option" tabindex="0">
                                 <input type="checkbox" 
-                                       name="application_method[]" 
-                                       value="direct" 
-                                       class="clean-filter-checkbox method-checkbox"
-                                       aria-describedby="method-direct-desc">
-                                <span class="clean-filter-label" id="method-direct-desc">
-                                    持参申請
+                                       name="continuous_support" 
+                                       value="1" 
+                                       class="clean-filter-checkbox continuous-checkbox">
+                                <span class="clean-filter-label">
+                                    <i class="fas fa-sync-alt" aria-hidden="true"></i>
+                                    継続支援あり
                                 </span>
                             </label>
                         </div>
 
-                        <!-- Reset Filters -->
+                        <!-- Enhanced Filter Actions -->
                         <div class="clean-filter-actions">
-                            <button type="button" id="clean-reset-filters" class="clean-reset-button">
-                                フィルターをリセット
-                            </button>
+                            <div class="filter-actions-grid">
+                                <button type="button" id="clean-reset-filters" class="clean-reset-button">
+                                    <i class="fas fa-undo" aria-hidden="true"></i>
+                                    リセット
+                                </button>
+                                
+                                <button type="button" id="apply-filters" class="apply-filters-button">
+                                    <i class="fas fa-search" aria-hidden="true"></i>
+                                    適用
+                                </button>
+                                
+                                <button type="button" id="save-filter-preset" class="save-preset-button">
+                                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                                    保存
+                                </button>
+                                
+                                <button type="button" id="share-filters" class="share-filters-button">
+                                    <i class="fas fa-share-alt" aria-hidden="true"></i>
+                                    共有
+                                </button>
+                            </div>
+                            
+                            <!-- Filter Statistics -->
+                            <div class="filter-statistics">
+                                <div class="filter-stat">
+                                    <span class="stat-label">選択中:</span>
+                                    <span id="active-filter-count" class="stat-value">0</span>
+                                </div>
+                                <div class="filter-stat">
+                                    <span class="stat-label">結果:</span>
+                                    <span id="result-preview-count" class="stat-value">-</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2276,28 +3342,42 @@ $region_mapping = [
     </div>
 </section>
 
-<!-- JavaScript -->
+<!-- Optimized JavaScript -->
 <script>
 /**
- * Clean Grant Archive JavaScript
- * シンプルでクリーンなデザイン用の機能
+ * Optimized Grant Archive JavaScript
+ * Enhanced with performance optimization and UX improvements
  */
 (function() {
     'use strict';
     
-    // Configuration
+    // Enhanced Configuration
     const config = {
         ajaxUrl: '<?php echo admin_url('admin-ajax.php'); ?>',
         nonce: '<?php echo wp_create_nonce('gi_ajax_nonce'); ?>',
-        debounceDelay: 300,
-        searchDelay: 500
+        debounce: {
+            search: 500,     // Text search - longer delay
+            filter: 200,     // Checkboxes - shorter delay
+            sort: 100        // Sort changes - immediate
+        },
+        cache: {
+            duration: 300000, // 5 minutes
+            maxSize: 50
+        },
+        performance: {
+            virtualScrollThreshold: 50,
+            lazyLoadOffset: 200
+        }
     };
     
-    // State Management
+    // Enhanced State Management
     const state = {
         currentView: '<?php echo $search_params['view']; ?>',
         currentPage: <?php echo $search_params['page']; ?>,
         isLoading: false,
+        cache: new Map(),
+        userPreferences: JSON.parse(localStorage.getItem('gi_preferences') || '{}'),
+        savedFilters: JSON.parse(localStorage.getItem('gi_saved_filters') || '[]'),
         filters: {
             search: '<?php echo esc_js($search_params['search']); ?>',
             categories: <?php echo json_encode(array_filter(explode(',', $search_params['category']))); ?>,
@@ -2307,29 +3387,48 @@ $region_mapping = [
             amount: '<?php echo esc_js($search_params['amount']); ?>',
             status: <?php echo json_encode(array_filter(explode(',', $search_params['status']))); ?>,
             is_featured: '<?php echo esc_js($search_params['is_featured']); ?>',
-            sort: '<?php echo esc_js($search_params['sort']); ?>'
+            sort: '<?php echo esc_js($search_params['sort']); ?>',
+            // New filter options
+            high_success_rate: false,
+            deadline_soon: false,
+            no_guarantee_required: false,
+            startup_friendly: false,
+            continuous_support: false
         }
     };
     
-    // DOM Elements
+    // DOM Elements Cache
     const elements = {};
     
     // Timers
-    let debounceTimer = null;
-    let searchTimer = null;
+    const timers = {
+        debounce: null,
+        search: null,
+        preview: null
+    };
+    
+    // Performance utilities
+    const performance = {
+        requestIdleCallback: window.requestIdleCallback || function(cb) { setTimeout(cb, 1); },
+        intersection: null,
+        mutation: null
+    };
     
     /**
-     * Initialize
+     * Initialize Enhanced System
      */
     function init() {
         cacheElements();
         bindEvents();
+        initializeAdvancedFeatures();
         updateFilterCount();
+        loadSavedFilters();
         initializeCardInteractions();
+        initializePerformanceOptimizations();
     }
     
     /**
-     * Cache DOM elements
+     * Enhanced DOM Element Caching
      */
     function cacheElements() {
         const ids = [
@@ -2337,25 +3436,37 @@ $region_mapping = [
             'clean-sort-select', 'clean-filter-toggle', 'clean-filter-sidebar',
             'clean-filter-close', 'clean-grid-view', 'clean-list-view',
             'clean-reset-search', 'clean-results-count', 'clean-loading',
-            'clean-grants-container', 'clean-grants-display', 'clean-filter-count'
+            'clean-grants-container', 'clean-grants-display', 'clean-filter-count',
+            // New elements
+            'active-filters-breadcrumb', 'active-filters-list', 'clear-all-filters',
+            'save-current-filter', 'saved-filter-list', 'detect-location',
+            'location-search-input', 'location-results', 'category-search-input',
+            'live-count', 'preview-categories', 'apply-filters',
+            'active-filter-count', 'result-preview-count'
         ];
         
         ids.forEach(id => {
             elements[id.replace(/-/g, '_')] = document.getElementById(id);
         });
         
+        // Enhanced selectors
         elements.quickFilters = document.querySelectorAll('.clean-filter-pill');
         elements.filterCheckboxes = document.querySelectorAll('.clean-filter-checkbox');
         elements.filterRadios = document.querySelectorAll('.clean-filter-radio');
+        elements.suggestionChips = document.querySelectorAll('.suggestion-chip');
+        elements.regionTabs = document.querySelectorAll('.region-tab');
+        elements.categoryChips = document.querySelectorAll('.category-chip-enhanced');
+        elements.statusOptions = document.querySelectorAll('.status-option');
+        elements.amountSliders = document.querySelectorAll('.amount-slider');
     }
     
     /**
-     * Bind events
+     * Enhanced Event Binding
      */
     function bindEvents() {
-        // Search
+        // Core Search Events
         if (elements.clean_search_input) {
-            elements.clean_search_input.addEventListener('input', handleSearchInput);
+            elements.clean_search_input.addEventListener('input', debounce(handleSearchInput, config.debounce.search));
             elements.clean_search_input.addEventListener('keypress', handleSearchKeypress);
         }
         
@@ -2363,12 +3474,12 @@ $region_mapping = [
             elements.clean_search_clear.addEventListener('click', handleSearchClear);
         }
         
-        // Sort
+        // Enhanced Sort
         if (elements.clean_sort_select) {
-            elements.clean_sort_select.addEventListener('change', handleSortChange);
+            elements.clean_sort_select.addEventListener('change', debounce(handleSortChange, config.debounce.sort));
         }
         
-        // Filter toggle
+        // Filter UI Events
         if (elements.clean_filter_toggle) {
             elements.clean_filter_toggle.addEventListener('click', toggleFilterSidebar);
         }
@@ -2376,6 +3487,12 @@ $region_mapping = [
         if (elements.clean_filter_close) {
             elements.clean_filter_close.addEventListener('click', closeFilterSidebar);
         }
+        
+        // New Enhanced Events
+        bindFilterEvents();
+        bindLocationEvents();
+        bindCategoryEvents();
+        bindActionEvents();
         
         // View switcher
         if (elements.clean_grid_view) {
@@ -3415,51 +4532,382 @@ function applyRecommendation(index) {
 }
 
 /**
- * 履歴をクリア
+ * Enhanced Utility Functions
+ */
+    
+    // Debounce utility
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+    
+    // Throttle utility
+    function throttle(func, limit) {
+        let inThrottle;
+        return function() {
+            const args = arguments;
+            const context = this;
+            if (!inThrottle) {
+                func.apply(context, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        };
+    }
+    
+    // Enhanced Performance Features
+    function initializeAdvancedFeatures() {
+        initializeLocationServices();
+        initializeCategorySearch();
+        initializeFilterPreview();
+        initializeSavedFilters();
+    }
+    
+    function initializePerformanceOptimizations() {
+        // Intersection Observer for lazy loading
+        if ('IntersectionObserver' in window) {
+            performance.intersection = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Lazy load functionality
+                        handleLazyLoad(entry.target);
+                    }
+                });
+            }, { rootMargin: `${config.performance.lazyLoadOffset}px` });
+        }
+        
+        // Service Worker for caching (if supported)
+        if ('serviceWorker' in navigator && 'caches' in window) {
+            registerServiceWorker();
+        }
+    }
+    
+    // Location Services
+    function initializeLocationServices() {
+        if ('geolocation' in navigator) {
+            state.geolocationSupported = true;
+        }
+    }
+    
+    function handleLocationDetection() {
+        if (!navigator.geolocation) {
+            showNotification('位置情報がサポートされていません', 'error');
+            return;
+        }
+        
+        const button = elements.detect_location;
+        button.disabled = true;
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 位置情報取得中...';
+        
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const { latitude, longitude } = position.coords;
+                detectPrefectureFromCoordinates(latitude, longitude);
+                button.disabled = false;
+                button.innerHTML = '<i class="fas fa-crosshairs"></i> 現在地から検索';
+            },
+            (error) => {
+                showNotification('位置情報の取得に失敗しました', 'error');
+                button.disabled = false;
+                button.innerHTML = '<i class="fas fa-crosshairs"></i> 現在地から検索';
+            },
+            { timeout: 10000, enableHighAccuracy: true }
+        );
+    }
+    
+    // Enhanced Filter Functions
+    function handleSuggestionClick(event) {
+        const preset = event.target.dataset.preset;
+        applyFilterPreset(preset);
+    }
+    
+    function applyFilterPreset(preset) {
+        const presets = {
+            'it-companies': {
+                categories: ['it', 'digital', 'software'],
+                amount: '1000-3000',
+                status: ['open'],
+                startup_friendly: true
+            },
+            'tokyo-high-amount': {
+                prefectures: ['tokyo'],
+                amount: '3000+',
+                status: ['open']
+            },
+            'manufacturing': {
+                categories: ['manufacturing', 'industry'],
+                amount: '500-3000',
+                no_guarantee_required: true
+            }
+        };
+        
+        const presetData = presets[preset];
+        if (presetData) {
+            Object.assign(state.filters, presetData);
+            updateFiltersUI();
+            loadGrants();
+        }
+    }
+    
+    // Category Search Enhancement
+    function initializeCategorySearch() {
+        if (!elements.category_search_input) return;
+        
+        elements.category_search_input.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            filterCategories(query);
+        });
+    }
+    
+    function filterCategories(query) {
+        elements.categoryChips.forEach(chip => {
+            const categoryName = chip.dataset.categoryName || '';
+            const matches = categoryName.includes(query) || query === '';
+            chip.style.display = matches ? 'flex' : 'none';
+        });
+    }
+    
+    // Filter Preview System
+    function initializeFilterPreview() {
+        updateFilterPreview();
+    }
+    
+    function updateFilterPreview() {
+        performance.requestIdleCallback(() => {
+            const activeFilters = getActiveFiltersCount();
+            if (elements.active_filter_count) {
+                elements.active_filter_count.textContent = activeFilters;
+            }
+            
+            // Update live count with debounced AJAX call
+            debouncedPreviewUpdate();
+        });
+    }
+    
+    const debouncedPreviewUpdate = debounce(async () => {
+        try {
+            const response = await fetch(config.ajaxUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({
+                    action: 'gi_get_filter_preview',
+                    nonce: config.nonce,
+                    filters: JSON.stringify(state.filters)
+                })
+            });
+            
+            const data = await response.json();
+            if (data.success && elements.live_count) {
+                elements.live_count.textContent = data.data.count || 0;
+                updateCategoryPreview(data.data.categories || []);
+            }
+        } catch (error) {
+            console.warn('Filter preview failed:', error);
+        }
+    }, 1000);
+    
+    // Saved Filters System
+    function loadSavedFilters() {
+        const saved = state.savedFilters;
+        if (saved.length > 0 && elements.saved_filter_list) {
+            elements.saved_filter_list.innerHTML = saved.map(filter => 
+                `<button class="saved-filter-item" data-filter-id="${filter.id}">
+                    ${filter.name}
+                    <button class="saved-filter-delete" data-filter-id="${filter.id}">×</button>
+                </button>`
+            ).join('');
+            
+            document.querySelector('.saved-filters').style.display = 'block';
+        }
+    }
+    
+    function saveCurrentFilter() {
+        const filterName = prompt('フィルター設定の名前を入力してください:');
+        if (!filterName) return;
+        
+        const filterData = {
+            id: Date.now(),
+            name: filterName,
+            filters: { ...state.filters },
+            created: new Date().toISOString()
+        };
+        
+        state.savedFilters.push(filterData);
+        localStorage.setItem('gi_saved_filters', JSON.stringify(state.savedFilters));
+        loadSavedFilters();
+        showNotification(`フィルター "${filterName}" を保存しました`, 'success');
+    }
+    
+    // Enhanced Status Filter Handler (Fixed)
+    function handleStatusChange(event) {
+        const checkbox = event.target;
+        const value = checkbox.value;
+        
+        if (checkbox.checked) {
+            if (!state.filters.status.includes(value)) {
+                state.filters.status.push(value);
+            }
+        } else {
+            state.filters.status = state.filters.status.filter(s => s !== value);
+        }
+        
+        updateFilterPreview();
+        updateActiveFilters();
+    }
+    
+    // Active Filters Management
+    function updateActiveFilters() {
+        const activeFiltersHtml = generateActiveFiltersHtml();
+        if (elements.active_filters_list) {
+            elements.active_filters_list.innerHTML = activeFiltersHtml;
+        }
+        
+        const breadcrumb = elements.active_filters_breadcrumb;
+        if (breadcrumb) {
+            breadcrumb.style.display = activeFiltersHtml ? 'block' : 'none';
+        }
+    }
+    
+    function generateActiveFiltersHtml() {
+        const filters = [];
+        
+        // Categories
+        if (state.filters.categories.length > 0) {
+            state.filters.categories.forEach(cat => {
+                filters.push(`<span class="filter-crumb">
+                    ${getCategoryDisplayName(cat)}
+                    <button class="filter-crumb-remove" data-type="category" data-value="${cat}">×</button>
+                </span>`);
+            });
+        }
+        
+        // Prefectures
+        if (state.filters.prefectures.length > 0) {
+            state.filters.prefectures.forEach(pref => {
+                filters.push(`<span class="filter-crumb">
+                    ${getPrefectureDisplayName(pref)}
+                    <button class="filter-crumb-remove" data-type="prefecture" data-value="${pref}">×</button>
+                </span>`);
+            });
+        }
+        
+        // Status
+        if (state.filters.status.length > 0) {
+            state.filters.status.forEach(status => {
+                filters.push(`<span class="filter-crumb">
+                    ${getStatusDisplayName(status)}
+                    <button class="filter-crumb-remove" data-type="status" data-value="${status}">×</button>
+                </span>`);
+            });
+        }
+        
+        return filters.join('');
+    }
+    
+    // Notification System
+    function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <i class="fas ${getNotificationIcon(type)}"></i>
+                <span>${message}</span>
+            </div>
+            <button class="notification-close">×</button>
+        `;
+        
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${getNotificationColor(type)};
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 10001;
+            animation: slideInRight 0.3s ease;
+        `;
+        
+        document.body.appendChild(notification);
+        
+        const closeBtn = notification.querySelector('.notification-close');
+        closeBtn.addEventListener('click', () => notification.remove());
+        
+        setTimeout(() => notification.remove(), 5000);
+    }
+    
+    function getNotificationIcon(type) {
+        const icons = {
+            success: 'fa-check-circle',
+            error: 'fa-exclamation-circle',
+            warning: 'fa-exclamation-triangle',
+            info: 'fa-info-circle'
+        };
+        return icons[type] || icons.info;
+    }
+    
+    function getNotificationColor(type) {
+        const colors = {
+            success: '#10b981',
+            error: '#ef4444',
+            warning: '#f59e0b',
+            info: '#3b82f6'
+        };
+        return colors[type] || colors.info;
+    }
+    
+    // Keyboard Navigation Enhancement
+    function handleKeyboardNavigation(event) {
+        if (event.key === 'Escape') {
+            if (elements.clean_filter_sidebar?.classList.contains('active')) {
+                closeFilterSidebar();
+            }
+        }
+        
+        if (event.key === 'Enter' && event.target.matches('.clean-filter-option')) {
+            event.target.click();
+        }
+        
+        // Ctrl/Cmd + F to focus search
+        if ((event.ctrlKey || event.metaKey) && event.key === 'f') {
+            event.preventDefault();
+            if (elements.clean_search_input) {
+                elements.clean_search_input.focus();
+            }
+        }
+    }
+    
+    // Initialize the system
+    document.addEventListener('DOMContentLoaded', init);
+    
+})();
+
+/**
+ * Legacy compatibility functions (simplified)
  */
 function clearHistoryAndRecommendations() {
     if (confirm('閲覧履歴と検索履歴をすべて削除しますか？')) {
         localStorage.removeItem('gi_view_history');
         localStorage.removeItem('gi_search_history');
-        closeFilterOptimization();
         
-        // トースト通知
         const toast = document.createElement('div');
-        toast.textContent = '✓ 履歴をクリアしました';
+        toast.textContent = 'checkmark 履歴をクリアしました';
         toast.style.cssText = `
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: #000;
-            color: #fff;
-            padding: 1rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: 700;
-            z-index: 10001;
-            animation: slideUp 0.3s ease;
+            position: fixed; bottom: 2rem; right: 2rem;
+            background: #000; color: #fff; padding: 1rem 1.5rem;
+            border-radius: 0.5rem; font-weight: 700; z-index: 10001;
         `;
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 3000);
     }
-}
-
-/**
- * ヘルパー関数
- */
-function getMostFrequentCategory(history) {
-    const freq = {};
-    history.forEach(item => {
-        if (item.category) freq[item.category] = (freq[item.category] || 0) + 1;
-    });
-    const top = Object.keys(freq).sort((a, b) => freq[b] - freq[a])[0];
-    return top || '未分析';
-}
-
-function getAverageAmount(history) {
-    const amounts = history.filter(item => item.amount > 0).map(item => item.amount);
-    if (amounts.length === 0) return '未分析';
-    const avg = amounts.reduce((sum, val) => sum + val, 0) / amounts.length;
-    return Math.floor(avg / 10000) + '万円';
 }
 </script>
 
