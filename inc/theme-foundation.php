@@ -73,29 +73,14 @@ function gi_content_width() {
 add_action('after_setup_theme', 'gi_content_width', 0);
 
 /**
- * スクリプト・スタイルの読み込み
+ * スクリプト・スタイルの読み込み - 統合・最適化版
  */
 function gi_enqueue_scripts() {
-    // メインスタイルシート
+    // WordPressテーマメインスタイルシート
     wp_enqueue_style('gi-style', get_stylesheet_uri(), array(), GI_THEME_VERSION);
     
-    // 統合されたメインCSS
-    wp_enqueue_style('gi-main-css', get_template_directory_uri() . '/assets/css/main.css', array(), GI_THEME_VERSION);
-    
-    // みんなの銀行風スタイル（白黒スタイリッシュデザイン）
-    wp_enqueue_style('gi-minna-bank-style', get_template_directory_uri() . '/assets/css/minna-bank-style.css', array('gi-main-css'), GI_THEME_VERSION);
-    
-    // UI/UX修正CSS（ユーザーフィードバックに基づく修正）
-    wp_enqueue_style('gi-ui-ux-fixes', get_template_directory_uri() . '/assets/css/ui-ux-fixes.css', array('gi-minna-bank-style'), GI_THEME_VERSION);
-    
-    // UI/UX Advanced Fixes（スクリーンショット分析に基づく追加修正）
-    wp_enqueue_style('gi-ui-ux-advanced', get_template_directory_uri() . '/assets/css/ui-ux-advanced-fixes.css', array('gi-ui-ux-fixes'), GI_THEME_VERSION);
-    
-    // Color Contrast Fixes（色のコントラスト問題修正 - 全ページ対応）
-    wp_enqueue_style('gi-contrast-fixes', get_template_directory_uri() . '/assets/css/contrast-fixes.css', array('gi-ui-ux-advanced'), GI_THEME_VERSION);
-    
-    // Chat UI Fixes（チャットUI改善 - フォントサイズ拡大と重なり修正）
-    wp_enqueue_style('gi-chat-ui-fixes', get_template_directory_uri() . '/assets/css/chat-ui-fixes.css', array('gi-contrast-fixes'), GI_THEME_VERSION);
+    // 統合フロントエンドCSS（全CSSを統合・最適化）
+    wp_enqueue_style('gi-unified-frontend', get_template_directory_uri() . '/assets/css/unified-frontend.css', array(), GI_THEME_VERSION);
     
     // Google Fonts（日本語フォント）
     wp_enqueue_style('google-fonts-noto', 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap', array(), null);
@@ -103,10 +88,8 @@ function gi_enqueue_scripts() {
     // メインJavaScript
     wp_enqueue_script('gi-main', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), GI_THEME_VERSION, true);
     
-    // UI/UX拡張JavaScript（スクリーンショット分析に基づく改善）
+    // UI/UX拡張JavaScript
     wp_enqueue_script('gi-ui-ux-enhancements', get_template_directory_uri() . '/assets/js/ui-ux-enhancements.js', array('jquery', 'gi-main'), GI_THEME_VERSION, true);
-    
-    // AI機能は削除されました
     
     // AJAX設定
     wp_localize_script('gi-main', 'gi_ajax', array(
@@ -641,27 +624,20 @@ function gi_pagination($pages = '') {
 }
 
 /**
- * 管理画面用のスタイル
+ * 管理画面用のスタイル - 統合版
  */
 function gi_admin_styles() {
+    // 統合管理画面CSS読み込み
+    wp_enqueue_style('gi-admin-consolidated', get_template_directory_uri() . '/assets/css/admin-consolidated.css', array(), GI_THEME_VERSION);
+    
+    // 管理画面メニューアイコン設定
     echo '<style>
         #adminmenu .menu-icon-grant div.wp-menu-image:before {
             content: "\f155";
         }
-        .grant-status-badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 3px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        .grant-status-active { background: #7ad03a; color: white; }
-        .grant-status-soon { background: #ffba00; color: white; }
-        .grant-status-expired { background: #dd3333; color: white; }
-
     </style>';
 }
-add_action('admin_head', 'gi_admin_styles');
+add_action('admin_enqueue_scripts', 'gi_admin_styles');
 
 /**
  * =============================================================================
