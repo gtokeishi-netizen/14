@@ -188,11 +188,14 @@ $difficulty_configs = array(
 $difficulty = $grant_data['application_difficulty'];
 $difficulty_data = $difficulty_configs[$difficulty] ?? $difficulty_configs['normal'];
 
-// CSS・JSの重複防止
-static $assets_loaded = false;
+// CSS・JSの重複防止（グローバル変数使用）
+global $grant_card_assets_loaded;
+if (!isset($grant_card_assets_loaded)) {
+    $grant_card_assets_loaded = false;
+}
 ?>
 
-<?php if (!$assets_loaded): $assets_loaded = true; ?>
+<?php if (!$grant_card_assets_loaded): $grant_card_assets_loaded = true; ?>
 
 <style>
 /* Clean Grant Card Design System - Full Monochrome Edition */
@@ -2014,6 +2017,10 @@ static $assets_loaded = false;
 </style>
 
 <script>
+// 重複実行防止
+if (!window.grantCardScriptLoaded) {
+    window.grantCardScriptLoaded = true;
+    
 document.addEventListener('DOMContentLoaded', function() {
     // カードクリック処理（詳細ボタンのみでページ遷移）
     document.addEventListener('click', function(e) {
@@ -2475,6 +2482,8 @@ if (!document.getElementById('grant-card-unified-styles')) {
     `;
     document.head.appendChild(grantCardStyles);
 }
+
+} // End of grantCardScriptLoaded check
 </script>
 <?php endif; ?>
 
@@ -2769,12 +2778,19 @@ if (!document.getElementById('grant-card-unified-styles')) {
 </article>
 
 <?php
-// JavaScriptを一度だけ出力
-static $ai_features_js_loaded = false;
-if (!$ai_features_js_loaded):
-    $ai_features_js_loaded = true;
+// AI機能JavaScriptを一度だけ出力（グローバル変数使用）
+global $grant_card_ai_js_loaded;
+if (!isset($grant_card_ai_js_loaded)) {
+    $grant_card_ai_js_loaded = false;
+}
+if (!$grant_card_ai_js_loaded):
+    $grant_card_ai_js_loaded = true;
 ?>
 <script>
+// 重複実行防止
+if (!window.grantCardAIScriptLoaded) {
+    window.grantCardAIScriptLoaded = true;
+
 // ============================================================================
 // AI機能JavaScript（モノクローム対応）
 // ============================================================================
@@ -3005,6 +3021,8 @@ function showToast(message, type = 'success') {
         setTimeout(() => toast.remove(), 300);
     }, 3000);
 }
+
+} // End of grantCardAIScriptLoaded check
 </script>
 
 <!-- AI機能CSS -->
